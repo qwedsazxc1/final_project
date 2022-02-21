@@ -1,4 +1,6 @@
-// token : vscode://vscode.github-authentication/did-authenticate?windowid=1&code=43c2bd640855d0e60985&state=ffa64612-150a-4537-8fba-948b5b36e4b7
+// This is Chung-cheng University Computer science and Information engineering course : program design(II)'s final project
+// participant :
+// student ID : 410410021, name : Yi-Hong Lin, mail : linyihong1234@gmail.com
 
 #include <stdio.h>
 #include <conio.h>
