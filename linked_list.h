@@ -6,6 +6,7 @@ typedef struct node{
     struct node *next;
 } node;
 
+struct node *build_node(int data);
 struct node *search_target_previous_node(struct node *head, int target);
 struct node *search_target_node(struct node *head, int target);
 int add_node_to_head(struct node **head, int data);
