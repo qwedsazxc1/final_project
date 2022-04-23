@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "error.h"
 #include "linked_list.h" 
 #include "lib.h"
 
@@ -32,8 +33,10 @@ struct node *search_target_node(struct node *head, int target){
 
 int add_node_to_head(struct node **head, int data){
     struct node *new_node = (struct node *)malloc(sizeof(struct node));
-    if (new_node == NULL)
+    if (new_node == NULL){
+        set_and_print_error_message("linked list : allocate memory fail\n");
         return -1;
+    }
     new_node->data = data;
     new_node->next = *head;
     *head = new_node;
@@ -42,8 +45,11 @@ int add_node_to_head(struct node **head, int data){
 
 int add_node_to_end(struct node **head, int data){
     struct node *new_node = (struct node *)malloc(sizeof(struct node));
-    if (new_node == NULL)
+    if (new_node == NULL){
+        set_and_print_error_message("linked list : allocate memory fail\n");
         return -1;
+    }
+
     new_node->data = data;
     new_node->next = NULL;
     struct node *current_node = *head;
@@ -61,12 +67,17 @@ int add_node_to_end(struct node **head, int data){
 
 int insert_node_before_target(struct node **head, int target, int data){
     struct node *target_node = search_target_node(*head, target);
-    if (target_node == NULL)
+    if (target_node == NULL){
+        set_and_print_error_message("linked list : target node not found\n");
         return 1;
+    }
+
     
     struct node *new_node = (struct node *)malloc(sizeof(struct node));
-    if (new_node == NULL)
+    if (new_node == NULL){
+        set_and_print_error_message("linked list : allocate memory fail\n");
         return -1;
+    }
 
     new_node->data = data;
     new_node->next = target_node;
@@ -80,11 +91,16 @@ int insert_node_before_target(struct node **head, int target, int data){
 
 int insert_node_after_target(struct node *head, int target, int data){
     struct node *target_node = search_target_node(head, target);
-    if (target_node == NULL)
+    if (target_node == NULL){
+        set_and_print_error_message("linked list : target node not found\n");
         return 1;
+    }
+
     struct node *new_node = (struct node *)malloc(sizeof(struct node));
-    if (new_node == NULL)
+    if (new_node == NULL){
+        set_and_print_error_message("linked list : allocate memory fail\n");
         return -1;
+    }
     new_node->data = data;
     new_node->next = target_node->next;
     target_node->next = new_node;
@@ -93,8 +109,11 @@ int insert_node_after_target(struct node *head, int target, int data){
 
 int delete_node(struct node **head, int target){
     struct node *target_node = search_target_node(*head, target);
-    if (target_node == NULL)
+    if (target_node == NULL){
+        set_and_print_error_message("linked list : target node not found\n");
         return 1;
+    }
+       
     struct node *previous_node = search_target_previous_node(*head, target);
     if (previous_node == NULL)
         *head = target_node->next;
@@ -105,12 +124,16 @@ int delete_node(struct node **head, int target){
 }
 
 int swap_node(struct node **head, int target1, int target2){
-    if (target1 == target2)
+    if (target1 == target2){
+        set_error_message("linked list : swap target is same\n");
         return 2;
+    }
     struct node *target1_node = search_target_node(*head, target1);
     struct node *target2_node = search_target_node(*head, target2);
-    if (target1_node == NULL || target2_node == NULL)
+    if (target1_node == NULL || target2_node == NULL){
+        set_and_print_error_message("linked list : target node not found\n");
         return 1;
+    }
     swap(&(target1_node->next), &(target2_node->next), sizeof(struct node *));
     struct node *target1_previous_node = search_target_previous_node(*head, target1);
     struct node *target2_previous_node = search_target_previous_node(*head, target2);

@@ -1,7 +1,8 @@
 #ifndef LIB_H
 #define LIB_H
+#include <stdio.h>
 
-typedef unsigned int size_t;
 void swap(void *a, void *b, size_t size);
+void fflush_stdin(void);
 
 #endif
