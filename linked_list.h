@@ -12,6 +12,7 @@ struct node{
     int data;
     struct node *next;
 };
+typedef struct node node;
 #endif
 #ifndef LINKED_LIST
 #define LINKED_LIST
@@ -29,9 +30,8 @@ struct list{
     void (*print_list)(struct node *head);
     void (*clean)(struct node **head);
 };
-#endif
-typedef struct node node;
 typedef struct list list;
+#endif
 
 void initial_list(struct list *data);
 
