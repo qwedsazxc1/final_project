@@ -13,6 +13,7 @@
 #include "linked_list.h"
 #include "lib.h"
 #include "error.h"
+#include "stack.h"
 #define BUFFER_SIZE (4096)
 
 int main(int argc, char **argv){
@@ -35,7 +36,7 @@ int main(int argc, char **argv){
     fgets(input_buffer, BUFFER_SIZE, user);
     char *user_name = (char *)malloc(100 * sizeof(char));
     char *password = (char *)malloc(100 * sizeof(char));
-    sscanf(input_buffer, "username:%100s , password:%100s", user_name, password);
+    sscanf(input_buffer, "username:%100s password:%100s", user_name, password);
     if(strcmp(user_name, input_user_name) != 0 || strcmp(password, input_password) != 0){
         fprintf(stdout, "Wrong username or password\n");
         return 0;
