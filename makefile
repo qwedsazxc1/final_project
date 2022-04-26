@@ -13,4 +13,4 @@ stack.o: stack.c stack.h
 	gcc stack.c -c
 
 clear:
-	rm main final_project.o linked_list.o lib.o error.o list.o
+	rm main final_project.o linked_list.o lib.o error.o stack.o
