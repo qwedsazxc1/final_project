@@ -1,21 +1,27 @@
 #include "double_linked_list.h"
 
 static struct dnode *build_node(int data, struct dnode *next, struct dnode *prev);
-static struct dnode *search_node(struct dnode *node, int target);
 static int add_node_to_head(struct dnode **head, struct dnode **tail, int data);
 static int add_node_to_tail(struct dnode **head, struct dnode **tail, int data);
-static void print_list_from_head(struct dnode *head);
-static void print_list_from_tail(struct dnode *head);
-static int delete_node(struct dnode **head, struct dnode **tail, int target, struct dnode *start_node);
+static int delete_node(struct dnode **head, struct dnode **tail, struct dnode *target_node);
+static int insert_node(struct dnode **head, int data, struct dnode *target_node);
+static void print_list_from_head(const struct double_linked_list *dlist);
+static void print_list_from_tail(const struct double_linked_list *dlist);
 static void clear(struct double_linked_list *dlist);
 static int push_front(struct double_linked_list *dlist, int data);
 static int push_back(struct double_linked_list *dlist, int data);
-static int front(struct double_linked_list *dlist);
-static int back(struct double_linked_list *dlist);
-static int size(struct double_linked_list *dlist);
-static int empty(struct double_linked_list *dlist);
+static int front(const struct double_linked_list *dlist);
+static int back(const struct double_linked_list *dlist);
+static int size(const struct double_linked_list *dlist);
+static int empty(const struct double_linked_list *dlist);
 static int pop_back(struct double_linked_list *dlist);
 static int pop_front(struct double_linked_list *dlist);
+static struct dnode *begin(const struct double_linked_list *dlist);
+static struct dnode *end(const struct double_linked_list *dlist);
+static struct dnode *search_node_from_head(const struct double_linked_list *dlist, int target_data);
+static struct dnode *search_node_from_tail(const struct double_linked_list *dlist, int target_data);
+static int erase(struct double_linked_list *dlist, struct dnode *target_node);
+static int insert(struct double_linked_list *dlist, int data, struct dnode *target_node);
 
 void initial_double_linked_list(struct double_linked_list *list){
     list->list_size = 0;
@@ -32,6 +38,12 @@ void initial_double_linked_list(struct double_linked_list *list){
     list->empty = empty;
     list->pop_back = pop_back;
     list->pop_front = pop_front;
+    list->begin = begin;
+    list->end = end;
+    list->insert = insert;
+    list->erase = erase;
+    list->search_node_from_head = search_node_from_head;
+    list->search_node_from_tail = search_node_from_tail;
 }
 
 static struct dnode *build_node(int data, struct dnode *next, struct dnode *prev){
@@ -67,9 +79,9 @@ static int add_node_to_tail(struct dnode **head, struct dnode **tail, int data){
     return 0;
 }
 
-static void print_list_from_head(struct dnode *head){
+static void print_list_from_head(const struct double_linked_list *dlist){
     printf("list (from head) : ");
-    for (struct dnode *cur = head; cur != NULL; cur = cur->next)
+    for (struct dnode *cur = dlist->head; cur != NULL; cur = cur->next)
         printf("%d ", cur->data);
     
     printf("\n");
@@ -84,9 +96,9 @@ static void clear(struct double_linked_list *dlist){
     dlist->head = NULL;
     dlist->tail = NULL;
 }
-static void print_list_from_tail(struct dnode *tail){
+static void print_list_from_tail(const struct double_linked_list *dlist){
     printf("list (from tail) : ");
-    for (struct dnode *cur = tail; cur != NULL; cur = cur->prev)
+    for (struct dnode *cur = dlist->tail; cur != NULL; cur = cur->prev)
         printf("%d ", cur->data);
     
     printf("\n");
@@ -106,34 +118,33 @@ static int push_back(struct double_linked_list *dlist, int data){
     return push_result;
 }
 
-static int front(struct double_linked_list *dlist){
+static int front(const struct double_linked_list *dlist){
     if (dlist->empty(dlist))
         return -1;
 
     return dlist->head->data;
 }
 
-static int back(struct double_linked_list *dlist){
+static int back(const struct double_linked_list *dlist){
     if (dlist->empty(dlist))
         return -1;
 
     return dlist->head->data;
 }
 
-static int size(struct double_linked_list *dlist){
+static int size(const struct double_linked_list *dlist){
     return dlist->list_size;
 }
 
-static int empty(struct double_linked_list *dlist){
-    if (dlist->size == 0)
+static int empty(const struct double_linked_list *dlist){
+    if (dlist->list_size == 0)
         return 1;
 
     return 0;
 }
 
-static int delete_node(struct dnode **head, struct dnode **tail, int target, struct dnode *start_node){
-    struct dnode *cur;
-    cur = search_node(start_node, target);
+static int delete_node(struct dnode **head, struct dnode **tail, struct dnode *target_node){
+    struct dnode *cur = target_node;
     if (cur == NULL){
         set_and_print_error_message("double linked list : delete target not found\n");
         return 1;
@@ -165,37 +176,71 @@ static int delete_node(struct dnode **head, struct dnode **tail, int target, str
 }
 
 static int pop_back(struct double_linked_list *dlist){
-    int pop_result = delete_node(&(dlist->head), &(dlist->tail), dlist->back(dlist), dlist->tail);
+    int pop_result = delete_node(&(dlist->head), &(dlist->tail), dlist->tail);
     if (!pop_result)
-        dlist->size -= 1;
+        dlist->list_size -= 1;
 
     return pop_result;
 }
 
-static struct dnode *search_node(struct dnode *node, int target){
-    struct dnode *cur;
-    if (node == NULL)
-        return NULL;
-    if (node->next == NULL && node->prev != NULL){
-        for (cur = node; cur != NULL; cur = cur->prev){
-            if (cur->data == target)
-                break;
-        }
-        return cur;
-    }
+static int pop_front(struct double_linked_list *dlist){
+    int pop_result = delete_node(&(dlist->head), &(dlist->tail), dlist->head);
+    if (!pop_result)
+        dlist->list_size -= 1;
 
-    for (cur = node; cur != NULL; cur = cur->next){
-        if (cur->data == target)
+    return pop_result;
+}
+
+static struct dnode *begin(const struct double_linked_list *dlist){
+    return dlist->head;
+}
+
+static struct dnode *end(const struct double_linked_list *dlist){
+    return dlist->tail;
+}
+static struct dnode *search_node_from_head(const struct double_linked_list *dlist, int target_data){
+    struct dnode *cur;
+    for (cur = dlist->head; cur != NULL; cur = cur->next){
+        if (cur->data == target_data)
+            break;
+    }
+    return cur;
+}
+static struct dnode *search_node_from_tail(const struct double_linked_list *dlist, int target_data){
+    struct dnode *cur;
+    for (cur = dlist->tail; cur != NULL; cur = cur->prev){
+        if (cur->data == target_data)
             break;
     }
     return cur;
 }
 
-static int pop_front(struct double_linked_list *dlist){
-    int pop_result = delete_node(&(dlist->head), &(dlist->tail), dlist->front(dlist), dlist->head);
-    if (!pop_result)
-        dlist->size -= 1;
-
-    return pop_result;
+static int erase(struct double_linked_list *dlist, struct dnode *target_node){
+    int delete_result = delete_node(&(dlist->head), &(dlist->tail), target_node);
+    if (!delete_result)
+        dlist->list_size -= 1;
+    return delete_result;
 }
 
+static int insert_node(struct dnode **head, int data, struct dnode *target_node){
+    if (target_node == NULL){
+        set_and_print_error_message("double linked list : insert target node not found\n");
+        return 1;
+    }
+    struct dnode *new_node = build_node(data, target_node, target_node->prev);
+    if (new_node == NULL){
+        set_and_print_error_message("double linked list : insert node memory allocate fail\n");
+        return -1;
+    }
+    if (target_node == *head)
+        *head = new_node;
+    target_node->prev = new_node;
+    return 0;
+}
+
+static int insert(struct double_linked_list *dlist, int data, struct dnode *target_node){
+    int insert_result = insert_node(&(dlist->head), data, target_node);
+    if (!insert_result)
+        dlist->list_size += 1;
+    return insert_result;
+}

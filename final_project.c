@@ -15,6 +15,7 @@
 #include "lib.h"
 #include "error.h"
 #include "stack.h"
+#include "double_linked_list.h"
 #define BUFFER_SIZE (4096)
 
 int main(int argc, char **argv){
