@@ -16,10 +16,12 @@
 #include "error.h"
 #include "stack.h"
 #include "double_linked_list.h"
+#include "queue.h"
 #define BUFFER_SIZE (4096)
 
 int main(int argc, char **argv){
     char *input_buffer = (char *)malloc(BUFFER_SIZE * sizeof(char));
+
     free(input_buffer);
     return 0;
 }

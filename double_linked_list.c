@@ -61,8 +61,12 @@ static int add_node_to_head(struct dnode **head, struct dnode **tail, int data){
         set_and_print_error_message("double linked list : allocate memory fail\n");
         return -1;
     }
-    if (*tail == NULL)
+    if (*head == NULL && *tail == NULL){
+        *head = new_node;
         *tail = new_node;
+        return 0;
+    }
+    (*head)->prev = new_node;
     *head = new_node;
     return 0;
 }
@@ -73,8 +77,13 @@ static int add_node_to_tail(struct dnode **head, struct dnode **tail, int data){
         set_and_print_error_message("double linked list : allocate memory fail\n");
         return -1;
     }
-    if (*head == NULL)
+    if (*head == NULL && *tail == NULL){
         *head = new_node;
+        *tail = new_node;
+        return 0;
+    }
+
+    (*tail)->next = new_node;
     *tail = new_node;
     return 0;
 }
@@ -129,7 +138,7 @@ static int back(const struct double_linked_list *dlist){
     if (dlist->empty(dlist))
         return -1;
 
-    return dlist->head->data;
+    return dlist->tail->data;
 }
 
 static int size(const struct double_linked_list *dlist){
