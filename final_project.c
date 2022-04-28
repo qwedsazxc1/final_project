@@ -1,5 +1,6 @@
 /*
-    This is Chung-cheng University Computer science and Information engineering course : program design(II)'s final project
+    This is Chung-Cheng University Computer science and Information engineering course : program design(II)'s final project
+    Group : 電神阿宏與他的小夥伴
     participant :
     student ID : 410410021, name : Yi-Hong Lin, mail : linyihong1234@gmail.com
     student ID : 410410083
