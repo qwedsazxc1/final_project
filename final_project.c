@@ -12,11 +12,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "linked_list.h"
 #include "lib.h"
 #include "error.h"
 #include "stack.h"
-#include "double_linked_list.h"
+#include "list.h"
 #include "queue.h"
 #define BUFFER_SIZE (4096)
 

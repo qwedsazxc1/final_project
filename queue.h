@@ -1,10 +1,10 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include "double_linked_list.h"
+#include "list.h"
 
 struct queue{
-    double_linked_list list;
+    struct list list;
     size_t queue_size;
     int (*front)(const struct queue *queue);
     int (*back)(const struct queue *queue);

@@ -1,6 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
-#include "linked_list.h"
+#include "list.h"
 #ifndef STACK_STRUCTURE
 #define STACK_STRUCTURE
 struct stack{
