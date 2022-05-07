@@ -6,7 +6,7 @@ void swap(void *a, void *b, size_t size){
     for (int i = 0; i < size; i++){
         tmp = first[i];
         first[i] = second[i];
-        second[i] = first[i];
+        second[i] = tmp;
     }
 }
 
