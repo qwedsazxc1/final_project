@@ -9,14 +9,15 @@
     student ID : 410410080
 */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "lib.h"
+#include "avl_tree.h"
 #include "error.h"
-#include "stack.h"
+#include "lib.h"
 #include "list.h"
 #include "queue.h"
+#include "stack.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #define BUFFER_SIZE (4096)
 
 int main(int argc, char **argv){
