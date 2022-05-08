@@ -1,21 +1,23 @@
-main: final_project.o lib.o error.o stack.o list.o queue.o
-	gcc final_project.o lib.o error.o stack.o list.o queue.o -o main 
+main: final_project.o lib.o error.o stack.o list.o queue.o avl_tree.o
+	gcc -g final_project.o lib.o error.o stack.o list.o queue.o avl_tree.o -o main 
 
 final_project.o: final_project.c lib.h error.h
-	gcc final_project.c -c
+	gcc -g final_project.c -c -O3 -Wall
 lib.o: lib.c lib.h
-	gcc lib.c -c
+	gcc -g lib.c -c -O3 -Wall
 error.o: error.c error.h
-	gcc error.c -c
+	gcc -g error.c -c -O3 -Wall
 stack.o: stack.c stack.h
-	gcc stack.c -c
+	gcc -g stack.c -c -O3 -Wall
 list.o: list.c list.h
-	gcc list.c -c
+	gcc -g list.c -c -O3 -Wall
 queue.o: queue.c queue.h
-	gcc queue.c -c
+	gcc -g queue.c -c -O3 -Wall
+avl_tree.o: avl_tree.c avl_tree.h
+	gcc -g avl_tree.c -c -O3 -Wall
 
 clear:
-	rm main final_project.o lib.o error.o stack.o list.o queue.o
+	rm main final_project.o lib.o error.o stack.o list.o queue.o avl_tree.o
 
 clean:
-	rm main final_project.o lib.o error.o stack.o list.o queue.o
+	rm main final_project.o lib.o error.o stack.o list.o queue.o avl_tree.o
