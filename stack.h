@@ -1,19 +1,18 @@
 #ifndef STACK_H
 #define STACK_H
 #include "list.h"
-#ifndef STACK_STRUCTURE
-#define STACK_STRUCTURE
+typedef struct stack *stack;
 struct stack{
-    struct list stack_list;
+    list stack_list;
     size_t stack_size;
     int stack_top;
-    int (*empty)(struct stack stack);
-    int (*size)(struct stack stack);
-    int (*top)(struct stack stack);
-    int (*push)(struct stack *stack, int data);
-    int (*pop)(struct stack *stack);
+    int (*empty)(const stack stack);
+    int (*size)(const stack stack);
+    int (*top)(const stack stack);
+    int (*push)(stack stack, int data);
+    int (*pop)(stack stack);
+    void (*clear)(stack stack);
 };
-typedef struct stack stack;
-#endif
-void initial_stack(struct stack *stack);
+
+void initial_stack(stack stack);
 #endif  

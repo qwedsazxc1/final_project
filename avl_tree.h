@@ -13,20 +13,20 @@ struct avlnode{
 
 typedef struct avlnode avlnode;
 
+typedef struct avl_tree *avl_tree;
+
 struct avl_tree{
     struct avlnode *root;
-    int (*add)(struct avl_tree *tree, int data);
-    int (*max)(struct avl_tree tree);
-    int (*min)(struct avl_tree tree);
-    int (*height)(struct avl_tree tree);
-    void (*clear)(struct avl_tree *tree);
-    int (*search)(struct avl_tree tree, int target);
-    void (*delete)(struct avl_tree *tree, int target);
+    int (*add)(avl_tree tree, int data);
+    int (*max)(const avl_tree tree);
+    int (*min)(const avl_tree tree);
+    int (*height)(const avl_tree tree);
+    void (*clear)(const avl_tree tree);
+    int (*search)(const avl_tree tree, int target);
+    void (*delete)(const avl_tree tree, int target);
 };
 
-typedef struct avl_tree avl_tree;
-
-void initial_avl_tree(struct avl_tree *avl_tree);
+void initial_avl_tree(avl_tree avl_tree);
 void print_tree(struct avlnode *node);
 
 #endif

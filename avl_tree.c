@@ -1,26 +1,27 @@
 #include "avl_tree.h"
 
 static struct avlnode *build_node(int data, struct avlnode *parent);
-static int add(struct avl_tree *tree, int data);
 static int add_node(struct avlnode *node, int data);
-static int height(struct avl_tree tree);
 static void balance(struct avlnode *node);
 static void left_rotate(struct avlnode *node);
 static void right_rotate(struct avlnode *node);
-static int max(struct avl_tree tree);
-static int max_node(struct avlnode *node);
-static int min(struct avl_tree tree);
-static void clear(struct avl_tree *tree);
-static void delete(struct avl_tree *tree, int target);
 static int min_node(struct avlnode *node);
 static void update_root(struct avlnode **node);
 static int node_height(struct avlnode *node);
 static void free_tree(struct avlnode *node);
-static int search(struct avl_tree tree, int target);
 static struct avlnode *search_node(struct avlnode *node, int target);
 static struct avlnode *delete_node(struct avlnode *node, int target);
 static struct avlnode *get_successor_node(struct avlnode *node);
 static void update_node_height(struct avlnode *node);
+
+static int add(avl_tree tree, int data);
+static int max(const avl_tree tree);
+static int min(const avl_tree tree);
+static int height(const avl_tree tree);
+static int max_node(struct avlnode *node);
+static void clear(avl_tree tree);
+static void delete(avl_tree tree, int target);
+static int search(const avl_tree tree, int target);
 
 void print_tree(struct avlnode *node){
     if (node == NULL)
@@ -31,7 +32,7 @@ void print_tree(struct avlnode *node){
     print_tree(node->right_child);
 }
 
-void initial_avl_tree(struct avl_tree *avl_tree){
+void initial_avl_tree(avl_tree avl_tree){
     avl_tree->root = NULL;
     avl_tree->add = add;
     avl_tree->max = max;
@@ -42,8 +43,8 @@ void initial_avl_tree(struct avl_tree *avl_tree){
     avl_tree->delete = delete;
 }
 
-static int height(struct avl_tree tree){
-    return node_height(tree.root);
+static int height(const avl_tree tree){
+    return node_height(tree->root);
 }
 
 static void left_rotate(struct avlnode *node){
@@ -135,7 +136,7 @@ static int add_node(struct avlnode *node, int data){
     return add_result;
 }
 
-static int add(struct avl_tree *tree, int data){
+static int add(avl_tree tree, int data){
     if (tree->root == NULL){
         struct avlnode *new_node = build_node(data, NULL);
         if (new_node == NULL){
@@ -162,8 +163,8 @@ static struct avlnode *build_node(int data, struct avlnode *parent){
     return new_node;
 }
 
-static int max(struct avl_tree tree){
-    return max_node(tree.root);
+static int max(const avl_tree tree){
+    return max_node(tree->root);
 }
 
 static int max_node(struct avlnode *node){
@@ -176,8 +177,8 @@ static int max_node(struct avlnode *node){
     return max_node(node->right_child);
 }
 
-static int min(struct avl_tree tree){
-    return min_node(tree.root);
+static int min(const avl_tree tree){
+    return min_node(tree->root);
 }
 
 static int min_node(struct avlnode *node){
@@ -203,7 +204,7 @@ static int node_height(struct avlnode *node){
     return node->depth;
 }
 
-static void clear(struct avl_tree *tree){
+static void clear(avl_tree tree){
     free_tree(tree->root);
     tree->root = NULL;
 }
@@ -217,12 +218,12 @@ static void free_tree(struct avlnode *node){
     free(node);
 }
 
-static void delete(struct avl_tree *tree, int target){
+static void delete(avl_tree tree, int target){
     tree->root = delete_node(tree->root, target);
 }
 
-static int search(struct avl_tree tree, int target){
-    struct avlnode *node = search_node(tree.root, target);
+static int search(const avl_tree tree, int target){
+    struct avlnode *node = search_node(tree->root, target);
     if (node != NULL)
         return node->data;
     return -1;
