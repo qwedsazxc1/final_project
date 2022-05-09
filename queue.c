@@ -7,16 +7,17 @@ static size_t size(const queue queue);
 static int empty(const queue queue);
 static void clear(queue queue);
 
-void initial_queue(queue queue){
-    queue->queue_size = 0;
-    initial_double_linked_list(queue->list);
-    queue->front = front;
-    queue->back = back;
-    queue->push = push;
-    queue->pop = pop;
-    queue->empty = empty;
-    queue->size = size;
-    queue->clear = clear;
+void initial_queue(queue *queue){
+    *queue = malloc(sizeof(struct queue));
+    (*queue)->queue_size = 0;
+    initial_double_linked_list(&(*queue)->list);
+    (*queue)->front = front;
+    (*queue)->back = back;
+    (*queue)->push = push;
+    (*queue)->pop = pop;
+    (*queue)->empty = empty;
+    (*queue)->size = size;
+    (*queue)->clear = clear;
 }
 
 static int push(queue queue, int data){

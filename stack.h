@@ -14,5 +14,5 @@ struct stack{
     void (*clear)(stack stack);
 };
 
-void initial_stack(stack stack);
+void initial_stack(stack *stack);
 #endif  

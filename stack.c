@@ -6,16 +6,17 @@ static int push(stack stack, int data);
 static int pop(stack stack);
 static void clear(stack stack);
 
-void initial_stack(stack stack){
-    stack->stack_size = 0;
-    initial_double_linked_list(stack->stack_list);
-    stack->stack_top = -1;
-    stack->empty = empty;
-    stack->size = size;
-    stack->top = top;
-    stack->push = push;
-    stack->pop = pop;
-    stack->clear = clear;
+void initial_stack(stack *stack){
+    *stack = malloc(sizeof(struct stack));
+    (*stack)->stack_size = 0;
+    initial_double_linked_list(&(*stack)->stack_list);
+    (*stack)->stack_top = -1;
+    (*stack)->empty = empty;
+    (*stack)->size = size;
+    (*stack)->top = top;
+    (*stack)->push = push;
+    (*stack)->pop = pop;
+    (*stack)->clear = clear;
 }
 
 static int empty(const stack stack){

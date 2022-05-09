@@ -18,5 +18,5 @@ struct queue{
 };
 
 
-void initial_queue(queue queue);
+void initial_queue(queue *queue);
 #endif

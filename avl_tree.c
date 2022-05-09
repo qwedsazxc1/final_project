@@ -13,6 +13,7 @@ static struct avlnode *search_node(struct avlnode *node, int target);
 static struct avlnode *delete_node(struct avlnode *node, int target);
 static struct avlnode *get_successor_node(struct avlnode *node);
 static void update_node_height(struct avlnode *node);
+static void print_tree(struct avlnode *node, int mode);
 
 static int add(avl_tree tree, int data);
 static int max(const avl_tree tree);
@@ -23,24 +24,51 @@ static void clear(avl_tree tree);
 static void delete(avl_tree tree, int target);
 static int search(const avl_tree tree, int target);
 
-void print_tree(struct avlnode *node){
+static void print_tree(struct avlnode *node, int mode){
     if (node == NULL)
         return;
 
-    printf("%d\n", node->data);
-    print_tree(node->left_child);
-    print_tree(node->right_child);
+    if (mode == PREORDER)
+        printf("%d\n", node->data);
+
+    print_tree(node->left_child, mode);
+
+    if (mode == INORDER)
+        printf("%d\n", node->data);
+
+    print_tree(node->right_child, mode);
+
+    if (mode == POSTORDER)
+        printf("%d\n", node->data);
 }
 
-void initial_avl_tree(avl_tree avl_tree){
-    avl_tree->root = NULL;
-    avl_tree->add = add;
-    avl_tree->max = max;
-    avl_tree->min = min;
-    avl_tree->height = height;
-    avl_tree->clear = clear;
-    avl_tree->search = search;
-    avl_tree->delete = delete;
+void avl_tree_traversal(avl_tree tree, int mode){
+    if (mode != LEVEL_ORDER)
+        print_tree(tree->root, mode);
+}
+
+void avl_tree_preorder_traversal(avl_tree tree){
+    print_tree(tree->root, PREORDER);
+}
+
+void avl_tree_inorder_traversal(avl_tree tree){
+    print_tree(tree->root, INORDER);
+}
+
+void avl_tree_postorder_traversal(avl_tree tree){
+    print_tree(tree->root, POSTORDER);
+}
+
+void initial_avl_tree(avl_tree *avl_tree){
+    *avl_tree = malloc(sizeof(struct avl_tree));
+    (*avl_tree)->root = NULL;
+    (*avl_tree)->add = add;
+    (*avl_tree)->max = max;
+    (*avl_tree)->min = min;
+    (*avl_tree)->height = height;
+    (*avl_tree)->clear = clear;
+    (*avl_tree)->search = search;
+    (*avl_tree)->delete = delete;
 }
 
 static int height(const avl_tree tree){

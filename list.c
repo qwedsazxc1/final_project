@@ -24,27 +24,28 @@ static struct dnode *search_node_from_tail(const list dlist, int target_data);
 static int erase(list dlist, struct dnode *target_node);
 static int insert(list dlist, int data, struct dnode *target_node);
 
-void initial_double_linked_list(list list){
-    list->list_size = 0;
-    list->head = NULL;
-    list->tail = NULL;
-    list->print_list_from_head = print_list_from_head;
-    list->print_list_from_tail = print_list_from_tail;
-    list->clear = clear;
-    list->push_front = push_front;
-    list->push_back = push_back;
-    list->front = front;
-    list->back = back;
-    list->size = size;
-    list->empty = empty;
-    list->pop_back = pop_back;
-    list->pop_front = pop_front;
-    list->begin = begin;
-    list->end = end;
-    list->insert = insert;
-    list->erase = erase;
-    list->search_node_from_head = search_node_from_head;
-    list->search_node_from_tail = search_node_from_tail;
+void initial_double_linked_list(list *list){
+    *list = malloc(sizeof(struct list));
+    (*list)->list_size = 0;
+    (*list)->head = NULL;
+    (*list)->tail = NULL;
+    (*list)->print_list_from_head = print_list_from_head;
+    (*list)->print_list_from_tail = print_list_from_tail;
+    (*list)->clear = clear;
+    (*list)->push_front = push_front;
+    (*list)->push_back = push_back;
+    (*list)->front = front;
+    (*list)->back = back;
+    (*list)->size = size;
+    (*list)->empty = empty;
+    (*list)->pop_back = pop_back;
+    (*list)->pop_front = pop_front;
+    (*list)->begin = begin;
+    (*list)->end = end;
+    (*list)->insert = insert;
+    (*list)->erase = erase;
+    (*list)->search_node_from_head = search_node_from_head;
+    (*list)->search_node_from_tail = search_node_from_tail;
 }
 
 static struct dnode *build_node(int data, struct dnode *next, struct dnode *prev){

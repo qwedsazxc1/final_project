@@ -35,5 +35,5 @@ struct list{
     int (*insert)(list dlist, int data, struct dnode *target_node);
 };
 
-void initial_double_linked_list(list list);
+void initial_double_linked_list(list *list);
 #endif
