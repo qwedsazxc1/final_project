@@ -22,7 +22,7 @@
 
 int main(int argc, char **argv){
     char *input_buffer = (char *)malloc(BUFFER_SIZE * sizeof(char));
-
+    setvbuf(stdin, input_buffer, _IOLBF, BUFFER_SIZE);
     free(input_buffer);
     return 0;
 }

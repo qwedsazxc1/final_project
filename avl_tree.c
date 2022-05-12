@@ -1,62 +1,84 @@
 #include "avl_tree.h"
 
-static struct avlnode *build_node(int data, struct avlnode *parent);
-static int add_node(struct avlnode *node, int data);
+static struct avlnode *build_node(void *data, size_t size, struct avlnode *parent);
+static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(void *a, void *b));
 static void balance(struct avlnode *node);
 static void left_rotate(struct avlnode *node);
 static void right_rotate(struct avlnode *node);
-static int min_node(struct avlnode *node);
+static void *min_node(struct avlnode *node);
+static void *max_node(struct avlnode *node);
 static void update_root(struct avlnode **node);
 static int node_height(struct avlnode *node);
 static void free_tree(struct avlnode *node);
-static struct avlnode *search_node(struct avlnode *node, int target);
-static struct avlnode *delete_node(struct avlnode *node, int target);
+static struct avlnode *search_node(struct avlnode *node, void *target, int(*cmp)(void *a, void *b));
+static struct avlnode *delete_node(struct avlnode *node, void *target, int(*cmp)(void *a, void *b));
 static struct avlnode *get_successor_node(struct avlnode *node);
 static void update_node_height(struct avlnode *node);
-static void print_tree(struct avlnode *node, int mode);
+static void print_tree(struct avlnode *node, int mode, int (*print_func)(void *data));
 
-static int add(avl_tree tree, int data);
-static int max(const avl_tree tree);
-static int min(const avl_tree tree);
+static int add(avl_tree tree, void *data, size_t size, int (*cmp)(void *a, void *b));
+static void *max(const avl_tree tree);
+static void *min(const avl_tree tree);
 static int height(const avl_tree tree);
-static int max_node(struct avlnode *node);
 static void clear(avl_tree tree);
-static void delete(avl_tree tree, int target);
-static int search(const avl_tree tree, int target);
+static void delete(avl_tree tree, void *target, int (*cmp)(void *a, void *b));
+static void *search(const avl_tree tree, void *target, int (*cmp)(void *a, void *b));
 
-static void print_tree(struct avlnode *node, int mode){
+static void print_tree(struct avlnode *node, int mode, int (*print_func)(void *data)){
     if (node == NULL)
         return;
 
     if (mode == PREORDER)
-        printf("%d\n", node->data);
+        print_func(node->data);
 
-    print_tree(node->left_child, mode);
+    print_tree(node->left_child, mode, print_func);
 
     if (mode == INORDER)
-        printf("%d\n", node->data);
+        print_func(node->data);
 
-    print_tree(node->right_child, mode);
+    print_tree(node->right_child, mode, print_func);
 
     if (mode == POSTORDER)
-        printf("%d\n", node->data);
+        print_func(node->data);
 }
 
-void avl_tree_traversal(avl_tree tree, int mode){
+void avl_tree_traversal(avl_tree tree, int mode, int (*print_func)(void *data)){
     if (mode != LEVEL_ORDER)
-        print_tree(tree->root, mode);
+        print_tree(tree->root, mode, print_func);
 }
 
-void avl_tree_preorder_traversal(avl_tree tree){
-    print_tree(tree->root, PREORDER);
+void avl_tree_preorder_traversal(avl_tree tree, int (*print_func)(void *data)){
+    print_tree(tree->root, PREORDER, print_func);
 }
 
-void avl_tree_inorder_traversal(avl_tree tree){
-    print_tree(tree->root, INORDER);
+void avl_tree_inorder_traversal(avl_tree tree, int (*print_func)(void *data)){
+    print_tree(tree->root, INORDER, print_func);
 }
 
-void avl_tree_postorder_traversal(avl_tree tree){
-    print_tree(tree->root, POSTORDER);
+void avl_tree_postorder_traversal(avl_tree tree, int (*print_func)(void *data)){
+    print_tree(tree->root, POSTORDER, print_func);
+}
+
+void avl_tree_level_order_traversal(avl_tree tree, int (*print_func)(void *data)){
+    queue que;
+    initial_queue(&que);
+    que->push(que, &(tree->root), sizeof(struct avlnode *));
+    
+    while (!(que->empty(que))){
+        struct avlnode *node = *(struct avlnode **)que->front(que);
+
+        if (node == NULL){
+            que->pop(que);
+            continue;
+        }
+
+        print_func(node->data);
+
+        que->push(que, &(node->left_child), sizeof(struct avlnode *));
+        que->push(que, &(node->right_child), sizeof(struct avlnode *));
+        que->pop(que);
+    }
+    free(que);
 }
 
 void initial_avl_tree(avl_tree *avl_tree){
@@ -127,14 +149,14 @@ static void balance(struct avlnode *node){
 
 }
 
-static int add_node(struct avlnode *node, int data){
+static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(void *a, void *b)){
 
     int add_result = 0;
-    if ((node)->data < data){
+    if (cmp(node->data, data) < 0){
         if ((node)->right_child != NULL)
-            add_result = add_node(((node)->right_child), data);
+            add_result = add_node(((node)->right_child), data, size, cmp);
         else{
-            struct avlnode *new_node = build_node(data, node);
+            struct avlnode *new_node = build_node(data, size, node);
             if (new_node == NULL){
                 set_and_print_error_message("avltree : memory allocation fail\n");
                 return -1;
@@ -144,11 +166,11 @@ static int add_node(struct avlnode *node, int data){
             return 0;
         }
     }
-    if ((node)->data > data){
+    if (cmp(node->data, data) > 0){
         if ((node)->left_child != NULL)
-            add_result = add_node(((node)->left_child), data);
+            add_result = add_node(((node)->left_child), data, size, cmp);
         else{
-            struct avlnode *new_node = build_node(data, node);
+            struct avlnode *new_node = build_node(data, size, node);
             if (new_node == NULL){
                 set_and_print_error_message("avltree : memory allocation fail\n");
                 return -1;
@@ -164,9 +186,9 @@ static int add_node(struct avlnode *node, int data){
     return add_result;
 }
 
-static int add(avl_tree tree, int data){
+static int add(avl_tree tree, void *data, size_t size, int(*cmp)(void *a, void *b)){
     if (tree->root == NULL){
-        struct avlnode *new_node = build_node(data, NULL);
+        struct avlnode *new_node = build_node(data, size, NULL);
         if (new_node == NULL){
             set_and_print_error_message("avltree : memory allocation fail\n");
             return -1;
@@ -174,16 +196,17 @@ static int add(avl_tree tree, int data){
         tree->root = new_node;
         return 0;
     }
-    int add_result = add_node(tree->root, data);
+    int add_result = add_node(tree->root, data, size, cmp);
     update_root(&(tree->root));
     return add_result;
 }
 
-static struct avlnode *build_node(int data, struct avlnode *parent){
+static struct avlnode *build_node(void *data, size_t size, struct avlnode *parent){
     struct avlnode *new_node = (struct avlnode *)malloc(sizeof(avlnode));
     if (new_node == NULL)
         return NULL;
-    new_node->data = data;
+    new_node->data = malloc(size);
+    memcpy(new_node->data, data, size);
     new_node->left_child = NULL;
     new_node->right_child = NULL;
     new_node->parent = parent;
@@ -191,13 +214,13 @@ static struct avlnode *build_node(int data, struct avlnode *parent){
     return new_node;
 }
 
-static int max(const avl_tree tree){
+static void *max(const avl_tree tree){
     return max_node(tree->root);
 }
 
-static int max_node(struct avlnode *node){
+static void *max_node(struct avlnode *node){
     if (node == NULL)
-        return -1;
+        return NULL;
     
     if (node->right_child == NULL)
         return node->data;
@@ -205,13 +228,13 @@ static int max_node(struct avlnode *node){
     return max_node(node->right_child);
 }
 
-static int min(const avl_tree tree){
+static void *min(const avl_tree tree){
     return min_node(tree->root);
 }
 
-static int min_node(struct avlnode *node){
+static void *min_node(struct avlnode *node){
     if (node == NULL)
-        return -1;
+        return NULL;
     
     if (node->left_child == NULL)
         return node->data;
@@ -243,60 +266,63 @@ static void free_tree(struct avlnode *node){
 
     free_tree(node->left_child);
     free_tree(node->right_child);
+    free(node->data);
     free(node);
 }
 
-static void delete(avl_tree tree, int target){
-    tree->root = delete_node(tree->root, target);
+static void delete(avl_tree tree, void *target, int (*cmp)(void *a, void *b)){
+    tree->root = delete_node(tree->root, target, cmp);
 }
 
-static int search(const avl_tree tree, int target){
-    struct avlnode *node = search_node(tree->root, target);
+static void *search(const avl_tree tree, void *target, int (*cmp)(void *a, void *b)){
+    struct avlnode *node = search_node(tree->root, target, cmp);
     if (node != NULL)
         return node->data;
-    return -1;
+    return NULL;
 }
 
-static struct avlnode *search_node(struct avlnode *node, int target){
+static struct avlnode *search_node(struct avlnode *node, void *target, int (*cmp)(void *a, void *b)){
     if (node == NULL){
         set_and_print_error_message("avl_tree (delete) : target not found\n");
         return NULL;
     }
     
-    if (target > node->data)
-        return search_node(node->right_child, target);
+    if (cmp(node->data, target) < 0)
+        return search_node(node->right_child, target, cmp);
     
-    if (target < node->data)
-        return search_node(node->right_child, target);
+    if (cmp(node->data, target) > 0)
+        return search_node(node->right_child, target, cmp);
     
     return node;
 }
 
-static struct avlnode *delete_node(struct avlnode *node, int target){
+static struct avlnode *delete_node(struct avlnode *node, void *target, int (*cmp)(void *a, void *b)){
     if (node == NULL){
         set_and_print_error_message("avl_tree (delete) : target not found\n");
         return NULL;
     }
     if (node->data > target){
-        node->left_child = delete_node(node->left_child, target);
+        node->left_child = delete_node(node->left_child, target, cmp);
         balance(node);
         update_node_height(node);
         return node;
     }
     if (node->data < target){
-        node->right_child = delete_node(node->right_child, target);
+        node->right_child = delete_node(node->right_child, target, cmp);
         balance(node);
         update_node_height(node);
         return node;
     }
 
     if (node->left_child == NULL && node->right_child == NULL){
+        free(node->data);
         free(node);
         return NULL;
     }
 
     if (node->left_child == NULL){
         struct avlnode *right_sub_tree = node->right_child;
+        free(node->data);
         free(node);
         right_sub_tree->parent = node;
         return right_sub_tree;
@@ -304,6 +330,7 @@ static struct avlnode *delete_node(struct avlnode *node, int target){
 
     if (node->right_child == NULL){
         struct avlnode *left_sub_tree = node->left_child;
+        free(node->data);
         free(node);
         left_sub_tree->parent = node;
         return left_sub_tree;
@@ -329,6 +356,7 @@ static struct avlnode *delete_node(struct avlnode *node, int target){
 
     balance(successor_node);
     update_node_height(successor_node);
+    free(node->data);
     free(node);
     if (temp_parent_node == successor_node->parent)
         return successor_node;

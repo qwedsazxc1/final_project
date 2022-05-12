@@ -1,11 +1,12 @@
 #include "queue.h"
-static int front(const queue queue);
-static int back(const queue queue);
-static int push(queue queue, int data);
+static void *front(const queue queue);
+static void *back(const queue queue);
+static int push(queue queue, void *data, size_t size);
 static int pop(queue queue);
 static size_t size(const queue queue);
 static int empty(const queue queue);
 static void clear(queue queue);
+static void destory(queue queue);
 
 void initial_queue(queue *queue){
     *queue = malloc(sizeof(struct queue));
@@ -18,10 +19,11 @@ void initial_queue(queue *queue){
     (*queue)->empty = empty;
     (*queue)->size = size;
     (*queue)->clear = clear;
+    (*queue)->destory = destory;
 }
 
-static int push(queue queue, int data){
-    int push_result = queue->list->push_back(queue->list, data);
+static int push(queue queue, void *data, size_t size){
+    int push_result = queue->list->push_back(queue->list, data, size);
     if (!push_result)
         queue->queue_size += 1;
     return push_result;
@@ -45,19 +47,25 @@ static int empty(const queue queue){
     return 0;
 }
 
-static int front(const queue queue){
+static void *front(const queue queue){
     if (empty(queue))
-        return -1;
+        return NULL;
     return queue->list->front(queue->list);
 }
 
-static int back(const queue queue){
+static void *back(const queue queue){
     if (empty(queue))
-        return -1;
+        return NULL;
     return queue->list->back(queue->list);
 }
 
 static void clear(queue queue){
     while (!empty(queue))
         pop(queue);
+}
+
+static void destory(queue queue){
+    queue->clear(queue);
+    queue->list->destory(queue->list);
+    free(queue);
 }
