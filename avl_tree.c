@@ -1,7 +1,7 @@
 #include "avl_tree.h"
 
 static struct avlnode *build_node(void *data, size_t size, struct avlnode *parent);
-static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(void *a, void *b));
+static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(const void *a, const void *b));
 static void balance(struct avlnode *node);
 static void left_rotate(struct avlnode *node);
 static void right_rotate(struct avlnode *node);
@@ -10,19 +10,19 @@ static void *max_node(struct avlnode *node);
 static void update_root(struct avlnode **node);
 static int node_height(struct avlnode *node);
 static void free_tree(struct avlnode *node);
-static struct avlnode *search_node(struct avlnode *node, void *target, int(*cmp)(void *a, void *b));
-static struct avlnode *delete_node(struct avlnode *node, void *target, int(*cmp)(void *a, void *b));
+static struct avlnode *search_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b));
+static struct avlnode *delete_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b));
 static struct avlnode *get_successor_node(struct avlnode *node);
 static void update_node_height(struct avlnode *node);
 static void print_tree(struct avlnode *node, int mode, int (*print_func)(void *data));
 
-static int add(avl_tree tree, void *data, size_t size, int (*cmp)(void *a, void *b));
+static int add(avl_tree tree, void *data, size_t size, int (*cmp)(const void *a, const void *b));
 static void *max(const avl_tree tree);
 static void *min(const avl_tree tree);
 static int height(const avl_tree tree);
 static void clear(avl_tree tree);
-static void delete(avl_tree tree, void *target, int (*cmp)(void *a, void *b));
-static void *search(const avl_tree tree, void *target, int (*cmp)(void *a, void *b));
+static void delete(avl_tree tree, void *target, int (*cmp)(const void *a, const void *b));
+static void *search(const avl_tree tree, void *target, int (*cmp)(const void *a, const void *b));
 
 static void print_tree(struct avlnode *node, int mode, int (*print_func)(void *data)){
     if (node == NULL)
@@ -149,7 +149,7 @@ static void balance(struct avlnode *node){
 
 }
 
-static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(void *a, void *b)){
+static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(const void *a, const void *b)){
 
     int add_result = 0;
     if (cmp(node->data, data) < 0){
@@ -186,7 +186,7 @@ static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(vo
     return add_result;
 }
 
-static int add(avl_tree tree, void *data, size_t size, int(*cmp)(void *a, void *b)){
+static int add(avl_tree tree, void *data, size_t size, int(*cmp)(const void *a, const void *b)){
     if (tree->root == NULL){
         struct avlnode *new_node = build_node(data, size, NULL);
         if (new_node == NULL){
@@ -270,22 +270,20 @@ static void free_tree(struct avlnode *node){
     free(node);
 }
 
-static void delete(avl_tree tree, void *target, int (*cmp)(void *a, void *b)){
+static void delete(avl_tree tree, void *target, int (*cmp)(const void *a, const void *b)){
     tree->root = delete_node(tree->root, target, cmp);
 }
 
-static void *search(const avl_tree tree, void *target, int (*cmp)(void *a, void *b)){
+static void *search(const avl_tree tree, void *target, int (*cmp)(const void *a, const void *b)){
     struct avlnode *node = search_node(tree->root, target, cmp);
     if (node != NULL)
         return node->data;
     return NULL;
 }
 
-static struct avlnode *search_node(struct avlnode *node, void *target, int (*cmp)(void *a, void *b)){
-    if (node == NULL){
-        set_and_print_error_message("avl_tree (delete) : target not found\n");
+static struct avlnode *search_node(struct avlnode *node, void *target, int (*cmp)(const void *a, const void *b)){
+    if (node == NULL)
         return NULL;
-    }
     
     if (cmp(node->data, target) < 0)
         return search_node(node->right_child, target, cmp);
@@ -296,7 +294,7 @@ static struct avlnode *search_node(struct avlnode *node, void *target, int (*cmp
     return node;
 }
 
-static struct avlnode *delete_node(struct avlnode *node, void *target, int (*cmp)(void *a, void *b)){
+static struct avlnode *delete_node(struct avlnode *node, void *target, int (*cmp)(const void *a, const void *b)){
     if (node == NULL){
         set_and_print_error_message("avl_tree (delete) : target not found\n");
         return NULL;

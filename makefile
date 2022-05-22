@@ -1,8 +1,10 @@
-objects = final_project.o lib.o error.o stack.o list.o queue.o avl_tree.o
+objects = final_project.o lib.o error.o stack.o list.o queue.o avl_tree.o student.o vector.o
 CC = gcc
 exe = main
 
-all: $(objects)
+all: $(exe)
+
+$(exe): $(objects)
 	$(CC) -g $(objects) -o $(exe) 
 
 %.o:%.c

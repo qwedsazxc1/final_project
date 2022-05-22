@@ -15,14 +15,25 @@
 #include "list.h"
 #include "queue.h"
 #include "stack.h"
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define BUFFER_SIZE (4096)
 
-int main(int argc, char **argv){
+void seg_fault(int signo);
+
+int main(int argc, char *argv[]){
     char *input_buffer = (char *)malloc(BUFFER_SIZE * sizeof(char));
-    setvbuf(stdin, input_buffer, _IOLBF, BUFFER_SIZE);
+    if (signal(SIGSEGV, seg_fault) == SIG_ERR){
+        set_and_print_error_message("signal error\n");
+       	exit(0);
+    }
     free(input_buffer);
     return 0;
+}
+
+void seg_fault(int signo){
+    set_and_print_error_message("Segmentation fault\n");
+    exit(139);
 }

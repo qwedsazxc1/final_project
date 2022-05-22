@@ -22,13 +22,13 @@ typedef struct avl_tree *avl_tree;
 
 struct avl_tree{
     struct avlnode *root;
-    int (*add)(avl_tree tree, void *data, size_t size, int (*cmp)(void *a, void *b));
+    int (*add)(avl_tree tree, void *data, size_t size, int (*cmp)(const void *a, const void *b));
     void *(*max)(const avl_tree tree);
     void *(*min)(const avl_tree tree);
     int (*height)(const avl_tree tree);
     void (*clear)(const avl_tree tree);
-    void *(*search)(const avl_tree tree, void *target, int (*cmp)(void *a, void *b));
-    void (*delete)(const avl_tree tree, void *target, int (*cmp)(void *a, void *b));
+    void *(*search)(const avl_tree tree, void *target, int (*cmp)(const void *a, const void *b));
+    void (*delete)(const avl_tree tree, void *target, int (*cmp)(const void *a, const void *b));
 };
 
 void initial_avl_tree(avl_tree *avl_tree);
