@@ -16,11 +16,11 @@ struct list{
     size_t list_size;
     struct dnode *head;
     struct dnode *tail;
-    void (*print_list_from_head)(const list dlist, int (*print_func)(void *data));
-    void (*print_list_from_tail)(const list dlist, int (*print_func)(void *data));
+    void (*print_list_from_head)(const list dlist);
+    void (*print_list_from_tail)(const list dlist);
     void (*clear)(list dlist);
-    struct dnode *(*search_node_from_head)(const list dlist, void *target_data, int (*cmp)(void *a, void *b));
-    struct dnode *(*search_node_from_tail)(const list dlist, void *target_data, int (*cmp)(void *a, void *b));
+    struct dnode *(*search_node_from_head)(const list dlist, void *target_data);
+    struct dnode *(*search_node_from_tail)(const list dlist, void *target_data);
     int (*push_front)(list dlist, void *data, size_t size);
     int (*push_back)(list dlist, void *data, size_t size);
     void *(*front)(const list dlist);
@@ -34,7 +34,13 @@ struct list{
     int (*erase)(list dlist, struct dnode *target_node);
     int (*insert)(list dlist, void *data, size_t size, struct dnode *target_node);
     void (*destory)(list dlist);
+    void (*destroy_data_function)(void *data);
+    int (*cmp)(const void *a, const void *b);
+    int (*print_func)(const void *data);
 };
 
-void initial_double_linked_list(list *list);
+void initial_list(  list *list, void (*destroy_data_function)(void *data), \
+                    int (*cmp)(const void *a, const void *b), int (*print_func)(const void *data));
+
+void simple_initial_list(list *list, void (*destroy_data_function)(void *data));
 #endif

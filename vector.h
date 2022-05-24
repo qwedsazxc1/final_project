@@ -13,15 +13,16 @@ struct vector{
     size_t max_size;
     size_t element_size;
     void (*push_back)(vector vector, void *data);
-    void (*pop_back)(vector vector, void (*destroy_data_function)(void *data));
-    int (*empty)(vector vector);
-    int (*size)(vector vector);
-    void (*clear)(vector vector, void (*destroy_data_function)(void *data));
-    void *(*front)(vector vector);
-    void *(*back)(vector vector);
+    void (*pop_back)(vector vector);
+    int (*empty)(const vector vector);
+    int (*size)(const vector vector);
+    void (*clear)(vector vector);
+    void *(*front)(const vector vector);
+    void *(*back)(const vector vector);
+    void (*destroy_data_function)(void *data);
 };
 
-void destory_vector(vector vector, void (*destroy_data_function)(void *data));
-void initial_vector(vector *vector, size_t basic_type_size);
+void destory_vector(vector vector);
+void initial_vector(vector *vector, size_t basic_type_size, void (*destroy_data_function)(void *data));
 
 #endif

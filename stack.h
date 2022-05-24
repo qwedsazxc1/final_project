@@ -15,5 +15,5 @@ struct stack{
     void (*destory)(stack stack);
 };
 
-void initial_stack(stack *stack);
+void initial_stack(stack *stack, void (*destory_data_function)(void *data));
 #endif  

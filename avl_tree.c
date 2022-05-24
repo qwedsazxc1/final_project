@@ -9,59 +9,59 @@ static void *min_node(struct avlnode *node);
 static void *max_node(struct avlnode *node);
 static void update_root(struct avlnode **node);
 static int node_height(struct avlnode *node);
-static void free_tree(struct avlnode *node);
+static void free_tree(struct avlnode *node, void (*destroy_data_function)(void *data));
 static struct avlnode *search_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b));
-static struct avlnode *delete_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b));
+static struct avlnode *delete_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b), void (*destroy_data_function)(void *data));
 static struct avlnode *get_successor_node(struct avlnode *node);
 static void update_node_height(struct avlnode *node);
-static void print_tree(struct avlnode *node, int mode, int (*print_func)(void *data));
+static void print_tree(struct avlnode *node, int mode, void (*print_func)(const void *data));
 
-static int add(avl_tree tree, void *data, size_t size, int (*cmp)(const void *a, const void *b));
+static int add(avl_tree tree, void *data, size_t size);
 static void *max(const avl_tree tree);
 static void *min(const avl_tree tree);
 static int height(const avl_tree tree);
 static void clear(avl_tree tree);
-static void delete(avl_tree tree, void *target, int (*cmp)(const void *a, const void *b));
-static void *search(const avl_tree tree, void *target, int (*cmp)(const void *a, const void *b));
+static void delete(avl_tree tree, void *target);
+static void *search(const avl_tree tree, void *target);
 
-static void print_tree(struct avlnode *node, int mode, int (*print_func)(void *data)){
+static void print_tree(struct avlnode *node, int mode, void (*print_func)(const void *data)){
     if (node == NULL)
         return;
 
-    if (mode == PREORDER)
+    if (mode == PRE_ORDER)
         print_func(node->data);
 
     print_tree(node->left_child, mode, print_func);
 
-    if (mode == INORDER)
+    if (mode == IN_ORDER)
         print_func(node->data);
 
     print_tree(node->right_child, mode, print_func);
 
-    if (mode == POSTORDER)
+    if (mode == POST_ORDER)
         print_func(node->data);
 }
 
-void avl_tree_traversal(avl_tree tree, int mode, int (*print_func)(void *data)){
+void avl_tree_traversal(avl_tree tree, int mode){
     if (mode != LEVEL_ORDER)
-        print_tree(tree->root, mode, print_func);
+        print_tree(tree->root, mode, tree->print_func);
 }
 
-void avl_tree_preorder_traversal(avl_tree tree, int (*print_func)(void *data)){
-    print_tree(tree->root, PREORDER, print_func);
+void avl_tree_preorder_traversal(avl_tree tree){
+    print_tree(tree->root, PRE_ORDER, tree->print_func);
 }
 
-void avl_tree_inorder_traversal(avl_tree tree, int (*print_func)(void *data)){
-    print_tree(tree->root, INORDER, print_func);
+void avl_tree_inorder_traversal(avl_tree tree){
+    print_tree(tree->root, IN_ORDER, tree->print_func);
 }
 
-void avl_tree_postorder_traversal(avl_tree tree, int (*print_func)(void *data)){
-    print_tree(tree->root, POSTORDER, print_func);
+void avl_tree_postorder_traversal(avl_tree tree){
+    print_tree(tree->root, POST_ORDER, tree->print_func);
 }
 
-void avl_tree_level_order_traversal(avl_tree tree, int (*print_func)(void *data)){
+void avl_tree_level_order_traversal(avl_tree tree){
     queue que;
-    initial_queue(&que);
+    initial_queue(&que, tree->destroy_data_function);
     que->push(que, &(tree->root), sizeof(struct avlnode *));
     
     while (!(que->empty(que))){
@@ -72,7 +72,7 @@ void avl_tree_level_order_traversal(avl_tree tree, int (*print_func)(void *data)
             continue;
         }
 
-        print_func(node->data);
+        tree->print_func(node->data);
 
         que->push(que, &(node->left_child), sizeof(struct avlnode *));
         que->push(que, &(node->right_child), sizeof(struct avlnode *));
@@ -81,7 +81,8 @@ void avl_tree_level_order_traversal(avl_tree tree, int (*print_func)(void *data)
     free(que);
 }
 
-void initial_avl_tree(avl_tree *avl_tree){
+void initial_avl_tree(avl_tree *avl_tree, int (*cmp)(const void *a, const void *b), void (*print_func)(const void *data)\
+, void (*destroy_data_function)(void *data)){
     *avl_tree = malloc(sizeof(struct avl_tree));
     (*avl_tree)->root = NULL;
     (*avl_tree)->add = add;
@@ -91,6 +92,9 @@ void initial_avl_tree(avl_tree *avl_tree){
     (*avl_tree)->clear = clear;
     (*avl_tree)->search = search;
     (*avl_tree)->delete = delete;
+    (*avl_tree)->cmp = cmp;
+    (*avl_tree)->print_func = print_func;
+    (*avl_tree)->destroy_data_function = destroy_data_function;
 }
 
 static int height(const avl_tree tree){
@@ -186,7 +190,7 @@ static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(co
     return add_result;
 }
 
-static int add(avl_tree tree, void *data, size_t size, int(*cmp)(const void *a, const void *b)){
+static int add(avl_tree tree, void *data, size_t size){
     if (tree->root == NULL){
         struct avlnode *new_node = build_node(data, size, NULL);
         if (new_node == NULL){
@@ -196,7 +200,7 @@ static int add(avl_tree tree, void *data, size_t size, int(*cmp)(const void *a, 
         tree->root = new_node;
         return 0;
     }
-    int add_result = add_node(tree->root, data, size, cmp);
+    int add_result = add_node(tree->root, data, size, tree->cmp);
     update_root(&(tree->root));
     return add_result;
 }
@@ -256,26 +260,27 @@ static int node_height(struct avlnode *node){
 }
 
 static void clear(avl_tree tree){
-    free_tree(tree->root);
+    free_tree(tree->root, tree->destroy_data_function);
     tree->root = NULL;
 }
 
-static void free_tree(struct avlnode *node){
+static void free_tree(struct avlnode *node, void (*destroy_data_function)(void *data)){
     if (node == NULL)
         return;
 
-    free_tree(node->left_child);
-    free_tree(node->right_child);
+    free_tree(node->left_child, destroy_data_function);
+    free_tree(node->right_child, destroy_data_function);
+    destroy_data_function(node->data);
     free(node->data);
     free(node);
 }
 
-static void delete(avl_tree tree, void *target, int (*cmp)(const void *a, const void *b)){
-    tree->root = delete_node(tree->root, target, cmp);
+static void delete(avl_tree tree, void *target){
+    tree->root = delete_node(tree->root, target, tree->cmp, tree->destroy_data_function);
 }
 
-static void *search(const avl_tree tree, void *target, int (*cmp)(const void *a, const void *b)){
-    struct avlnode *node = search_node(tree->root, target, cmp);
+static void *search(const avl_tree tree, void *target){
+    struct avlnode *node = search_node(tree->root, target, tree->cmp);
     if (node != NULL)
         return node->data;
     return NULL;
@@ -294,19 +299,19 @@ static struct avlnode *search_node(struct avlnode *node, void *target, int (*cmp
     return node;
 }
 
-static struct avlnode *delete_node(struct avlnode *node, void *target, int (*cmp)(const void *a, const void *b)){
+static struct avlnode *delete_node(struct avlnode *node, void *target, int (*cmp)(const void *a, const void *b), void (*destroy_data_function)(void *data)){
     if (node == NULL){
         set_and_print_error_message("avl_tree (delete) : target not found\n");
         return NULL;
     }
     if (node->data > target){
-        node->left_child = delete_node(node->left_child, target, cmp);
+        node->left_child = delete_node(node->left_child, target, cmp, destroy_data_function);
         balance(node);
         update_node_height(node);
         return node;
     }
     if (node->data < target){
-        node->right_child = delete_node(node->right_child, target, cmp);
+        node->right_child = delete_node(node->right_child, target, cmp, destroy_data_function);
         balance(node);
         update_node_height(node);
         return node;

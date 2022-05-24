@@ -7,10 +7,10 @@ static int pop(stack stack);
 static void clear(stack stack);
 static void destory(stack stack);
 
-void initial_stack(stack *stack){
+void initial_stack(stack *stack, void (*destory_data_function)(void *data)){
     *stack = malloc(sizeof(struct stack));
     (*stack)->stack_size = 0;
-    initial_double_linked_list(&(*stack)->stack_list);
+    simple_initial_list(&(*stack)->stack_list, destory_data_function);
     (*stack)->stack_top = NULL;
     (*stack)->empty = empty;
     (*stack)->size = size;

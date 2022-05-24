@@ -8,10 +8,10 @@ static int empty(const queue queue);
 static void clear(queue queue);
 static void destory(queue queue);
 
-void initial_queue(queue *queue){
+void initial_queue(queue *queue, void (*destory_data_function)(void *data)){
     *queue = malloc(sizeof(struct queue));
     (*queue)->queue_size = 0;
-    initial_double_linked_list(&(*queue)->list);
+    simple_initial_list(&(*queue)->list, destory_data_function);
     (*queue)->front = front;
     (*queue)->back = back;
     (*queue)->push = push;
