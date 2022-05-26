@@ -9,8 +9,8 @@ int main(int argc, char *argv[]){
     }
     FILE *footprint_fp = fopen("footprint.csv", "a");
     if (footprint_fp == NULL){
-        fprintf(stderr, "footprint.csv : file not found\n");
-        fprintf(stderr, "please add a new file name footprint.csv\n");
+        fprintf(stderr, "footprint.csv : cannot read footprint.csv\n");
+        fprintf(stderr, "please check the file name \"footprint.csv\"\n");
         return 0;
     }
     int student_id = atoi(argv[1]);
