@@ -15,6 +15,7 @@
 #include "list.h"
 #include "queue.h"
 #include "stack.h"
+#include "student.h"
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>

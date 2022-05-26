@@ -6,8 +6,9 @@ int main(int argc, char *argv[]){
         printf("Usage : ./delete [student_id] [place_id] [time]\n");
         return 0;
     }
+    char *tmp_file_name = "temp_file.csv";
     FILE *footprint_fp = fopen("footprint.csv", "r");
-    FILE *footprint_write_fp = fopen("temp_file.csv", "w");
+    FILE *footprint_write_fp = fopen(tmp_file_name, "w");
     if (footprint_fp == NULL){
         fprintf(stderr, "footprint.csv : cannot read footprint.csv\n");
         fprintf(stderr, "please check the file name \"footprint.csv\"\n");
@@ -35,6 +36,6 @@ int main(int argc, char *argv[]){
     fclose(footprint_fp);
     fclose(footprint_write_fp);
     remove("footprint.csv");
-    rename("temp_file.csv", "footprint.csv");
+    rename(tmp_file_name, "footprint.csv");
     return 0;
 }

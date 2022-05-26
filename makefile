@@ -19,7 +19,7 @@ $(delete): delete.c
 	$(CC) -g $^ -c -O3 -Wall -o $@
 
 clear:
-	rm $(exe) $(objects) $(add)
+	rm $(exe) $(objects) $(add) $(delete)
 
 clean:
 	rm $(exe) $(objects) $(add) $(delete)

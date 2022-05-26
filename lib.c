@@ -15,3 +15,42 @@ void fflush_stdin(void){
     while((c = getchar()) != EOF && c != '\n')
         ;
 }
+
+void itoa_(int number, char *string){
+    string[0] = '0';
+    string[1] = '\0';
+    int i = 0, sign = number;
+    if (sign < 0){
+        number *= -1;
+        string[i++] = '-';
+    }
+
+
+    while (number){
+        string[i++] = '0' + number % 10;
+        number /= 10;
+    }
+    string[i] = '\0';
+    if (sign > 0)
+        for (int j = 0; j < i / 2; j++){
+            swap(string + j, string + i - j - 1, sizeof(char));
+        }
+    else
+        for (int j = 1; j < i / 2; j++){
+            swap(string + j, string + i - j, sizeof(char));
+        }
+}
+
+void ultoa_(unsigned long long number, char *string){
+    int i = 0;
+    string[0] = '0';
+    string[1] = '\0';
+    while (number){
+        string[i++] = '0' + number % 10;
+        number /= 10;
+    }
+    string[i] = '\0';
+    for (int j = 0; j < i / 2; j++){
+        swap(string + j, string + i - j - 1, sizeof(char));
+    }
+}

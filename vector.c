@@ -9,9 +9,15 @@ static void *front(vector vector);
 static void *back(vector vector);
 
 void initial_vector(vector *vector, size_t element_size, void (*destroy_data_function)(void *data)){
+    *vector = malloc(sizeof(struct vector));
+    if (*vector == NULL){
+        set_and_print_error_message("initial vector error : memory allocate fail\n");
+        return;
+    }
     (*vector)->array = malloc(element_size * 10);
     if ((*vector)->array == NULL){
         set_and_print_error_message("initial vector error : memory allocate fail\n");
+        free(*vector);
         return;
     }
     (*vector)->element_size = element_size;
@@ -28,7 +34,7 @@ void initial_vector(vector *vector, size_t element_size, void (*destroy_data_fun
 }
 
 void destory_vector(vector vector){
-    clear(vector);
+    free(vector->array);
     free(vector);
     vector = NULL;
 }
