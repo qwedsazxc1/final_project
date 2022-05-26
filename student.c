@@ -2,6 +2,7 @@
 
 static void print_func(const void *data);
 static void destory_data_function(void *data);
+static void destory_student_data_function(void *data);
 
 static int student_id_compare(const void *a, const void *b){
     const struct student *current_data = a;
@@ -10,7 +11,7 @@ static int student_id_compare(const void *a, const void *b){
 }
 
 void initial_student_list(student_list student_list){
-    initial_avl_tree(&student_list->student_tree, student_id_compare, print_func, destory_data_function);
+    initial_avl_tree(&student_list->student_tree, student_id_compare, print_func, destory_student_data_function);
     student_list->student_amount = 0;
 }
 
@@ -24,7 +25,7 @@ void add_student(student_list student_list, int student_id, const char *name){
         return;
     }
     strcpy(target->name, name);
-    //initial_avl_tree(&target->path);
+    initial_vector(&(target->path), sizeof(place_record), destory_data_function);
     student_list->student_tree->add(student_list->student_tree, target, sizeof(struct student));
     free(target);
 }
@@ -33,6 +34,11 @@ static void print_func(const void *data){
 
 }
 
+static void destory_student_data_function(void *data){
+    student target = data;
+    destory_vector(target->path);
+}
+
 static void destory_data_function(void *data){
-    
+    return;
 }

@@ -8,11 +8,10 @@
 #include <time.h>
 
 struct place_record{
+    int student_id;
     time_t time;
     int place_id;
 };
-
-typedef struct student *student;
 
 struct student{
     int id;
@@ -20,13 +19,16 @@ struct student{
     vector path;
 };
 
-typedef struct student_list *student_list;
-
 struct student_list{
     int student_amount;
     avl_tree student_tree;
 };
 
+typedef struct place_record place_record;
+typedef struct student_list *student_list;
+typedef struct student *student;
+
 void initial_student(student student);
 void initial_student_list(student_list student_list);
+void add_student(student_list student_list, int student_id, const char *name);
 #endif

@@ -29,6 +29,11 @@ int main(int argc, char *argv[]){
         set_and_print_error_message("signal error\n");
        	exit(0);
     }
+    FILE *footprint = fopen("footprint.csv", "r");
+    if (footprint == NULL){
+        set_and_print_error_message("fopen fail : fail to open footprint.csv\n");
+        exit(0);
+    }
     free(input_buffer);
     return 0;
 }
