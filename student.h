@@ -17,7 +17,7 @@ struct place_record{
 };
 
 struct student{
-    int id;
+    int student_id;
     vector path;
 };
 
@@ -32,6 +32,9 @@ typedef struct student *student;
 
 void initial_student(student student);
 void initial_student_list(student_list *student_list);
+void record_path(student_list student_list, int student_id, int place_id);
 void add_student(student_list student_list, int student_id);
-void record_path(student_list, int student_id, int place_id);
+void add_student_path(student_list student_list, int student_id, int place_id, time_t current_time);
+void destory_student_list(student_list student_list);
+void print_all_list(student_list student_list);
 #endif

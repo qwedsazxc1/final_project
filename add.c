@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]){
-    if (argc != 4){
+    if (argc != 4 && argc != 3){
         fprintf(stdout, "Usage : add [student_id] [place_id] [time]\n");
         return 0;
     }
@@ -23,7 +23,17 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "place id format error\n");
         return 0;
     }
-    fprintf(footprint_fp, "%s,%d,%d\n", argv[3], student_id, place_id);
+    unsigned long long current_time;
+    if (argc == 3) 
+        current_time = (unsigned long long)time(NULL);
+    else
+        current_time = atoll(argv[3]);
+    
+    if (current_time == 0){
+        fprintf(stderr, "time format error\n");
+        return 0;
+    }
+    fprintf(footprint_fp, "%llu,%d,%d\n", current_time, student_id, place_id);
     fclose(footprint_fp);
     return 0;
 }
