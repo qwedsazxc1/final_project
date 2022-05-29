@@ -16,6 +16,7 @@
 #include "queue.h"
 #include "stack.h"
 #include "student.h"
+#include "vector.h"
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,10 +31,10 @@ int main(int argc, char *argv[]){
         return 0;
     }
     char *input_buffer = (char *)malloc(BUFFER_SIZE * sizeof(char));
-    if (signal(SIGSEGV, seg_fault) == SIG_ERR){
+    /*if (signal(SIGSEGV, seg_fault) == SIG_ERR){
         set_and_print_error_message("signal error\n");
        	exit(0);
-    }
+    }*/
     char file_name[80];
     if (argc == 1)
         strcpy(file_name, "footprint.csv");

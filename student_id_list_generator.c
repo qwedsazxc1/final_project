@@ -21,5 +21,6 @@ int main(){
             fprintf(student_id, "\n");
         }
     }
+    fclose(student_id);
     return 0;
 }

@@ -3,8 +3,10 @@ CC = gcc
 exe = avl_tree_ver
 add = add
 delete = delete
+student_id_list = student_id_list_generator
+test_case_generator = test_case_generator
 
-all: $(exe) $(add) $(delete)
+all: $(exe) $(add) $(delete) $(student_id_list) $(test_case_generator)
 
 $(exe): $(objects)
 	$(CC) -g $(objects) -o $(exe) 
@@ -19,16 +21,24 @@ $(delete): delete.c
 	$(CC) -g $^ -c -O3 -Wall -o $@
 
 test1: all
-	wc -l test1.csv
-	time ./avl_tree_ver test1.csv
-	time ./linked_list_ver test1.csv
+	./$(test_case_generator) 10 $@.csv
+	wc -l $@.csv
+	time -p ./$(exe) $@.csv
 
-student_id_list: student_id_list_generator.c
-	$(CC) -g $^ -O3 -o $@_generator
-	./$@_generator
+test2: all
+	./$(test_case_generator) 100 $@.csv
+	wc -l $@.csv
+	time -p ./$(exe) $@.csv
+
+test_case_generator: test_case_generator.c
+	$(CC) -g $^ -O3 -o $@
+
+student_id_list_generator: student_id_list_generator.c
+	$(CC) -g $^ -O3 -o $@
+	./$@
 
 clear:
-	rm $(exe) $(objects) $(add) $(delete) student_id_list_generator
+	rm $(exe) $(objects) $(add) $(delete) $(student_id_list) $(test_case_generator) test*.csv
 
 clean:
-	rm $(exe) $(objects) $(add) $(delete) student_id_list_generator
+	rm $(exe) $(objects) $(add) $(delete) $(student_id_list) $(test_case_generator) test*.csv

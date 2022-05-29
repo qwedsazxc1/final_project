@@ -294,7 +294,7 @@ static struct avlnode *search_node(struct avlnode *node, void *target, int (*cmp
         return search_node(node->right_child, target, cmp);
     
     if (cmp(node->data, target) > 0)
-        return search_node(node->right_child, target, cmp);
+        return search_node(node->left_child, target, cmp);
     
     return node;
 }

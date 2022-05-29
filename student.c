@@ -16,12 +16,16 @@ void initial_student_list(student_list *student_list){
         set_and_print_error_message("initial student list error : memory allocate fail\n");
         return;
     }
-    initial_avl_tree(&(*student_list)->student_tree, student_id_compare, print_func, destory_student_data_function);
+    initial_avl_tree(&((*student_list)->student_tree), student_id_compare, print_func, destory_student_data_function);
     (*student_list)->student_amount = 0;
 }
 
 void add_student(student_list student_list, int student_id){
     student target = malloc(sizeof(struct student));
+    if (target == NULL){
+        set_and_print_error_message("add_student : memory alloate fail\n");
+        return;
+    }
     target->student_id = student_id;
     student student_data = student_list->student_tree->search(student_list->student_tree, target);
     if (student_data != NULL){
@@ -30,7 +34,9 @@ void add_student(student_list student_list, int student_id){
         return;
     }
     initial_vector(&(target->path), sizeof(place_record), destory_data_function);
-    student_list->student_tree->add(student_list->student_tree, target, sizeof(struct student));
+    int add_result = student_list->student_tree->add(student_list->student_tree, target, sizeof(struct student));
+    if (add_result)
+        set_and_print_error_message("some problem happen\n");
     free(target);
 }
 
@@ -71,16 +77,24 @@ void record_path(student_list student_list, int student_id, int place_id){
 }
 
 void add_student_path(student_list student_list, int student_id, int place_id, time_t time){
-    student target = student_list->student_tree->search(student_list->student_tree, &student_id);
+    struct student search_target;
+    search_target.student_id = student_id;
+    student target = student_list->student_tree->search(student_list->student_tree, &search_target);
     if (target == NULL){
         add_student(student_list, student_id);
-        target = student_list->student_tree->search(student_list->student_tree, &student_id);
+        target = student_list->student_tree->search(student_list->student_tree, &search_target);
     }
-    place_record data;
-    data.place_id = place_id;
-    data.student_id = student_id;
-    data.time = time;
-    target->path->push_back(target->path, &data);
+    place_record *data = malloc(sizeof(place_record));
+    if  (data == NULL){
+        set_and_print_error_message("add_student_path : memory allocate fail\n");
+        return;
+    }
+    data->time = time;
+    data->student_id = student_id;
+    data->place_id = place_id;
+    
+    target->path->push_back(target->path, data);
+    free(data);
 }
 
 void destory_student_list(student_list student_list){
