@@ -1,9 +1,10 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include "error.h"
+#include "../error.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct vector *vector;
 

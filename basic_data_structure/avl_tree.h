@@ -1,9 +1,10 @@
 #ifndef AVL_TREE_H
 #define AVL_TREE_H
-#include "error.h"
+#include "../error.h"
 #include "queue.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define PRE_ORDER 0
 #define IN_ORDER 1
 #define POST_ORDER 2

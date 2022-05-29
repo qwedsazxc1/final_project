@@ -2,7 +2,8 @@
 #define DOUBLE_LINKED_LIST_H
 #include <stdio.h>
 #include <stdlib.h>
-#include "error.h"
+#include <string.h>
+#include "../error.h"
 struct dnode{
     void *data;
     struct dnode *next;

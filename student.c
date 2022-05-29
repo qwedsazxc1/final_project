@@ -38,15 +38,14 @@ void add_student(student_list student_list, int student_id){
     if (add_result)
         set_and_print_error_message("some problem happen\n");
     free(target);
+    student_list->student_amount += 1;
 }
 
 static void print_func(const void *data){
     const student student_data = (student)data;
     place_record *record = (place_record *)student_data->path->array;
-    for (int i = 0; i < student_data->path->num_of_element; i++){
-        printf("%d,%llu,%d\n", record->student_id, (unsigned long long)record->time, record->place_id);
-        record++;
-    }
+    for (int i = 0; i < student_data->path->num_of_element; i++)
+        printf("%d,%llu,%5d\n", record[i].student_id, (unsigned long long)record[i].time, record[i].place_id);
 }
 
 static void destory_student_data_function(void *data){
@@ -56,24 +55,6 @@ static void destory_student_data_function(void *data){
 
 static void destory_data_function(void *data){
     return;
-}
-
-void record_path(student_list student_list, int student_id, int place_id){
-    time_t current_time = time(NULL);
-    add_student_path(student_list, student_id, place_id, current_time);
-    char string_of_student_id[20], string_of_place_id[20], string_of_current_time[30];
-    itoa_(student_id, string_of_student_id);
-    itoa_(place_id, string_of_place_id);
-    ultoa_((unsigned long long)current_time, string_of_current_time);
-    char *command[] = {"./add", string_of_student_id, string_of_place_id, string_of_current_time, NULL};
-    errno = 0;
-    if (execvp("./add", command) == -1) {
-        if (errno == EACCES)
-            printf("[ERROR] permission is denied for a file\n");
-        else
-            perror("execvp");
-        exit(EXIT_FAILURE);
-    }
 }
 
 void add_student_path(student_list student_list, int student_id, int place_id, time_t time){
@@ -102,6 +83,6 @@ void destory_student_list(student_list student_list){
     free(student_list);
 }
 
-void print_all_list(student_list student_list){
+void print_all_student_list(student_list student_list){
     avl_tree_traversal(student_list->student_tree, IN_ORDER);
 }

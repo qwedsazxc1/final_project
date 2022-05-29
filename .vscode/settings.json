@@ -99,6 +99,9 @@
       "typeinfo": "cpp",
       "valarray": "cpp",
       "ios": "cpp",
-      "cfloat": "cpp"
+      "cfloat": "cpp",
+      "avl_tree.h": "c",
+      "vector.h": "c",
+      "error.h": "c"
     }
   }
