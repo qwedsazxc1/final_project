@@ -20,6 +20,8 @@
 #include <string.h>
 #define BUFFER_SIZE (4096)
 
+char file_name[85];
+
 void record_path(student_list student_list, place_list place_list, int student_id, int place_id);
 void seg_fault(int signo);
 
@@ -33,11 +35,11 @@ int main(int argc, char *argv[]){
         set_and_print_error_message("signal error\n");
        	exit(0);
     }
-    char file_name[80];
+    
     if (argc == 1)
         strcpy(file_name, "footprint.csv");
     else
-        strcpy(file_name, argv[1]);
+        strncpy(file_name, argv[1], 80);
     FILE *footprint = fopen(file_name, "r");
     if (footprint == NULL){
         set_and_print_error_message("fopen fail : fail to open csv file\n");
@@ -71,7 +73,6 @@ void seg_fault(int signo){
     exit(139);
 }
 
-
 void record_path(student_list student_list, place_list place_list, int student_id, int place_id){
     time_t current_time = time(NULL);
     add_student_path(student_list, student_id, place_id, current_time);
@@ -80,13 +81,10 @@ void record_path(student_list student_list, place_list place_list, int student_i
     itoa_(student_id, string_of_student_id);
     itoa_(place_id, string_of_place_id);
     ultoa_((unsigned long long)current_time, string_of_current_time);
-    char *command[] = {"./add", string_of_student_id, string_of_place_id, string_of_current_time, NULL};
+    char *command[] = {"./add", string_of_student_id, string_of_place_id, "-t", string_of_current_time, "-f", file_name, NULL};
     errno = 0;
     if (execvp("./add", command) == -1) {
-        if (errno == EACCES)
-            printf("[ERROR] permission is denied for a file\n");
-        else
-            perror("execvp");
+        perror("execvp");
         exit(EXIT_FAILURE);
     }
 }

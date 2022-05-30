@@ -1,26 +1,75 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <errno.h>
 
 int main(int argc, char *argv[]){
-    if (argc != 4){
-        printf("Usage : ./delete [student_id] [place_id] [time]\n");
+    if (argc < 4 || argc > 6){
+        printf("Usage : ./delete [student_id] [place_id] [time] [OPTION]\n");
+        printf("option : \n");
+        printf("-f, --file\t<arg>\tassign the file name that store information\n");
+        return 0;
+    }
+    char file_name[85];
+    char string_of_student_id[25] = {'\0'};
+    char string_of_place_id[25] = {'\0'};
+    char string_of_time[35] = {'\0'};
+    strcpy(file_name, "footprint.csv");
+    for (char **str = &argv[1]; *str != NULL; str++){
+        if (strcmp("-f", *str) == 0 || strcmp("--file", *str) == 0){
+            if (*(str++) == NULL)
+                break;
+
+            strncpy(file_name, *str, 80);
+            continue;
+        }
+        if (string_of_student_id[0] == '\0'){
+            strncpy(string_of_student_id, *str, 20);
+            continue;
+        }
+        if (string_of_place_id[0] == '\0'){
+            strncpy(string_of_place_id, *str, 20);
+            continue;
+        }
+        if (string_of_time[0] == '\0'){
+            strncpy(string_of_time, *str, 30);
+            continue;
+        }
+    }
+    if (atoi(string_of_student_id) < 1e8){
+        fprintf(stderr, "student id format error\n");
+        return 0;
+    }
+    if (atoi(string_of_place_id) <= 0){
+        fprintf(stderr, "place id format error\n");
+        return 0;
+    }
+    if (atoll(string_of_time) <= 0){
+        fprintf(stderr, "time format error\n");
         return 0;
     }
     char *tmp_file_name = "temp_file.csv";
-    FILE *footprint_fp = fopen("footprint.csv", "r");
-    FILE *footprint_write_fp = fopen(tmp_file_name, "w");
+    errno = 0;
+    FILE *footprint_fp = fopen(file_name, "r");
     if (footprint_fp == NULL){
-        fprintf(stderr, "footprint.csv : cannot read footprint.csv\n");
-        fprintf(stderr, "please check the file name \"footprint.csv\"\n");
+        fprintf(stderr, "file read error : cannot read file %s\n", file_name);
+        perror("fopen");
+        return 0;
+    }
+    errno = 0;
+    FILE *footprint_write_fp = fopen(tmp_file_name, "w");
+    if (footprint_write_fp == NULL){
+        fprintf(stderr, "file write error : cannot write file %s\n", tmp_file_name);
+        perror("fopen");
         return 0;
     }
     char input[100];
     char delete_target[100] = {'\0'};
-    strncat(delete_target, argv[3], 30);
+    strncat(delete_target, string_of_time, 30);
     strcat(delete_target, ",");
-    strncat(delete_target, argv[1], 15);
+    strncat(delete_target, string_of_student_id, 15);
     strcat(delete_target, ",");
-    strncat(delete_target, argv[2], 15);
+    strncat(delete_target, string_of_place_id, 15);
     strcat(delete_target, "\n");
     int flag = 1;
     while (fgets(input, 100, footprint_fp) != NULL){
@@ -35,7 +84,7 @@ int main(int argc, char *argv[]){
 
     fclose(footprint_fp);
     fclose(footprint_write_fp);
-    remove("footprint.csv");
-    rename(tmp_file_name, "footprint.csv");
+    remove(file_name);
+    rename(tmp_file_name, file_name);
     return 0;
 }
