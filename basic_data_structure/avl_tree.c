@@ -1,7 +1,7 @@
 #include "avl_tree.h"
 
 static struct avlnode *build_node(void *data, size_t size, struct avlnode *parent);
-static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(const void *a, const void *b));
+static int insert_node(struct avlnode *node, void *data, size_t size, int (*cmp)(const void *a, const void *b));
 static void balance(struct avlnode *node);
 static void left_rotate(struct avlnode *node);
 static void right_rotate(struct avlnode *node);
@@ -16,7 +16,7 @@ static struct avlnode *get_successor_node(struct avlnode *node);
 static void update_node_height(struct avlnode *node);
 static void print_tree(struct avlnode *node, int mode, void (*print_func)(const void *data));
 
-static int add(avl_tree tree, void *data, size_t size);
+static int insert(avl_tree tree, void *data, size_t size);
 static void *max(const avl_tree tree);
 static void *min(const avl_tree tree);
 static int height(const avl_tree tree);
@@ -85,7 +85,7 @@ void initial_avl_tree(avl_tree *avl_tree, int (*cmp)(const void *a, const void *
 , void (*destroy_data_function)(void *data)){
     *avl_tree = malloc(sizeof(struct avl_tree));
     (*avl_tree)->root = NULL;
-    (*avl_tree)->add = add;
+    (*avl_tree)->insert = insert;
     (*avl_tree)->max = max;
     (*avl_tree)->min = min;
     (*avl_tree)->height = height;
@@ -153,12 +153,12 @@ static void balance(struct avlnode *node){
 
 }
 
-static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(const void *a, const void *b)){
+static int insert_node(struct avlnode *node, void *data, size_t size, int (*cmp)(const void *a, const void *b)){
 
     int add_result = 0;
     if (cmp(node->data, data) < 0){
         if ((node)->right_child != NULL)
-            add_result = add_node(((node)->right_child), data, size, cmp);
+            add_result = insert_node(((node)->right_child), data, size, cmp);
         else{
             struct avlnode *new_node = build_node(data, size, node);
             if (new_node == NULL){
@@ -172,7 +172,7 @@ static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(co
     }
     if (cmp(node->data, data) > 0){
         if ((node)->left_child != NULL)
-            add_result = add_node(((node)->left_child), data, size, cmp);
+            add_result = insert_node(((node)->left_child), data, size, cmp);
         else{
             struct avlnode *new_node = build_node(data, size, node);
             if (new_node == NULL){
@@ -190,7 +190,7 @@ static int add_node(struct avlnode *node, void *data, size_t size, int (*cmp)(co
     return add_result;
 }
 
-static int add(avl_tree tree, void *data, size_t size){
+static int insert(avl_tree tree, void *data, size_t size){
     if (tree->root == NULL){
         struct avlnode *new_node = build_node(data, size, NULL);
         if (new_node == NULL){
@@ -200,7 +200,7 @@ static int add(avl_tree tree, void *data, size_t size){
         tree->root = new_node;
         return 0;
     }
-    int add_result = add_node(tree->root, data, size, tree->cmp);
+    int add_result = insert_node(tree->root, data, size, tree->cmp);
     update_root(&(tree->root));
     return add_result;
 }

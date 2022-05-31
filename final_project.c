@@ -40,9 +40,11 @@ int main(int argc, char *argv[]){
         strcpy(file_name, "footprint.csv");
     else
         strncpy(file_name, argv[1], 80);
+    errno = 0;
     FILE *footprint = fopen(file_name, "r");
     if (footprint == NULL){
         set_and_print_error_message("fopen fail : fail to open csv file\n");
+        perror("fopen");
         exit(0);
     }
     if (fscanf(footprint, "time,student_id,place_id") == EOF){

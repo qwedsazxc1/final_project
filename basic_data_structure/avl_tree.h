@@ -23,7 +23,7 @@ typedef struct avl_tree *avl_tree;
 
 struct avl_tree{
     struct avlnode *root;
-    int (*add)(avl_tree tree, void *data, size_t size);
+    int (*insert)(avl_tree tree, void *data, size_t size);
     void *(*max)(const avl_tree tree);
     void *(*min)(const avl_tree tree);
     int (*height)(const avl_tree tree);

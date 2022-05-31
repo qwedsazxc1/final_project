@@ -1,9 +1,16 @@
 #include <stdio.h>
+#include <errno.h>
 #define FRONT 1000000
 #define MIDDLE 1000
 
 int main(){
+    errno = 0;
     FILE *student_id = fopen("student_id_list.txt", "w");
+    if (student_id == NULL){
+        perror("fopen");
+        return 0;
+    }
+
     long long front[] = {407, 408, 409, 410};
     long long middle[30] = {110, 115, 120, 125, 210, 220, 235, 257, 260, 310, 315, 320, 330, 335, 410, 415, 420, 425, 430, 510, 515, 520,
                     526, 530, 610, 620, 630, 710, 725, 736};

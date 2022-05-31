@@ -29,7 +29,7 @@ void add_place(place_list place_list, int place_id){
         return;
     }
     initial_vector(&(target->path), sizeof(place_record), destory_data_function);
-    int add_result = place_list->place_tree->add(place_list->place_tree, target, sizeof(struct place));
+    int add_result = place_list->place_tree->insert(place_list->place_tree, target, sizeof(struct place));
     if (add_result)
         set_and_print_error_message("some problem happen\n");
     free(target);

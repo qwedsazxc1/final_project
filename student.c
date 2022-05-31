@@ -34,7 +34,7 @@ void add_student(student_list student_list, int student_id){
         return;
     }
     initial_vector(&(target->path), sizeof(place_record), destory_data_function);
-    int add_result = student_list->student_tree->add(student_list->student_tree, target, sizeof(struct student));
+    int add_result = student_list->student_tree->insert(student_list->student_tree, target, sizeof(struct student));
     if (add_result)
         set_and_print_error_message("some problem happen\n");
     free(target);
