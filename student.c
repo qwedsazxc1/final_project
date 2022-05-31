@@ -12,6 +12,7 @@ static int student_id_compare(const void *a, const void *b){
 
 void initial_student_list(student_list *student_list){
     *student_list = malloc(sizeof(struct student_list));
+	//ensure the memories set is successfull
     if (*student_list == NULL){
         set_and_print_error_message("initial student list error : memory allocate fail\n");
         return;
@@ -22,6 +23,7 @@ void initial_student_list(student_list *student_list){
 
 void add_student(student_list student_list, int student_id){
     student target = malloc(sizeof(struct student));
+	//ensure the memories set is successful
     if (target == NULL){
         set_and_print_error_message("add_student : memory alloate fail\n");
         return;
