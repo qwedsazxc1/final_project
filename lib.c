@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "lib.h"
-
+//basic swap algo
 void swap(void *a, void *b, size_t size){
     unsigned char *first = a, *second = b, tmp;
     for (int i = 0; i < size; i++){
@@ -9,13 +9,13 @@ void swap(void *a, void *b, size_t size){
         second[i] = tmp;
     }
 }
-
+//clears buffer
 void fflush_stdin(void){
     char c;
     while((c = getchar()) != EOF && c != '\n')
         ;
 }
-
+//realizing int to ascii string (in c)
 void itoa_(int number, char *string){
     string[0] = '0';
     string[1] = '\0';
@@ -40,7 +40,7 @@ void itoa_(int number, char *string){
             swap(string + j, string + i - j, sizeof(char));
         }
 }
-
+//realizing unsigned long to ascii string (in c)
 void ultoa_(unsigned long long number, char *string){
     int i = 0;
     string[0] = '0';
