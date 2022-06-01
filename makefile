@@ -45,7 +45,7 @@ student_id_list_generator: student_id_list_generator.o
 	$(CC) -g $^ -O3 -o $@
 
 clear:
-	rm $(exe) $(objects) $(add) $(delete) $(test_case_generator) test*.csv
+	rm $(exe) $(objects) $(add) $(delete) $(test_case_generator) test*.csv *.o student_id_list_generator
 
 clean:
-	rm $(exe) $(objects) $(add) $(delete) $(test_case_generator) test*.csv
+	rm $(exe) $(objects) $(add) $(delete) $(test_case_generator) test*.csv *.o student_id_list_generator
