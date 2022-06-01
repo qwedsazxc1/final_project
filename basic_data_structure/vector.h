@@ -21,6 +21,8 @@ struct vector{
     void *(*front)(const vector vector);
     void *(*back)(const vector vector);
     void (*destroy_data_function)(void *data);
+    void (*erase)(vector vector, int index);
+    void (*insert)(vector vector, int index, void *data);
 };
 
 void destory_vector(vector vector);

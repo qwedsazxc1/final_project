@@ -2,11 +2,13 @@
 
 static void push_back(vector vector, void *data);
 static void pop_back(vector vector);
-static int size(vector vector);
-static int empty(vector vector);
+static int size(const vector vector);
+static int empty(const vector vector);
 static void clear(vector vector);
-static void *front(vector vector);
-static void *back(vector vector);
+static void *front(const vector vector);
+static void *back(const vector vector);
+static void erase(vector vector, int index);
+static void insert(vector vector, int index, void *data);
 
 void initial_vector(vector *vector, size_t element_size, void (*destroy_data_function)(void *data)){
 
@@ -36,6 +38,8 @@ void initial_vector(vector *vector, size_t element_size, void (*destroy_data_fun
     (*vector)->front = front;
     (*vector)->back = back;
     (*vector)->destroy_data_function = destroy_data_function;
+    (*vector)->erase = erase;
+    (*vector)->insert = insert;
 }
 
 void destory_vector(vector vector){
@@ -75,12 +79,12 @@ static void pop_back(vector vector){
 }
 
 // return the size of the vector
-static int size(vector vector){
+static int size(const vector vector){
     return vector->num_of_element;
 }
 
 // check if the vector is empty
-static int empty(vector vector){
+static int empty(const vector vector){
     return vector->num_of_element > 0;
 }
 
@@ -91,11 +95,63 @@ static void clear(vector vector){
 }
 
 // returns a pointer to the first element
-static void *front(vector vector){
+static void *front(const vector vector){
     return vector->array;
 }
 
 // returns a pointer to the last element
-static void *back(vector vector){
-    return vector->array + ((vector->num_of_element - 1) * vector->element_size);
+static void *back(const vector vector){
+    return ((char *)vector->array) + ((vector->num_of_element - 1) * vector->element_size);
+}
+
+static void erase(vector vector, int index){
+    if (index >= vector->num_of_element || index < 0)
+        return;
+
+    int buffer_size = (vector->num_of_element - index - 1) * vector->element_size;
+    void *buffer = malloc(buffer_size);
+    if (buffer == NULL){
+        set_and_print_error_message("vector (erase) : memory allocation fail\n");
+        return;
+    }
+
+    vector->destroy_data_function(((char *)vector->array) + index * vector->element_size);
+    memcpy(buffer, ((char *)vector->array) + (index + 1) * vector->element_size, buffer_size);
+    memcpy(((char *)vector->array) + index * vector->element_size, buffer, buffer_size);
+    free(buffer);
+    vector->num_of_element -= 1;
+}
+
+static void insert(vector vector, int index, void *data){
+    if (index >= vector->num_of_element || index < 0)
+        return;
+
+    int buffer_size = (vector->num_of_element - index) * vector->element_size;
+    void *buffer = malloc(buffer_size);
+    if (buffer == NULL){
+        set_and_print_error_message("vector (insert) : memory allocation fail\n");
+        return;
+    }
+
+    // realloc doubles the original memory size if vector is full
+    if (vector->num_of_element == vector->max_size){
+        void *temp_ptr = realloc(vector->array, vector->element_size * 2 * vector->num_of_element);
+
+        // allocation fails
+        if (temp_ptr == NULL){
+            set_and_print_error_message("vector (insert) : memory allocation fail\n");
+            free(buffer);
+            return;
+        }
+
+        // reinitializations due to reallocation
+        vector->array = temp_ptr;
+        vector->max_size = 2 * vector->max_size;
+    }
+
+    memcpy(buffer, (char *)vector->array + index * vector->element_size, buffer_size);
+    memcpy((char *)vector->array + index * vector->element_size, data, vector->element_size);
+    memcpy((char *)vector->array + (index + 1) * vector->element_size, buffer, buffer_size);
+    vector->num_of_element += 1;
+    free(buffer);
 }

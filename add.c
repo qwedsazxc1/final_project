@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[]){
     if (argc < 3 || argc > 7){
-        printf("Usage : add [student id] [place id] [OPTION]\n");
+        printf("Usage : ./add [student id] [place id] [OPTION]\n");
         printf("options : \n");
         printf("-t, --time\t<arg>\tassign the time be stored\n");
         printf("-f, --file\t<arg>\tassign the file name that store information\n");

@@ -12,22 +12,26 @@ static int student_id_compare(const void *a, const void *b){
 
 void initial_student_list(student_list *student_list){
     *student_list = malloc(sizeof(struct student_list));
-	//ensure the memories set is successfull
+
+	// ensure the memories set is successfull
     if (*student_list == NULL){
         set_and_print_error_message("initial student list error : memory allocate fail\n");
         return;
     }
+
     initial_avl_tree(&((*student_list)->student_tree), student_id_compare, print_func, destory_student_data_function);
     (*student_list)->student_amount = 0;
 }
 
 void add_student(student_list student_list, int student_id){
     student target = malloc(sizeof(struct student));
-	//ensure the memories set is successful
+
+	// ensure the memories set is successful
     if (target == NULL){
         set_and_print_error_message("add_student : memory alloate fail\n");
         return;
     }
+    
     target->student_id = student_id;
     student student_data = student_list->student_tree->search(student_list->student_tree, target);
     if (student_data != NULL){

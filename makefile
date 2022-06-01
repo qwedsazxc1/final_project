@@ -38,9 +38,11 @@ test3: all
 test_case_generator: test_case_generator.c
 	$(CC) -g $^ -O3 -o $@
 
-student_id_list.txt: student_id_list_generator.c
-	$(CC) -g $^ -O3 -o student_id_list_generator
-	./$@
+student_id_list.txt: student_id_list_generator
+	./$^
+
+student_id_list_generator: student_id_list_generator.o
+	$(CC) -g $^ -O3 -o $@
 
 clear:
 	rm $(exe) $(objects) $(add) $(delete) $(test_case_generator) test*.csv

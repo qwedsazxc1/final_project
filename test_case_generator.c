@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <errno.h>
 
 int main(int argc, char *argv[]){
     if (argc != 3){
@@ -10,7 +11,7 @@ int main(int argc, char *argv[]){
     srand(time(NULL));
     int number_of_test_case = atoi(argv[1]);
     if (number_of_test_case <= 0){
-        printf("test case amount can not less than 1\n");
+        fprintf(stderr, "test case amount can not less than 1\n");
         return 0;
     }
     int student_id_list[] = {
@@ -18,7 +19,14 @@ int main(int argc, char *argv[]){
     };
     int student_id_list_size = 12000;
     unsigned long long current_time = time(NULL);
+
+    errno = 0;
     FILE *generate_file_name = fopen(argv[2], "w");
+    if (generate_file_name == NULL){
+        perror("fopen");
+        return 0;
+    }
+
     fprintf(generate_file_name, "time,student_id,place_id\n");
 
     for (unsigned long long i = 0; i < number_of_test_case; i++){
