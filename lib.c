@@ -110,7 +110,7 @@ int binary_search(const void *base, void *target, size_t num_of_element, size_t 
 int lower_bound(const void *base, void *target, size_t num_of_element, size_t size_of_element, int (*compare_function)(const void *, const void *)){
     int max = num_of_element - 1;
     int min = 0;
-    int traget_index = num_of_element;
+    int traget_index = -1;
      while (max >= min){
         int mid = (max - min) / 2 + min;
         if (compare_function((char *)base + mid * size_of_element, target) >= 0){
@@ -126,7 +126,7 @@ int lower_bound(const void *base, void *target, size_t num_of_element, size_t si
 int upper_bound(const void *base, void *target, size_t num_of_element, size_t size_of_element, int (*compare_function)(const void *, const void *)){
     int max = num_of_element - 1;
     int min = 0;
-    int traget_index = num_of_element;
+    int traget_index = -1;
      while (max >= min){
         int mid = (max - min) / 2 + min;
         if (compare_function((char *)base + mid * size_of_element, target) <= 0){

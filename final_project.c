@@ -9,16 +9,19 @@
     student ID : 410410080
 */
 
+#include "basic_data_structure/list.h"
 #include "error.h"
 #include "lib.h"
-#include "basic_data_structure/list.h"
 #include "place.h"
 #include "student.h"
+#include <errno.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #define BUFFER_SIZE (4096)
 
 char file_name[85];
@@ -62,6 +65,7 @@ int main(int argc, char *argv[]){
         add_student_path(student_list, student_id, place_id, time);
         add_place_path(place_list, student_id, place_id, time);
     }
+    record_path(student_list, place_list, 410410021, 200);
     print_all_student_list(student_list);
     printf("-----------------------------\n");
     print_all_place_list(place_list);
@@ -80,14 +84,27 @@ void record_path(student_list student_list, place_list place_list, int student_i
     time_t current_time = time(NULL);
     add_student_path(student_list, student_id, place_id, current_time);
     add_place_path(place_list, student_id, place_id, current_time);
-    char string_of_student_id[20], string_of_place_id[20], string_of_current_time[30];
-    itoa_(student_id, string_of_student_id);
-    itoa_(place_id, string_of_place_id);
-    ultoa_((unsigned long long)current_time, string_of_current_time);
-    char *command[] = {"./add", string_of_student_id, string_of_place_id, "-t", string_of_current_time, "-f", file_name, NULL};
+    pid_t pid;
+    if ((pid = fork()) < 0){
+        perror("fork");
+        exit(1);
+    }
+    if (pid == 0){
+        char string_of_student_id[20], string_of_place_id[20], string_of_current_time[30];
+        itoa_(student_id, string_of_student_id);
+        itoa_(place_id, string_of_place_id);
+        ultoa_((unsigned long long)current_time, string_of_current_time);
+        char *command[] = {"./add", string_of_student_id, string_of_place_id, "-t", string_of_current_time, "-f", file_name, NULL};
+        errno = 0;
+        if (execvp("./add", command) == -1) {
+            perror("execvp");
+            exit(EXIT_FAILURE);
+        }
+    }
+    int wstatus;
     errno = 0;
-    if (execvp("./add", command) == -1) {
-        perror("execvp");
-        exit(EXIT_FAILURE);
+    if (waitpid(pid, &wstatus, 0) != pid){
+        perror("wait");
+        exit(1);
     }
 }
