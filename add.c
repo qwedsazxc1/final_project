@@ -5,7 +5,7 @@
 #include <errno.h>
 
 int main(int argc, char *argv[]){
-    // prompting user of input format 
+    // prompting users of input format 
     if (argc < 3 || argc > 7){
         printf("Usage : ./add [student id] [place id] [OPTION]\n");
         printf("options : \n");
