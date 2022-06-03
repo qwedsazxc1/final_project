@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #define BUFFER_SIZE (4096)
 
 char file_name[85];

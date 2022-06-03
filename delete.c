@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-//prompting user of input format 
+
+// prompting user of input format 
 int main(int argc, char *argv[]){
     if (argc < 4 || argc > 6){
         printf("Usage : ./delete [student_id] [place_id] [time] [OPTION]\n");
@@ -15,7 +16,8 @@ int main(int argc, char *argv[]){
     char string_of_place_id[25] = {'\0'};
     char string_of_time[35] = {'\0'};
     strcpy(file_name, "footprint.csv");
-    //fetch needed variables from argument vectors
+
+    // fetch needed variables from argument vectors
     for (char **str = &argv[1]; *str != NULL; str++){
         if (strcmp("-f", *str) == 0 || strcmp("--file", *str) == 0){
             if (*(str++) == NULL)
@@ -37,7 +39,8 @@ int main(int argc, char *argv[]){
             continue;
         }
     }
-    //input format check
+
+    // input format check
     if (atoi(string_of_student_id) < 1e8){
         fprintf(stderr, "student id format error\n");
         return 0;
@@ -51,8 +54,9 @@ int main(int argc, char *argv[]){
         return 0;
     }
     char *tmp_file_name = "temp_file.csv";
+
+    // open files, raise error message when fails
     errno = 0;
-    //open files, raise error message when fails
     FILE *footprint_fp = fopen(file_name, "r");
     if (footprint_fp == NULL){
         fprintf(stderr, "file read error : cannot read file %s\n", file_name);
@@ -66,7 +70,8 @@ int main(int argc, char *argv[]){
         perror("fopen");
         return 0;
     }
-    //delete_target format : time,student_id,place_id
+
+    // delete_target format : time,student_id,place_id
     char input[100];
     char delete_target[100] = {'\0'};
     strncat(delete_target, string_of_time, 30);
@@ -75,8 +80,9 @@ int main(int argc, char *argv[]){
     strcat(delete_target, ",");
     strncat(delete_target, string_of_place_id, 15);
     strcat(delete_target, "\n");
+
     int flag = 1;
-    //pour everything to another file except "delete_target"
+    // pour everything to another file except "delete_target"
     while (fgets(input, 100, footprint_fp) != NULL){
         if (strcmp(delete_target, input) == 0){
             flag = 0;
@@ -89,7 +95,8 @@ int main(int argc, char *argv[]){
     
     fclose(footprint_fp);
     fclose(footprint_write_fp);
-    //update new footprint.csv
+    
+    // update new footprint.csv
     remove(file_name);
     rename(tmp_file_name, file_name);
     return 0;
