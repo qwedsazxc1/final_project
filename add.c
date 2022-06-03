@@ -5,6 +5,7 @@
 #include <errno.h>
 
 int main(int argc, char *argv[]){
+    // prompting user of input format 
     if (argc < 3 || argc > 7){
         printf("Usage : ./add [student id] [place id] [OPTION]\n");
         printf("options : \n");
@@ -17,6 +18,8 @@ int main(int argc, char *argv[]){
     char string_of_student_id[20] = {'\0'};
     char string_of_place_id[20] = {'\0'};
     strcpy(file, "footprint.csv");
+
+    // fetch needed variables from argument vectors
     for (char **str = &argv[1]; *str != NULL; str++){
         if (strcmp("-t", *str) == 0 || strcmp("--time", *str) == 0){
             if (*(++str) == NULL)
@@ -41,6 +44,7 @@ int main(int argc, char *argv[]){
             continue;
         }
     }
+    // input format check
     int student_id = atoi(string_of_student_id);
     if (student_id < 1e8){
         fprintf(stderr, "student id : %d\n", student_id);
@@ -53,12 +57,14 @@ int main(int argc, char *argv[]){
         return 0;
     }
     errno = 0;
+    //open file and check
     FILE *footprint_fp = fopen(file, "r");
     if (footprint_fp == NULL){
         fprintf(stderr, "file error : cannot read file %s\n", file);
         perror("fopen");
         return 0;
     }
+    //add all information of student into file and check format
     footprint_fp = freopen(file, "a", footprint_fp);
     if (footprint_fp == NULL){
         fprintf(stderr, "file error : cannot read file %s\n", file);
