@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
         printf("Usage : ./test_case_generator [number_of_test_case] [generate_file_name] ([parameter])\n");
         return 0;
     }
-	if (argc ==  3){
+	if (argc == 3){
     	srand(time(NULL));
     	int number_of_test_case = atoi(argv[1]);
     	if (number_of_test_case <= 0){

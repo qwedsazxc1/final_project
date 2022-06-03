@@ -89,6 +89,8 @@ void record_path(student_list student_list, place_list place_list, int student_i
         perror("fork");
         exit(1);
     }
+
+    // child proccess
     if (pid == 0){
         char string_of_student_id[20], string_of_place_id[20], string_of_current_time[30];
         itoa_(student_id, string_of_student_id);
@@ -101,6 +103,8 @@ void record_path(student_list student_list, place_list place_list, int student_i
             exit(EXIT_FAILURE);
         }
     }
+
+    // parent proccess
     int wstatus;
     errno = 0;
     if (waitpid(pid, &wstatus, 0) != pid){
