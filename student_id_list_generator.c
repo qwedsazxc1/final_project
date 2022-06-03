@@ -22,7 +22,7 @@ int main(){
         for (int j = 0; j < middle_size; j++){
             for (int k = 1; k <= 100; k++){
                 long long id = FRONT * front[i] + middle[j] * MIDDLE + k;
-                if (i == front_size - 1 && j == middle_size - 1 && k == 100)//the last student_id
+                if (i == front_size - 1 && j ==  middle_size - 1 && k == 100)//the last student_id
                     fprintf(student_id, "%lld", id);
                 else
                     fprintf(student_id, "%lld, ", id);
