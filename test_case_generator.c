@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
 			int a_random_place = rand() % 10000 + 1;
 			int a_randon_student_id = student_id_list[rand() % student_id_list_size];
 			for (unsigned long long i = 0; i < number_of_test_case; i++){
-				fprintf(generate_file_name, "%llu,%d,%d\n", current_time + i, a_randon_student_id, rand() % 10000 + 1);
+				fprintf(generate_file_name, "%llu,%d,%d\n", current_time + i, a_randon_student_id, a_random_place);
 			}
 		}
 		else if(strcmp(argv[3],"-li") == 0){
