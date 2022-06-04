@@ -35,6 +35,21 @@ test3: all
 	wc -l $@.csv
 	time -p ./$(exe) $@.csv
 
+test_l: all
+	./$(test_case_generator) 10 $@.csv -l
+	wc -l $@.csv
+	time -p ./$(exe) $@.csv
+
+test_li: all
+	./$(test_case_generator) 10 $@.csv -li
+	wc -l $@.csv
+	time -p ./$(exe) $@.csv
+
+test_lp: all
+	./$(test_case_generator) 10 $@.csv -lp
+	wc -l $@.csv
+	time -p ./$(exe) $@.csv
+
 test_case_generator: test_case_generator.c
 	$(CC) -g $^ -O3 -o $@
 
