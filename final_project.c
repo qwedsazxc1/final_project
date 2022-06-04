@@ -35,6 +35,7 @@ int main(int argc, char *argv[]){
         return 0;
     }
     char *input_buffer = (char *)malloc(BUFFER_SIZE * sizeof(char));
+    // error message raised when raised you attempt to illegally access or modify memory.
     if (signal(SIGSEGV, seg_fault) == SIG_ERR){
         set_and_print_error_message("signal error\n");
        	exit(0);
@@ -65,10 +66,53 @@ int main(int argc, char *argv[]){
         add_student_path(student_list, student_id, place_id, time);
         add_place_path(place_list, student_id, place_id, time);
     }
+    //////////////////////////////////////////
+    typedef unsigned long long ull;
+    system("clear");
+    printf("In this program, we will show the efficiency of avl tree compared with other data structures.\n");
+    printf("Current version : Adelson-Velskii and Landis tree.\n");
+    printf("Select options below to interact with database.\n");
     record_path(student_list, place_list, 410410021, 200);
-    print_all_student_list(student_list);
-    printf("-----------------------------\n");
-    print_all_place_list(place_list);
+    int options;
+    _Bool flag = 0;
+    while(1)
+    {
+        printf("-----------------------------\n");
+        printf("0:End\n");
+        printf("1:Search a student ID, the output will be students whose footprint overlaps \n");
+        printf("2:Add new footprint to database.\n");
+        printf("3:Delete a specific footprint.\n");
+        printf("4:Campus hot spot analyze.\n");
+        scanf("%d", &options);
+        switch(options)
+        {
+            case 1:// search ID, print out overlapped studentID at what time, which place
+                printf("Please type in student ID.\n");
+                break;
+            case 2:// add footprints
+                printf("Input format : ID time place\n");
+                break;
+            case 3:// delete footprints
+                printf("Input format : ID time place\n");
+                break;
+            case 4:
+                // hotspot();
+                break;
+            case 0:
+                flag = 1;
+                break;
+        }
+        if(flag)
+        {
+            print_all_student_list(student_list);
+            printf("-----------------------------\n");
+            print_all_place_list(place_list);
+            break;
+        }
+
+    }
+    
+    //////////////////////////////////////////
     destory_student_list(student_list);
     destory_place_list(place_list);
     free(input_buffer);
