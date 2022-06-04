@@ -1,29 +1,73 @@
 #include "list.h"
 
-static struct dnode *build_node(void *data, size_t size, struct dnode *next, struct dnode *prev);                                       //build a node with the information given
-static int add_node_to_head(struct dnode **head, struct dnode **tail, void *data, size_t size);                                         //add node at the head, making the newnode be the new head of the list. 
-static int add_node_to_tail(struct dnode **head, struct dnode **tail, void *data, size_t size);                                         //add node at the tail, making the newnode be the new tail of the list.
-static int delete_node(struct dnode **head, struct dnode **tail, struct dnode *target_node, void (*destroy_data_function)(void *data)); //delete a specific node from list
-static int insert_node(struct dnode **head, void *data, size_t size, struct dnode *target_node);                                        //insert a next node next of the target node (new_node is the next node of target_node)
+// build a node with the information given
+static struct dnode *build_node(void *data, size_t size, struct dnode *next, struct dnode *prev);     
 
-static void print_list_from_head(const list dlist);                                 //prints the list from the head (first node) until the last node (tail) , [head -> tail]
-static void print_list_from_tail(const list dlist);                                 //prints the list from the tail (last node) until the head node head) , [tail -> head]
-static void clear(list dlist);                                                      //clear the list (delete all nodes in the list)
-static int push_front(list dlist, void *data, size_t size);                         //insert a node as the the head of the list
-static int push_back(list dlist, void *data, size_t size);                          //insert a node as the the tail of the list
-static void *front(const list dlist);                                               //returns the data stored in the head (head node) of the list
-static void *back(const list dlist);                                                //returns the data stored in the tail (last node) of the list
-static int size(const list dlist);                                                  //return the number of nodes in the list   
-static int empty(const list dlist);                                                 //check if the list is empty
-static int pop_back(list dlist);                                                    //delete the current tail (last node) of the list
-static int pop_front(list dlist);                                                   //delete the current head (first node) of the list
-static struct dnode *begin(const list dlist);                                       //get the head (first node) of the list
-static struct dnode *end(const list dlist);                                         //get the tail (last node) of the list
-static struct dnode *search_node_from_head(const list dlist, void *target_data);    //search the list from head to tail to find the node that stores the specific data.
-static struct dnode *search_node_from_tail(const list dlist, void *target_data);    //search the list from tail to head to find the node that stores the specific data.
-static int erase(list dlist, struct dnode *target_node);                            //delete a specific node.
-static int insert(list dlist, void *data, size_t size, struct dnode *target_node);  //insert a new node in front of the specific node
-static void destory(list dlist);                                                    //delete the current list
+// add node at the head, making the newnode be the new head of the list. 
+static int add_node_to_head(struct dnode **head, struct dnode **tail, void *data, size_t size);         
+
+// add node at the tail, making the newnode be the new tail of the list.
+static int add_node_to_tail(struct dnode **head, struct dnode **tail, void *data, size_t size);                                  
+
+// delete a specific node from list
+static int delete_node(struct dnode **head, struct dnode **tail, struct dnode *target_node, void (*destroy_data_function)(void *data)); 
+
+// insert a next node next of the target node (new_node is the next node of target_node)
+static int insert_node(struct dnode **head, void *data, size_t size, struct dnode *target_node);                                       
+
+// prints the list from the head (first node) until the last node (tail) , [head -> tail]
+static void print_list_from_head(const list dlist);                                 
+
+// prints the list from the tail (last node) until the head node head) , [tail -> head]
+static void print_list_from_tail(const list dlist);                                 
+
+// clear the list (delete all nodes in the list)
+static void clear(list dlist); 
+
+// insert a node as the the head of the list
+static int push_front(list dlist, void *data, size_t size);            
+
+// insert a node as the the tail of the list
+static int push_back(list dlist, void *data, size_t size);  
+
+// returns the data stored in the head (head node) of the list
+static void *front(const list dlist);     
+
+// returns the data stored in the tail (last node) of the list
+static void *back(const list dlist);         
+
+// return the number of nodes in the list   
+static int size(const list dlist);     
+
+// check if the list is empty
+static int empty(const list dlist);       
+
+// delete the current tail (last node) of the list
+static int pop_back(list dlist);      
+
+// delete the current head (first node) of the list
+static int pop_front(list dlist);         
+
+// get the head (first node) of the list
+static struct dnode *begin(const list dlist);         
+
+// get the tail (last node) of the list
+static struct dnode *end(const list dlist);    
+
+// search the list from head to tail to find the node that stores the specific data.
+static struct dnode *search_node_from_head(const list dlist, void *target_data);    
+
+// search the list from tail to head to find the node that stores the specific data.
+static struct dnode *search_node_from_tail(const list dlist, void *target_data);  
+
+// delete a specific node.
+static int erase(list dlist, struct dnode *target_node);                      
+
+// insert a new node in front of the specific node
+static int insert(list dlist, void *data, size_t size, struct dnode *target_node); 
+
+// delete the current list
+static void destory(list dlist);                                                    
 
 void initial_list(  list *list, void (*destroy_data_function)(void *data), \
                     int (*cmp)(const void *a, const void *b), int (*print_func)(const void *data)){    //makes all function pointers point to functions

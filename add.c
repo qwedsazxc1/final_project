@@ -5,6 +5,7 @@
 #include <errno.h>
 
 int main(int argc, char *argv[]){
+
     // prompting users of input format 
     if (argc < 3 || argc > 7){
         printf("Usage : ./add [student id] [place id] [OPTION]\n");
@@ -13,6 +14,7 @@ int main(int argc, char *argv[]){
         printf("-f, --file\t<arg>\tassign the file name that store information\n");
         return 0;
     }
+
     char string_of_time[30] = {'\0'};
     char file[80] = {'\0'};
     char string_of_student_id[20] = {'\0'};
@@ -44,6 +46,7 @@ int main(int argc, char *argv[]){
             continue;
         }
     }
+
     // input format check
     int student_id = atoi(string_of_student_id);
     if (student_id < 1e8){
@@ -56,21 +59,6 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "place id format error\n");
         return 0;
     }
-    errno = 0;
-    //open file and check
-    FILE *footprint_fp = fopen(file, "r");
-    if (footprint_fp == NULL){
-        fprintf(stderr, "file error : cannot read file %s\n", file);
-        perror("fopen");
-        return 0;
-    }
-    //add all information of student into file and check format
-    footprint_fp = freopen(file, "a", footprint_fp);
-    if (footprint_fp == NULL){
-        fprintf(stderr, "file error : cannot read file %s\n", file);
-        perror("fopen");
-        return 0;
-    }
     unsigned long long time_be_stored;
     if (string_of_time[0] == '\0')
         time_be_stored = (unsigned long long)time(NULL);
@@ -81,6 +69,24 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "time format error\n");
         return 0;
     }
+
+    //open file and check file exist
+    errno = 0;
+    FILE *footprint_fp = fopen(file, "r");
+    if (footprint_fp == NULL){
+        fprintf(stderr, "file error : cannot read file %s\n", file);
+        perror("fopen");
+        return 0;
+    }
+    errno = 0;
+    footprint_fp = freopen(file, "a", footprint_fp);
+    if (footprint_fp == NULL){
+        fprintf(stderr, "file error : cannot read file %s\n", file);
+        perror("fopen");
+        return 0;
+    }
+
+    //add all information of student into file and check format
     fprintf(footprint_fp, "%llu,%d,%d\n", time_be_stored, student_id, place_id);
     fclose(footprint_fp);
     return 0;
