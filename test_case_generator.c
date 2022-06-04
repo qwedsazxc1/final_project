@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 		else return 0;
 	}
 	else{
-		for (unsigned long long i =0; i < number_of_test_case; i++){
+		for (unsigned long long i = 0; i < number_of_test_case; i++){
 			fprintf(generate_file_name, "%llu,%d,%d\n", current_time + i, student_id_list[rand() % student_id_list_size], rand() % 10000 + 1);
 		}
 	}	

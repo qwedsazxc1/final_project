@@ -85,6 +85,7 @@ void record_path(student_list student_list, place_list place_list, int student_i
     add_student_path(student_list, student_id, place_id, current_time);
     add_place_path(place_list, student_id, place_id, current_time);
     pid_t pid;
+    errno = 0;
     if ((pid = fork()) < 0){
         perror("fork");
         exit(1);

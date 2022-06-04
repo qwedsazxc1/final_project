@@ -22,43 +22,12 @@ void fflush_stdin(void){
 
 // realizing int to ascii string (in c)
 void itoa_(int number, char *string){
-    string[0] = '0';
-    string[1] = '\0';
-    int i = 0, sign = number;
-    if (sign < 0){
-        number *= -1;
-        string[i++] = '-';
-    }
-
-
-    while (number){
-        string[i++] = '0' + number % 10;
-        number /= 10;
-    }
-    string[i] = '\0';
-    if (sign > 0)
-        for (int j = 0; j < i / 2; j++){
-            swap(string + j, string + i - j - 1, sizeof(char));
-        }
-    else
-        for (int j = 1; j < i / 2; j++){
-            swap(string + j, string + i - j, sizeof(char));
-        }
+    sprintf(string, "%d", number);
 }
 
 // realizing unsigned long to ascii string (in c)
 void ultoa_(unsigned long long number, char *string){
-    int i = 0;
-    string[0] = '0';
-    string[1] = '\0';
-    while (number){
-        string[i++] = '0' + number % 10;
-        number /= 10;
-    }
-    string[i] = '\0';
-    for (int j = 0; j < i / 2; j++){
-        swap(string + j, string + i - j - 1, sizeof(char));
-    }
+    sprintf(string, "%llu", number);
 }
 
 void sort(void *base, size_t num_of_element, size_t size_of_element, int (*compare_function)(const void *, const void *)){
@@ -111,7 +80,7 @@ int lower_bound(const void *base, void *target, size_t num_of_element, size_t si
     int max = num_of_element - 1;
     int min = 0;
     int traget_index = -1;
-     while (max >= min){
+    while (max >= min){
         int mid = (max - min) / 2 + min;
         if (compare_function((char *)base + mid * size_of_element, target) >= 0){
             traget_index = mid;
@@ -127,7 +96,7 @@ int upper_bound(const void *base, void *target, size_t num_of_element, size_t si
     int max = num_of_element - 1;
     int min = 0;
     int traget_index = -1;
-     while (max >= min){
+    while (max >= min){
         int mid = (max - min) / 2 + min;
         if (compare_function((char *)base + mid * size_of_element, target) <= 0){
             traget_index = mid;

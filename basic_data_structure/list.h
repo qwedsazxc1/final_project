@@ -40,7 +40,6 @@ struct list{
     int (*print_func)(const void *data);
 };
 
-
 // use to initial the list structure
 void initial_list(list *list, void (*destroy_data_function)(void *data),
                   int (*cmp)(const void *a, const void *b), int (*print_func)(const void *data));
