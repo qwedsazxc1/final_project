@@ -3,6 +3,15 @@
 static void quick_sort(void *base, int left, int right, size_t size_of_elements, int (*compare_function)(const void *, const void *));
 static int partition(void *base, int left, int right, size_t size_of_elements, int (*cmp)(const void *, const void *));
 
+void clear_screen(void){
+    errno = 0;
+    int system_call_result = system("clear");
+    if (system_call_result){
+        perror("system(\"clear\")");
+        exit(EXIT_FAILURE);
+    }
+}
+
 // basic swap algo
 void swap(void *a, void *b, size_t size){
     unsigned char *first = a, *second = b, tmp;

@@ -72,7 +72,7 @@ int main(int argc, char *argv[]){
     }
     //////////////////////////////////////////
 
-    system("clear");
+    clear_screen();
     printf("In this program, we will show the efficiency of avl tree compared with other data structures.\n");
     printf("Current version : Adelson-Velskii and Landis tree.\n");
     printf("Select options below to interact with database.\n");
@@ -84,9 +84,15 @@ int main(int argc, char *argv[]){
         printf("[2] : Add new footprint to database.\n");
         printf("[3] : Delete a specific footprint.\n");
         printf("[4] : Campus hot spot analyze.\n");
-        scanf("%2d", &options);
+
+        int input_result = scanf("%2d", &options);
         fflush_stdin();
-        system("clear");
+        clear_screen();
+        if (input_result != 1){    
+            printf("invalid options\n");
+            continue;
+        }
+
 
         if (options == 0)
             break;
@@ -106,7 +112,7 @@ int main(int argc, char *argv[]){
             continue;
         }
         if (options == 4){
-            hot_spots(place_list);
+            // hot_spots(place_list);
             continue;
         }
         printf("invalid options\n");
