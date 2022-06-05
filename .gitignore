@@ -7,3 +7,4 @@ student_id_list_generator
 avl_tree_ver
 test_case_generator
 test*.csv
+*.vscode

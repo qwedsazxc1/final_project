@@ -24,10 +24,14 @@
 #include <unistd.h>
 #define BUFFER_SIZE (4096)
 
+typedef unsigned long long ull;
+
 char file_name[85];
 
+void add_new_footprint();
 void record_path(student_list student_list, place_list place_list, int student_id, int place_id);
 void seg_fault(int signo);
+void hot_spots(place_list place_list);
 
 int main(int argc, char *argv[]){
     if (argc != 1 && argc != 2){
@@ -67,49 +71,45 @@ int main(int argc, char *argv[]){
         add_place_path(place_list, student_id, place_id, time);
     }
     //////////////////////////////////////////
-    typedef unsigned long long ull;
+
     system("clear");
     printf("In this program, we will show the efficiency of avl tree compared with other data structures.\n");
     printf("Current version : Adelson-Velskii and Landis tree.\n");
     printf("Select options below to interact with database.\n");
-    record_path(student_list, place_list, 410410021, 200);
     int options;
-    _Bool flag = 0;
-    while(1)
-    {
+    while(1){
         printf("-----------------------------\n");
-        printf("0:End\n");
-        printf("1:Search a student ID, the output will be students whose footprint overlaps \n");
-        printf("2:Add new footprint to database.\n");
-        printf("3:Delete a specific footprint.\n");
-        printf("4:Campus hot spot analyze.\n");
-        scanf("%d", &options);
-        switch(options)
-        {
-            case 1:// search ID, print out overlapped studentID at what time, which place
-                printf("Please type in student ID.\n");
-                break;
-            case 2:// add footprints
-                printf("Input format : ID time place\n");
-                break;
-            case 3:// delete footprints
-                printf("Input format : ID time place\n");
-                break;
-            case 4:
-                // hotspot();
-                break;
-            case 0:
-                flag = 1;
-                break;
-        }
-        if(flag)
-        {
-            print_all_student_list(student_list);
-            printf("-----------------------------\n");
-            print_all_place_list(place_list);
+        printf("[0] : End\n");
+        printf("[1] : Search a student ID, the output will be students whose footprint overlaps \n");
+        printf("[2] : Add new footprint to database.\n");
+        printf("[3] : Delete a specific footprint.\n");
+        printf("[4] : Campus hot spot analyze.\n");
+        scanf("%2d", &options);
+        fflush_stdin();
+        system("clear");
+
+        if (options == 0)
             break;
+        // search ID, print out overlapped studentID at what time, which place
+        if (options == 1){
+            printf("Please type in student ID.\n");
+            continue;
+        }
+        if (options == 2){
+            printf("Input format : ID time place\n");
+            continue;
         }
 
+        // delete footprints
+        if (options == 3){
+            printf("Input format : ID time place\n");
+            continue;
+        }
+        if (options == 4){
+            hot_spots(place_list);
+            continue;
+        }
+        printf("invalid options\n");
     }
     
     //////////////////////////////////////////
