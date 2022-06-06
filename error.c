@@ -2,6 +2,7 @@
 #include <string.h>
 #include "error.h"
 char error_message[ERROR_MESSAGE_LENGTH + 1];
+//functions work as their name
 void set_error_message(const char *error){
     strncpy(error_message, error, ERROR_MESSAGE_LENGTH);
 }
