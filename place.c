@@ -50,10 +50,9 @@ static void print_func(const void *data){
     
 }
 
-
 static void destory_place(void *data){
     struct place *place_data = data;
-    destory_vector(place_data->path);
+    destory_vector(&place_data->path);
 
 }
 

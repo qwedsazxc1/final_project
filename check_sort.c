@@ -4,12 +4,12 @@
 
 int main(int argc, char *argv[]){
 	if(argc != 3){
-		printf("input format: [check_file] [number_of_test_case] [parameter]\n")
+		printf("Usage : [check_file] [number_of_test_case] [parameter]\n");
 		return 0;
 	}
 	
 	if(atoi(argv[1]) <= 0){
-		printf("number_of_tset_can't_be_less_than_0\n")
+		printf("number of tset can't be less than 0\n");
 		return 0;
 	}
 	
@@ -18,9 +18,10 @@ int main(int argc, char *argv[]){
 	int student_id = 0, prev_student_id = 0;
 	unsigned long long time = 0, prev_time = 0;
 	int place_id = 0, prev_place_id = 0;
-	//check time sort
-	if(strcmp(argv[2], -t) == 0){
-		for(int i = 0;i < number_of_test_case;i++){
+	
+	// check time sort
+	if(strcmp(argv[2], "-t") == 0){
+		for(int i = 0; i < number_of_test_case; i++){
 			scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
 			if(i == 0){
 				prev_time = time;
@@ -31,10 +32,13 @@ int main(int argc, char *argv[]){
 			}
 			prev_time = time;
 		}
+		printf("True\n");
+		return 0;
 	}
-	//check place_id sort
-	else if(strcmp(argv[2], -p) == 0){
-		for(int i = 0;i < number_of_test_case;i++){
+
+	// check place_id sort
+	if(strcmp(argv[2], "-p") == 0){
+		for(int i = 0; i < number_of_test_case; i++){
 			scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
 			if(i == 0){
 				prev_place_id = place_id;
@@ -45,11 +49,13 @@ int main(int argc, char *argv[]){
 			}
 			prev_place_id = place_id;
 		}
-
+		printf("True\n");
+		return 0;
 	}
-	//check student_id sort
-	else if(strcmp(argv[2], -i) == 0){
-		for(int i = 0;i < number_of_test_case;i++){
+
+	// check student_id sort
+	if(strcmp(argv[2], "-i") == 0){
+		for(int i = 0; i < number_of_test_case; i++){
 			scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
 			if(i == 0){
 				prev_student_id = student_id;
@@ -60,8 +66,11 @@ int main(int argc, char *argv[]){
 			}
 			prev_student_id = student_id;
 		}
-
+		printf("True\n");
+		return 0;
 	}
-	else return 0;
+	
+	printf("Unknown parameter\n");
+	return 0;
 }
 

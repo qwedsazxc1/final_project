@@ -42,10 +42,10 @@ void initial_vector(vector *vector, size_t element_size, void (*destroy_data_fun
     (*vector)->insert = insert;
 }
 
-void destory_vector(vector vector){
-    free(vector->array);
-    free(vector);
-    vector = NULL;
+void destory_vector(vector *vector){
+    free((*vector)->array);
+    free(*vector);
+    *vector = NULL;
 }
 
 static void push_back(vector vector, void *data){
@@ -65,7 +65,7 @@ static void push_back(vector vector, void *data){
     }
 
     // the push operation
-    memcpy((vector->array + vector->element_size * vector->num_of_element), data, vector->element_size);
+    memcpy(((char *)vector->array + vector->element_size * vector->num_of_element), data, vector->element_size);
     vector->num_of_element += 1;
 }
 
@@ -75,7 +75,7 @@ static void pop_back(vector vector){
         return;
     
     vector->num_of_element -= 1;
-    vector->destroy_data_function(vector->array + (vector->num_of_element * vector->element_size));
+    vector->destroy_data_function((char *)vector->array + (vector->num_of_element * vector->element_size));
 }
 
 // return the size of the vector

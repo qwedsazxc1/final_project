@@ -56,7 +56,7 @@ static void print_func(const void *data){
 
 static void destory_student_data_function(void *data){
     student target = data;
-    destory_vector(target->path);
+    destory_vector(&target->path);
 }
 
 static void destory_data_function(void *data){

@@ -25,7 +25,7 @@ struct vector{
     void (*insert)(vector vector, int index, void *data);
 };
 
-void destory_vector(vector vector);
+void destory_vector(vector *vector);
 void initial_vector(vector *vector, size_t basic_type_size, void (*destroy_data_function)(void *data));
 
 #endif
