@@ -55,7 +55,7 @@ int main(int argc, char *argv[]){
     }
     char *tmp_file_name = "temp_file.csv";
 
-    // open files, raise error message when fails
+    // open files, raise error message when failsas, check file exist
     errno = 0;
     FILE *footprint_fp = fopen(file_name, "r");
     if (footprint_fp == NULL){

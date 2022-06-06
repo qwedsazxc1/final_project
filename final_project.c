@@ -44,6 +44,7 @@ vector hot_spot_list = NULL;
 char file_name[85];
 int language;
 
+void delete_path(student_list student_list, place_list place_list, int student_id, int place_id, unsigned long long at_time);
 void clear_hot_spot();
 int hot_spot_compare_function(const void *front, const void *back);
 void hot_spot_visited_function(const void *data);
@@ -54,6 +55,7 @@ void record_path(student_list student_list, place_list place_list, int student_i
 void seg_fault(int signo);
 void hot_spots(place_list place_list);
 void record(student_list student_list, place_list place_list);
+void delete(student_list student_list, place_list place_list);
 
 int main(int argc, char *argv[]){
     if (argc != 1 && argc != 2){
@@ -290,11 +292,12 @@ int hot_spot_compare_function(const void *front, const void *back){
     return 1;
 }
 void delete(student_list student_list, place_list place_list){
-    int input_student_id, input_place_id, input_time;
+    int input_student_id, input_place_id;
+    unsigned long long input_time;
     while (1){
         int input_result;
         printf("Please input the data you want to delete\n");
-        printf("Input format : [student ID] [place ID] [time ID]\n");
+        printf("Input format : [student ID] [place ID] [target time]\n");
         printf("(input 0 if you want to leave)\n");
         printf("Input : ");
         input_result = scanf("%9d", &input_student_id);
@@ -312,16 +315,13 @@ void delete(student_list student_list, place_list place_list){
             break;
         }
 
-        input_result = scanf("%9d", &input_place_id);
+        input_result = scanf("%9d%31llu", &input_place_id, &input_time);
         fflush_stdin();
         clear_screen();
-        if (input_result != 1){
+        if (input_result != 2){
             printf("Input format error\n");
             continue;
         }
-        input_result = scanf("%9d", &input_time);
-        fflush_stdin();
-        clear_screen();
 
         if (input_student_id  <= 1e8 || input_place_id <= 0 || input_place_id > 10000){
             printf("Illegal data retrival\n");
@@ -331,7 +331,8 @@ void delete(student_list student_list, place_list place_list){
         printf("deletion appiled !\n");
     }
 }
-void delete_path(student_list student_list, place_list place_list, int student_id, int place_id,int at_time){
+
+void delete_path(student_list student_list, place_list place_list, int student_id, int place_id, unsigned long long at_time){
     delete_student_path(student_list, student_id, place_id, at_time);
     delete_place_path(place_list, student_id, place_id, at_time);
     pid_t pid;
@@ -346,10 +347,10 @@ void delete_path(student_list student_list, place_list place_list, int student_i
         char string_of_student_id[20], string_of_place_id[20], string_of_current_time[30];
         itoa_(student_id, string_of_student_id);
         itoa_(place_id, string_of_place_id);
-        ultoa_((unsigned long long)current_time, string_of_current_time);
-        char *command[] = {"./add", string_of_student_id, string_of_place_id, "-t", string_of_current_time, "-f", file_name, NULL};
+        ultoa_(at_time, string_of_current_time);
+        char *command[] = {"./delete", string_of_student_id, string_of_place_id, string_of_current_time, "-f", file_name, NULL};
         errno = 0;
-        if (execvp("./add", command) == -1) {
+        if (execvp("./delete", command) == -1) {
             perror("execvp");
             exit(EXIT_FAILURE);
         }

@@ -3,11 +3,28 @@
 static void print_func(const void *data);
 static void destory_data_function(void *data);
 static void destory_student_data_function(void *data);
+static int delete_compare(const void *a, const void *b);
 
 static int student_id_compare(const void *a, const void *b){
     const struct student *current_data = a;
     const struct student *target = b;
     return current_data->student_id - target->student_id;
+}
+
+static int delete_compare(const void *a, const void *b){
+    const struct place_record *current_data = a;
+    const struct place_record *target = b;
+    if (current_data->time > target->time)
+        return 1;
+    
+    if (current_data->time < target->time)
+        return -1;
+    
+    if (current_data->place_id != target->place_id){
+        set_and_print_error_message("place id error\n");
+        return -1;
+    }
+    return 0;
 }
 
 void initial_student_list(student_list *student_list){
@@ -83,20 +100,33 @@ void add_student_path(student_list student_list, int student_id, int place_id, t
     target->path->push_back(target->path, data);
     free(data);
 }
-void delete_student_path(student_list student_list, int student_id, int place_id, time_t at_time){
-    
 
+void delete_student_path(student_list student_list, int student_id, int place_id, unsigned long long at_time){
+    struct student search_target;
+    search_target.student_id = student_id;
+    student target = student_list->student_tree->search(student_list->student_tree, &search_target);
+    if (target == NULL){
+        set_and_print_error_message("delete student path : target not found\n");
+        return;
+    }
 
-
-
-
-
-
-
-
-
-
+    place_record *data = malloc(sizeof(place_record));
+    if  (data == NULL){
+        set_and_print_error_message("add_student_path : memory allocate fail\n");
+        return;
+    }
+    data->place_id = place_id;
+    data->student_id = student_id;
+    data->time = at_time;
+    void *array = target->path->array;
+    int index = binary_search(array, data, target->path->num_of_element, target->path->element_size, delete_compare);
+    if (index == -1){
+        set_and_print_error_message("add_student_path : memory allocate fail\n");
+        return;
+    }
+    target->path->erase(target->path, index);
 }
+
 void destory_student_list(student_list student_list){
     student_list->student_tree->clear(student_list->student_tree);
     free(student_list);

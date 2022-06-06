@@ -4,6 +4,7 @@ static int place_id_cmp(const void *a, const void *b);
 static void print_func(const void *data);
 static void destory_place(void *data);
 static void destory_data_function(void *data);
+static int delete_compare(const void *a, const void *b);
 
 //allocate memory for new place in tree
 void initial_place_list(place_list *place_list){
@@ -14,6 +15,22 @@ void initial_place_list(place_list *place_list){
     }
     (*place_list)->place_amount = 0;
     initial_avl_tree(&((*place_list)->place_tree), place_id_cmp, print_func, destory_place);
+}
+
+static int delete_compare(const void *a, const void *b){
+    const struct place_record *current_data = a;
+    const struct place_record *target = b;
+    if (current_data->time > target->time)
+        return 1;
+    
+    if (current_data->time < target->time)
+        return -1;
+    
+    if (current_data->student_id != target->student_id){
+        set_and_print_error_message("student id error\n");
+        return -1;
+    }
+    return 0;
 }
 
 //add place in tree
@@ -82,19 +99,31 @@ void add_place_path(place_list place_list, int student_id, int place_id, time_t 
     target->path->push_back(target->path, data);
     free(data);
 }
-void delete_place_path(place_list place_list, int student_id, int place_id, time_t at_time){
-    
 
+void delete_place_path(place_list student_list, int student_id, int place_id, unsigned long long at_time){
+    struct place search_target;
+    search_target.place_id = place_id;
+    place target = student_list->place_tree->search(student_list->place_tree, &search_target);
+    if (target == NULL){
+        set_and_print_error_message("delete student path : target not found\n");
+        return;
+    }
 
-
-
-
-
-
-
-
-
-
+    place_record *data = malloc(sizeof(place_record));
+    if  (data == NULL){
+        set_and_print_error_message("add_student_path : memory allocate fail\n");
+        return;
+    }
+    data->place_id = place_id;
+    data->student_id = student_id;
+    data->time = at_time;
+    void *array = target->path->array;
+    int index = binary_search(array, data, target->path->num_of_element, target->path->element_size, delete_compare);
+    if (index == -1){
+        set_and_print_error_message("add_student_path : memory allocate fail\n");
+        return;
+    }
+    target->path->erase(target->path, index);
 }
 
 void destory_place_list(place_list place_list){

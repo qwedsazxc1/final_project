@@ -39,4 +39,5 @@ void add_place(place_list place_list, int place_id);
 void add_place_path(place_list place_list, int student_id, int place_id, time_t time);
 void destory_place_list(place_list place_list);
 void print_all_place_list(place_list place_list);
+void delete_place_path(place_list student_list, int student_id, int place_id, unsigned long long at_time);
 #endif
