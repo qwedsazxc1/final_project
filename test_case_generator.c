@@ -50,7 +50,10 @@ int main(int argc, char *argv[]){
 				fprintf(generate_file_name, "%llu,%d,%d\n", current_time + i,student_id_list[rand() % student_id_list_size], a_random_place);
 			}
 		}
-		else return 0;
+		else{
+			printf("parameter format: [-l] [-li] [-lp]");
+			return 0;
+		}
 	}
 	else{
 		for (unsigned long long i = 0; i < number_of_test_case; i++){
