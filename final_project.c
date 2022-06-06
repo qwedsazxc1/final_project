@@ -142,7 +142,7 @@ int main(int argc, char *argv[]){
 
         // delete footprints
         if (options == DELETE){
-            printf("Input format : ID time place\n");
+            delete(student_list, place_list);
             continue;
         }
 
@@ -288,4 +288,78 @@ int hot_spot_compare_function(const void *front, const void *back){
         return 0;
 
     return 1;
+}
+void delete(student_list student_list, place_list place_list){
+    int input_student_id, input_place_id, input_time;
+    while (1){
+        int input_result;
+        printf("Please input the data you want to delete\n");
+        printf("Input format : [student ID] [place ID] [time ID]\n");
+        printf("(input 0 if you want to leave)\n");
+        printf("Input : ");
+        input_result = scanf("%9d", &input_student_id);
+
+        if (input_result != 1){
+            fflush_stdin();
+            clear_screen();
+            printf("Input format error\n");
+            continue;
+        }
+
+        if (input_student_id == LEAVE){
+            fflush_stdin();
+            clear_screen();
+            break;
+        }
+
+        input_result = scanf("%9d", &input_place_id);
+        fflush_stdin();
+        clear_screen();
+        if (input_result != 1){
+            printf("Input format error\n");
+            continue;
+        }
+        input_result = scanf("%9d", &input_time);
+        fflush_stdin();
+        clear_screen();
+
+        if (input_student_id  <= 1e8 || input_place_id <= 0 || input_place_id > 10000){
+            printf("Illegal data retrival\n");
+            continue;
+        }
+        delete_path(student_list, place_list, input_student_id, input_place_id,input_time);
+        printf("deletion appiled !\n");
+    }
+}
+void delete_path(student_list student_list, place_list place_list, int student_id, int place_id,int at_time){
+    delete_student_path(student_list, student_id, place_id, at_time);
+    delete_place_path(place_list, student_id, place_id, at_time);
+    pid_t pid;
+    errno = 0;
+    if ((pid = fork()) < 0){
+        perror("fork");
+        exit(1);
+    }
+
+    // child proccess
+    if (pid == 0){
+        char string_of_student_id[20], string_of_place_id[20], string_of_current_time[30];
+        itoa_(student_id, string_of_student_id);
+        itoa_(place_id, string_of_place_id);
+        ultoa_((unsigned long long)current_time, string_of_current_time);
+        char *command[] = {"./add", string_of_student_id, string_of_place_id, "-t", string_of_current_time, "-f", file_name, NULL};
+        errno = 0;
+        if (execvp("./add", command) == -1) {
+            perror("execvp");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // parent proccess
+    int wstatus;
+    errno = 0;
+    if (waitpid(pid, &wstatus, 0) != pid){
+        perror("wait");
+        exit(1);
+    }
 }

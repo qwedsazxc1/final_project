@@ -82,6 +82,20 @@ void add_place_path(place_list place_list, int student_id, int place_id, time_t 
     target->path->push_back(target->path, data);
     free(data);
 }
+void delete_place_path(place_list place_list, int student_id, int place_id, time_t at_time){
+    
+
+
+
+
+
+
+
+
+
+
+
+}
 
 void destory_place_list(place_list place_list){
     place_list->place_tree->clear(place_list->place_tree);

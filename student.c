@@ -83,7 +83,20 @@ void add_student_path(student_list student_list, int student_id, int place_id, t
     target->path->push_back(target->path, data);
     free(data);
 }
+void delete_student_path(student_list student_list, int student_id, int place_id, time_t at_time){
+    
 
+
+
+
+
+
+
+
+
+
+
+}
 void destory_student_list(student_list student_list){
     student_list->student_tree->clear(student_list->student_tree);
     free(student_list);
