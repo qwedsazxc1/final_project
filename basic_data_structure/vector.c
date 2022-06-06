@@ -1,13 +1,21 @@
 #include "vector.h"
-
+//push another vector
 static void push_back(vector vector, void *data);
+// pop the last element
 static void pop_back(vector vector);
+// return the size of the vector
 static int size(const vector vector);
+// check if the vector is empty
 static int empty(const vector vector);
+// pop all elements until nothing left
 static void clear(vector vector);
+// returns a pointer to the first element
 static void *front(const vector vector);
+// returns a pointer to the last element
 static void *back(const vector vector);
+//delete an element
 static void erase(vector vector, int index);
+//insert an element
 static void insert(vector vector, int index, void *data);
 
 void initial_vector(vector *vector, size_t element_size, void (*destroy_data_function)(void *data)){
@@ -41,7 +49,7 @@ void initial_vector(vector *vector, size_t element_size, void (*destroy_data_fun
     (*vector)->erase = erase;
     (*vector)->insert = insert;
 }
-
+//delete the current vector
 void destory_vector(vector *vector){
     free((*vector)->array);
     free(*vector);
@@ -69,7 +77,7 @@ static void push_back(vector vector, void *data){
     vector->num_of_element += 1;
 }
 
-// pop the last element
+
 static void pop_back(vector vector){
     if (vector->num_of_element <= 0)
         return;
@@ -78,28 +86,28 @@ static void pop_back(vector vector){
     vector->destroy_data_function((char *)vector->array + (vector->num_of_element * vector->element_size));
 }
 
-// return the size of the vector
+
 static int size(const vector vector){
     return vector->num_of_element;
 }
 
-// check if the vector is empty
+
 static int empty(const vector vector){
     return vector->num_of_element > 0;
 }
 
-// pop all elements until nothing left
+
 static void clear(vector vector){
     while (!empty(vector))
         pop_back(vector);
 }
 
-// returns a pointer to the first element
+
 static void *front(const vector vector){
     return vector->array;
 }
 
-// returns a pointer to the last element
+
 static void *back(const vector vector){
     return ((char *)vector->array) + ((vector->num_of_element - 1) * vector->element_size);
 }

@@ -1,10 +1,17 @@
 #include "stack.h"
+// check if the queue is empty
 static int empty(const stack stack);
+// return the size of stack
 static int size(const stack stack);
+// return the front of stack list
 static void *top(const stack stack);
+// insert an element at the front of the stack
 static int push(stack stack, void *data, size_t size);
+// pop an element at the front of the stack
 static int pop(stack stack);
+// pop all elements until nothing left
 static void clear(stack stack);
+// delete the current stack
 static void destory(stack stack);
 
 void initial_stack(stack *stack, void (*destory_data_function)(void *data)){
