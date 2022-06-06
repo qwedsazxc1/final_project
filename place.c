@@ -5,6 +5,7 @@ static void print_func(const void *data);
 static void destory_place(void *data);
 static void destory_data_function(void *data);
 
+//allocate memory for new place in tree
 void initial_place_list(place_list *place_list){
     *place_list = malloc(sizeof(struct place_list));
     if (*place_list == NULL){
@@ -15,6 +16,7 @@ void initial_place_list(place_list *place_list){
     initial_avl_tree(&((*place_list)->place_tree), place_id_cmp, print_func, destory_place);
 }
 
+//add place in tree
 void add_place(place_list place_list, int place_id){
     place target = malloc(sizeof(struct place));
     if (target == NULL){
@@ -47,9 +49,9 @@ static void print_func(const void *data){
     place_record *record = (place_record *)place_data->path->array;
     for (int i = 0; i < place_data->path->num_of_element; i++)
         printf("%d,%llu,%5d\n", record[i].student_id, (unsigned long long)record[i].time, record[i].place_id);
-    
 }
 
+//destroy specific place
 static void destory_place(void *data){
     struct place *place_data = data;
     destory_vector(&place_data->path);
