@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    //open file and check file exist
+    // open file and check file exist
     errno = 0;
     FILE *footprint_fp = fopen(file, "r");
     if (footprint_fp == NULL){
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    //add all information of student into file and check format
+    // add all information of student into file and check format
     fprintf(footprint_fp, "%llu,%d,%d\n", time_be_stored, student_id, place_id);
     fclose(footprint_fp);
     return 0;

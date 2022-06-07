@@ -14,6 +14,7 @@
 #include "error.h"
 #include "lib.h"
 #include "place.h"
+#include "setting.h"
 #include "student.h"
 #include <errno.h>
 #include <fcntl.h>
@@ -31,7 +32,6 @@
 #define DELETE 3
 #define HOT_SPOTS 4
 #define SEARCH 1
-#define BUFFER_SIZE (4096)
 
 typedef unsigned long long ull;
 
@@ -69,6 +69,11 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
+    if(atexit(write_to_setting)){
+        perror("atexit");
+        return 0;
+    }
+
     // error message raised when raised you attempt to illegally access or modify memory.
     if (signal(SIGSEGV, seg_fault) == SIG_ERR){
         set_and_print_error_message("signal error\n");
@@ -91,6 +96,11 @@ int main(int argc, char *argv[]){
         set_and_print_error_message("csv file : read error\n");
         exit(0);
     }
+
+    int read_setting_status = read_from_setting();
+    if (read_setting_status)
+        exit(1);
+    
     student_list student_list;
     initial_student_list(&student_list);
     place_list place_list;
@@ -291,6 +301,7 @@ int hot_spot_compare_function(const void *front, const void *back){
 
     return 1;
 }
+
 void delete(student_list student_list, place_list place_list){
     int input_student_id, input_place_id;
     unsigned long long input_time;

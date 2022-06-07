@@ -1,18 +1,26 @@
 #include "queue.h"
-//return the list at front of the queue
+
+// return the list at front of the queue
 static void *front(const queue queue);
-//return the list at back of the queue
+
+// return the list at back of the queue
 static void *back(const queue queue);
-//insert an element from the back of queue 
+
+// insert an element from the back of queue 
 static int push(queue queue, void *data, size_t size);
-//delete an element from head of queue
+
+// delete an element from head of queue
 static int pop(queue queue);
-//return the size of queue
+
+// return the size of queue
 static size_t size(const queue queue);
+
 // check if the queue is empty
 static int empty(const queue queue);
+
 // pop all elements until nothing left
 static void clear(queue queue);
+
 // delete the current queue
 static void destory(queue queue);
 
