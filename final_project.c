@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
             int time;
             int place_id;
             while(scanf("%llu,%d,%d\n", &student_id, &time, &place_id) != EOF){
-                printf("%llu,%d,%d", student_id, time, place_id);
+                printf("%llu,%d,%d\n", student_id, time, place_id);
             }
         }
         else{
