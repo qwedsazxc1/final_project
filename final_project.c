@@ -32,6 +32,7 @@
 #define DELETE 3
 #define HOT_SPOTS 4
 #define SEARCH 1
+#define SETTING 5
 
 typedef unsigned long long ull;
 
@@ -64,12 +65,12 @@ int main(int argc, char *argv[]){
     }
 
     errno = 0;
-    if(atexit(clear_hot_spot)){
+    if (atexit(clear_hot_spot)){
         perror("atexit");
         return 0;
     }
 
-    if(atexit(write_to_setting)){
+    if (atexit(write_to_setting)){
         perror("atexit");
         return 0;
     }
@@ -128,6 +129,7 @@ int main(int argc, char *argv[]){
         printf("[2] : Add new footprint to database.\n");
         printf("[3] : Delete a specific footprint.\n");
         printf("[4] : Campus hot spot analyze.\n");
+        printf("[5] : Setting\n");
 
         int input_result = scanf("%2d", &options);
         fflush_stdin();
@@ -160,6 +162,11 @@ int main(int argc, char *argv[]){
 
         if (options == HOT_SPOTS){
             hot_spots(place_list);
+            continue;
+        }
+
+        if (options == SETTING){
+            change_setting();
             continue;
         }
 

@@ -74,11 +74,11 @@ int main(int argc, char *argv[]){
     // delete_target format : time,student_id,place_id
     char input[100];
     char delete_target[100] = {'\0'};
-    strncat(delete_target, string_of_time, 30);
+    strncat(delete_target, string_of_time, 35);
     strcat(delete_target, ",");
-    strncat(delete_target, string_of_student_id, 15);
+    strncat(delete_target, string_of_student_id, 25);
     strcat(delete_target, ",");
-    strncat(delete_target, string_of_place_id, 15);
+    strncat(delete_target, string_of_place_id, 25);
     strcat(delete_target, "\n");
 
     int flag = 1;

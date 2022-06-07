@@ -15,10 +15,10 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    char string_of_time[30] = {'\0'};
-    char file[80] = {'\0'};
-    char string_of_student_id[20] = {'\0'};
-    char string_of_place_id[20] = {'\0'};
+    char string_of_time[35] = {'\0'};
+    char file[85] = {'\0'};
+    char string_of_student_id[25] = {'\0'};
+    char string_of_place_id[25] = {'\0'};
     strcpy(file, "footprint.csv");
 
     // fetch needed variables from argument vectors
