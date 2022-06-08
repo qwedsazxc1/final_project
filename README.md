@@ -1,6 +1,6 @@
 # __Footprints Tracker for CCU__
 
-__Footprint Tracker__ is a C-based database system for recording footprints of students, as well as faculties, in the time of pandemic.
+__Footprint Tracker__ is a C-based database system for ~~stalking~~ recording footprints of students, as well as faculties, in the time of pandemic.
 
 <br>
 <br>
