@@ -50,7 +50,7 @@ void clear_hot_spot();
 int hot_spot_compare_function(const void *front, const void *back);
 void hot_spot_visited_function(const void *data);
 void unused_function(void *data){}
-void search();
+void search(student_list student_list, place_list place_list);
 void add_new_footprint();
 void record_path(student_list student_list, place_list place_list, int student_id, int place_id);
 void seg_fault(int signo);
@@ -64,6 +64,29 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     errno = 0;
     if (atexit(clear_hot_spot)){
         perror("atexit");
@@ -145,7 +168,7 @@ int main(int argc, char *argv[]){
         
         // search ID, print out overlapped studentID at what time, which place
         if (options == SEARCH){
-            search();
+            search(student_list, place_list);
             continue;
         }
 
@@ -213,13 +236,28 @@ void record_path(student_list student_list, place_list place_list, int student_i
     int wstatus;
     errno = 0;
     if (waitpid(pid, &wstatus, 0) != pid){
-        perror("wait");
+        perror("waitpid");
         exit(1);
     }
 }
 
-void search(){
+void search(student_list student_list, place_list place_list){
+    while (1){
+        int option;
+        printf("[0] : leave\n");
+        int input_result = scanf("%2d", &option);
+        fflush_stdin();
+        clear_screen();
+        if (input_result != 1){
+            printf("Invalid option\n");
+            continue;
+        }
 
+        if (option == 0)
+            break;
+        
+        printf("Invalid option\n");
+    }
 }
 
 void hot_spots(place_list place_list){
