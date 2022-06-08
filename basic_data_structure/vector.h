@@ -13,24 +13,34 @@ struct vector{
     size_t num_of_element;
     size_t max_size;
     size_t element_size;
-    //push another vector
+
+    // push another vector
     void (*push_back)(vector vector, void *data);
+
     // pop the last element
     void (*pop_back)(vector vector);
+
     // check if the vector is empty
     int (*empty)(const vector vector);
+
     // return the size of the vector
     int (*size)(const vector vector);
+
     // pop all elements until nothing left
     void (*clear)(vector vector);
+
     // returns a pointer to the first element
     void *(*front)(const vector vector);
+
     // returns a pointer to the last element
     void *(*back)(const vector vector);
+
     void (*destroy_data_function)(void *data);
-    //delete an element
+
+    // delete an element
     void (*erase)(vector vector, int index);
-    //insert an element
+
+    // insert an element
     void (*insert)(vector vector, int index, void *data);
 };
 
