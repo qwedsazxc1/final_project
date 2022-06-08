@@ -59,11 +59,12 @@ void record(student_list student_list, place_list place_list);
 void delete(student_list student_list, place_list place_list);
 
 int main(int argc, char *argv[]){
-    if (argc != 1 && argc != 2){
-        printf("Usage : ./avl_tree_ver [file]\n");
+    if (argc != 1 && argc != 2 && argc != 3){
+        printf("Usage : ./avl_tree_ver [file] [parameter]\n");
         return 0;
     }
 
+<<<<<<< HEAD
     
     
     
@@ -87,6 +88,23 @@ int main(int argc, char *argv[]){
     
     
     
+=======
+    if(argc == 3){
+        if(strcmp(argv[2], "-r") == 0){
+            long long unsigned student_id;
+            int time;
+            int place_id;
+            while(scanf("%llu,%d,%d\n", &student_id, &time, &place_id) != EOF){
+                printf("%llu,%d,%d\n", student_id, time, place_id);
+            }
+        }
+        else{
+            printf("input parameter false");
+            return 0;
+        }
+    }
+
+>>>>>>> 412d02f94dbc8a422f8ab96939fdbf27d939a8eb
     errno = 0;
     if (atexit(clear_hot_spot)){
         perror("atexit");
