@@ -59,7 +59,7 @@ test_lp: all
 	wc -l $@.csv
 	time -p ./$(exe) $@.csv
 
-test_case_generator: test_case_generator.c
+test_case_generator: test_case_generator.o
 	$(CC) -g $^ -O3 -o $@
 
 student_id_list.txt: student_id_list_generator
