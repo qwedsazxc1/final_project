@@ -47,6 +47,14 @@ Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp
 
 &emsp;&emsp;
 
+## Contributions
+<font color=#FF5F5F>
+If you are interested in this project and wish to partake in, please contact our leader via below.
+
+[Github_page](https://github.com/qwedsazxc1)
+</font>
+
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
