@@ -1,29 +1,72 @@
 #include "avl_tree.h"
 
+// build a tree with the information given
 static struct avlnode *build_node(void *data, size_t size, struct avlnode *parent);
+
+// insert a node to tree and determine its place
 static int insert_node(struct avlnode *node, void *data, size_t size, int (*cmp)(const void *a, const void *b));
+
+// 
 static void balance(struct avlnode *node);
+
+// 
 static void left_rotate(struct avlnode *node);
+
+// 
 static void right_rotate(struct avlnode *node);
+
+// 
 static void *min_node(struct avlnode *node);
+
+// 
 static void *max_node(struct avlnode *node);
+
+// 
 static void update_root(struct avlnode **node);
+
+//return the height of node
 static int node_height(struct avlnode *node);
+
+//delete the tree
 static void free_tree(struct avlnode *node, void (*destroy_data_function)(void *data));
+
+// a function for return the target node for other function
 static struct avlnode *search_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b));
+
+// 
 static struct avlnode *delete_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b), void (*destroy_data_function)(void *data));
+
+// 
 static struct avlnode *get_successor_node(struct avlnode *node);
+
+//
 static void update_node_height(struct avlnode *node);
+
+// a function for print a tree and use for other function
 static void print_tree(struct avlnode *node, int mode, void (*print_func)(const void *data));
 
+// 
 static int insert(avl_tree tree, void *data, size_t size);
+
+// 
 static void *max(const avl_tree tree);
+
+// 
 static void *min(const avl_tree tree);
+
+// return the height of tree
 static int height(const avl_tree tree);
+
+// clear the tree to NULL
 static void clear(avl_tree tree);
+
+// 
 static void delete(avl_tree tree, void *target);
+
+// if node is not NULL use search_node to find the target
 static void *search(const avl_tree tree, void *target);
 
+// a function with print tree
 static void print_tree(struct avlnode *node, int mode, void (*print_func)(const void *data)){
     if (node == NULL)
         return;
@@ -42,23 +85,28 @@ static void print_tree(struct avlnode *node, int mode, void (*print_func)(const 
         print_func(node->data);
 }
 
+// print the tree when mode is different with level order
 void avl_tree_traversal(avl_tree tree, int mode){
     if (mode != LEVEL_ORDER)
         print_tree(tree->root, mode, tree->print_func);
 }
 
+// print the tree with pre order situation
 void avl_tree_preorder_traversal(avl_tree tree){
     print_tree(tree->root, PRE_ORDER, tree->print_func);
 }
 
+// print the tree with in order situation
 void avl_tree_inorder_traversal(avl_tree tree){
     print_tree(tree->root, IN_ORDER, tree->print_func);
 }
 
+// print the tree with post order situation
 void avl_tree_postorder_traversal(avl_tree tree){
     print_tree(tree->root, POST_ORDER, tree->print_func);
 }
 
+// print the tree with level order situation
 void avl_tree_level_order_traversal(avl_tree tree){
     queue que;
     initial_queue(&que, tree->destroy_data_function);
@@ -81,6 +129,7 @@ void avl_tree_level_order_traversal(avl_tree tree){
     free(que);
 }
 
+//initialization
 void initial_avl_tree(avl_tree *avl_tree, int (*cmp)(const void *a, const void *b), void (*print_func)(const void *data)\
 , void (*destroy_data_function)(void *data)){
     *avl_tree = malloc(sizeof(struct avl_tree));
@@ -97,9 +146,11 @@ void initial_avl_tree(avl_tree *avl_tree, int (*cmp)(const void *a, const void *
     (*avl_tree)->destroy_data_function = destroy_data_function;
 }
 
+
 static int height(const avl_tree tree){
     return node_height(tree->root);
 }
+
 
 static void left_rotate(struct avlnode *node){
     struct avlnode *parent = (node)->parent, *right = (node)->right_child;
@@ -258,6 +309,7 @@ static int node_height(struct avlnode *node){
         return 0;
     return node->depth;
 }
+
 
 static void clear(avl_tree tree){
     free_tree(tree->root, tree->destroy_data_function);

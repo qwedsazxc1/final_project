@@ -17,26 +17,59 @@ struct list{
     size_t list_size;
     struct dnode *head;
     struct dnode *tail;
+    
+    // prints the list from the head (first node) until the last node (tail) , [head -> tail]
     void (*print_list_from_head)(const list dlist);
+    
+    // prints the list from the tail (last node) until the head node head) , [tail -> head]
     void (*print_list_from_tail)(const list dlist);
+    
+    // clear the list (delete all nodes in the list)
     void (*clear)(list dlist);
+    
+    // search the list from head to tail to find the node that stores the specific data.
     struct dnode *(*search_node_from_head)(const list dlist, void *target_data);
+    
+    // search the list from tail to head to find the node that stores the specific data.
     struct dnode *(*search_node_from_tail)(const list dlist, void *target_data);
+    
+    
     int (*push_front)(list dlist, void *data, size_t size);
+    
     int (*push_back)(list dlist, void *data, size_t size);
+    
     void *(*front)(const list dlist);
+    
+    //
     void *(*back)(const list dlist);
+    
+    //
     int (*size)(const list dlist);
+    
+    // delete a specific node.
     int (*empty)(const list dlist);
+    
+
     int (*pop_back)(list dlist);
+    
     int (*pop_front)(list dlist);
+    
     struct dnode *(*begin)(const list dlist);
+    
     struct dnode *(*end)(const list dlist);
+    
     int (*erase)(list dlist, struct dnode *target_node);
+    
+    // insert a new node in front of the specific node
     int (*insert)(list dlist, void *data, size_t size, struct dnode *target_node);
+    
+    // delete the current list
     void (*destory)(list dlist);
+    
     void (*destroy_data_function)(void *data);
+    
     int (*cmp)(const void *a, const void *b);
+    
     int (*print_func)(const void *data);
 };
 
