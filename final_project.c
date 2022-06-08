@@ -64,31 +64,6 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-<<<<<<< HEAD
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-=======
     if(argc == 3){
         if(strcmp(argv[2], "-r") == 0){
             long long unsigned student_id;
@@ -104,7 +79,6 @@ int main(int argc, char *argv[]){
         }
     }
 
->>>>>>> 412d02f94dbc8a422f8ab96939fdbf27d939a8eb
     errno = 0;
     if (atexit(clear_hot_spot)){
         perror("atexit");
