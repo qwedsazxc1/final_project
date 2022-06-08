@@ -5,8 +5,9 @@ add = add
 delete = delete
 student_id_list = student_id_list_generator
 test_case_generator = test_case_generator
+check_sort = check_sort
 
-all: $(exe) $(add) $(delete) $(test_case_generator) student_id_list.txt
+all: $(exe) $(add) $(delete) $(test_case_generator) $(check_sort) student_id_list.txt
 
 $(exe): $(objects)
 	$(CC) -g $(objects) -o $(exe) 
@@ -15,6 +16,9 @@ $(add): add.o
 	$(CC) -g $^ -O3 -o $@
 
 $(delete): delete.o
+	$(CC) -g $^ -O3 -o $@
+
+$(check_sort): check_sort.o
 	$(CC) -g $^ -O3 -o $@
 
 %.o:%.c
@@ -28,12 +32,17 @@ test1: all
 test2: all
 	./$(test_case_generator) 100 $@.csv
 	wc -l $@.csv
-	time -p ./$(exe) $@.csv
+	time -p ./$(exe) -f $@.csv -ps
 
 test3: all
 	./$(test_case_generator) 10000 $@.csv
 	wc -l $@.csv
-	time -p ./$(exe) $@.csv
+	time -p ./$(exe) -f  $@.csv -ps
+
+test4: all
+	./$(test_case_generator) 10000000 $@.csv
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i
 
 test_l: all
 	./$(test_case_generator) 10 $@.csv -l

@@ -27,7 +27,7 @@ static int delete_compare(const void *a, const void *b){
     return 0;
 }
 
-void initial_student_list(student_list *student_list){
+void initial_student_list(student_list_ptr *student_list){
     *student_list = malloc(sizeof(struct student_list));
 
 	// ensure the memories set is successfull
@@ -40,7 +40,7 @@ void initial_student_list(student_list *student_list){
     (*student_list)->student_amount = 0;
 }
 
-void add_student(student_list student_list, int student_id){
+void add_student(student_list_ptr student_list, int student_id){
     student target = malloc(sizeof(struct student));
 
 	// ensure the memories set is successful
@@ -80,7 +80,7 @@ static void destory_data_function(void *data){
     return;
 }
 
-void add_student_path(student_list student_list, int student_id, int place_id, time_t time){
+void add_student_path(student_list_ptr student_list, int student_id, int place_id, time_t time){
     struct student search_target;
     search_target.student_id = student_id;
     student target = student_list->student_tree->search(student_list->student_tree, &search_target);
@@ -101,7 +101,7 @@ void add_student_path(student_list student_list, int student_id, int place_id, t
     free(data);
 }
 
-void delete_student_path(student_list student_list, int student_id, int place_id, unsigned long long at_time){
+void delete_student_path(student_list_ptr student_list, int student_id, int place_id, unsigned long long at_time){
     struct student search_target;
     search_target.student_id = student_id;
     student target = student_list->student_tree->search(student_list->student_tree, &search_target);
@@ -127,11 +127,11 @@ void delete_student_path(student_list student_list, int student_id, int place_id
     target->path->erase(target->path, index);
 }
 
-void destory_student_list(student_list student_list){
+void destory_student_list(student_list_ptr student_list){
     student_list->student_tree->clear(student_list->student_tree);
     free(student_list);
 }
 
-void print_all_student_list(student_list student_list){
+void print_all_student_list(student_list_ptr student_list){
     avl_tree_traversal(student_list->student_tree, IN_ORDER);
 }

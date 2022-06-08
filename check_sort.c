@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[]){
 	if(argc != 3){
-		printf("Usage : [check_file] [number_of_test_case] [parameter]\n");
+		printf("Usage : ./check_sort [number_of_test_case] [parameter]\n");
 		return 0;
 	}
 	
@@ -22,7 +22,12 @@ int main(int argc, char *argv[]){
 	// check time sort
 	if(strcmp(argv[2], "-t") == 0){
 		for(int i = 0; i < number_of_test_case; i++){
-			scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
+			
+			int read = scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
+			if (read != 3){
+				printf("read error\n");
+				exit(0);
+			}
 			if(i == 0){
 				prev_time = time;
 			}
@@ -39,7 +44,11 @@ int main(int argc, char *argv[]){
 	// check place_id sort
 	if(strcmp(argv[2], "-p") == 0){
 		for(int i = 0; i < number_of_test_case; i++){
-			scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
+			int read = scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
+			if (read != 3){
+				printf("read error\n");
+				exit(0);
+			}
 			if(i == 0){
 				prev_place_id = place_id;
 			}
@@ -56,7 +65,11 @@ int main(int argc, char *argv[]){
 	// check student_id sort
 	if(strcmp(argv[2], "-i") == 0){
 		for(int i = 0; i < number_of_test_case; i++){
-			scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
+			int read = scanf("%d,%llu,%d\n", &student_id, &time, &place_id);
+			if (read != 3){
+				printf("read error\n");
+				exit(0);
+			}
 			if(i == 0){
 				prev_student_id = student_id;
 			}

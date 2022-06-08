@@ -7,7 +7,7 @@ static void destory_data_function(void *data);
 static int delete_compare(const void *a, const void *b);
 
 //allocate memory for new place in tree
-void initial_place_list(place_list *place_list){
+void initial_place_list(place_list_ptr *place_list){
     *place_list = malloc(sizeof(struct place_list));
     if (*place_list == NULL){
         set_and_print_error_message("initial place list : memory allocate fail\n");
@@ -34,7 +34,7 @@ static int delete_compare(const void *a, const void *b){
 }
 
 //add place in tree
-void add_place(place_list place_list, int place_id){
+void add_place(place_list_ptr place_list, int place_id){
     place target = malloc(sizeof(struct place));
     if (target == NULL){
         set_and_print_error_message("add_place : memory alloate fail\n");
@@ -79,7 +79,7 @@ static void destory_data_function(void *data){
 
 }
 
-void add_place_path(place_list place_list, int student_id, int place_id, time_t time){
+void add_place_path(place_list_ptr place_list, int student_id, int place_id, time_t time){
     struct place search_target;
     search_target.place_id = place_id;
     place target = place_list->place_tree->search(place_list->place_tree, &search_target);
@@ -100,7 +100,7 @@ void add_place_path(place_list place_list, int student_id, int place_id, time_t 
     free(data);
 }
 
-void delete_place_path(place_list student_list, int student_id, int place_id, unsigned long long at_time){
+void delete_place_path(place_list_ptr student_list, int student_id, int place_id, unsigned long long at_time){
     struct place search_target;
     search_target.place_id = place_id;
     place target = student_list->place_tree->search(student_list->place_tree, &search_target);
@@ -126,11 +126,11 @@ void delete_place_path(place_list student_list, int student_id, int place_id, un
     target->path->erase(target->path, index);
 }
 
-void destory_place_list(place_list place_list){
+void destory_place_list(place_list_ptr place_list){
     place_list->place_tree->clear(place_list->place_tree);
     free(place_list);
 }
 
-void print_all_place_list(place_list place_list){
+void print_all_place_list(place_list_ptr place_list){
     avl_tree_traversal(place_list->place_tree, IN_ORDER);
 }

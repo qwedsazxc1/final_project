@@ -25,6 +25,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#define NOTHING 0
 #define ENGLISH 1
 #define CHINESE 0
 #define RECORD 2
@@ -33,6 +34,8 @@
 #define HOT_SPOTS 4
 #define SEARCH 1
 #define SETTING 5
+#define STUDENT_ORDER 1
+#define PLACE_ORDER 2
 
 typedef unsigned long long ull;
 
@@ -42,93 +45,36 @@ struct hot_spot{
 };
 vector hot_spot_list = NULL;
 
+struct place_list *place_list;
+struct student_list *student_list;
+int print_out = NOTHING;
 char file_name[85];
 int language;
 
-void delete_path(student_list student_list, place_list place_list, int student_id, int place_id, unsigned long long at_time);
+void print_out_check();
+void initial(int argc, char *argv[]);
+void deal_with_argv(int argc, char *argv[]);
+void delete_path(int student_id, int place_id, unsigned long long at_time);
 void clear_hot_spot();
 int hot_spot_compare_function(const void *front, const void *back);
 void hot_spot_visited_function(const void *data);
 void unused_function(void *data){}
-void search(student_list student_list, place_list place_list);
+void search();
 void add_new_footprint();
-void record_path(student_list student_list, place_list place_list, int student_id, int place_id);
+void record_path(int student_id, int place_id);
 void seg_fault(int signo);
-void hot_spots(place_list place_list);
-void record(student_list student_list, place_list place_list);
-void delete(student_list student_list, place_list place_list);
+void hot_spots();
+void record();
+void delete();
+void clear_list();
+void build_list();
+void print_usage();
 
 int main(int argc, char *argv[]){
-    if (argc != 1 && argc != 2 && argc != 3){
-        printf("Usage : ./avl_tree_ver [file] [parameter]\n");
-        return 0;
-    }
-
-    if(argc == 3){
-        if(strcmp(argv[2], "-r") == 0){
-            long long unsigned student_id;
-            int time;
-            int place_id;
-            while(scanf("%llu,%d,%d\n", &student_id, &time, &place_id) != EOF){
-                printf("%llu,%d,%d\n", student_id, time, place_id);
-            }
-        }
-        else{
-            printf("input parameter false");
-            return 0;
-        }
-    }
-
-    errno = 0;
-    if (atexit(clear_hot_spot)){
-        perror("atexit");
-        return 0;
-    }
-
-    if (atexit(write_to_setting)){
-        perror("atexit");
-        return 0;
-    }
-
-    // error message raised when raised you attempt to illegally access or modify memory.
-    if (signal(SIGSEGV, seg_fault) == SIG_ERR){
-        set_and_print_error_message("signal error\n");
-       	exit(0);
-    }
-    
-    if (argc == 1)
-        strcpy(file_name, "footprint.csv");
-    else
-        strncpy(file_name, argv[1], 80);
-    errno = 0;
-    FILE *footprint = fopen(file_name, "r");
-    if (footprint == NULL){
-        set_and_print_error_message("fopen fail : fail to open csv file\n");
-        perror("fopen");
-        exit(0);
-    }
-
-    if (fscanf(footprint, "time,student_id,place_id") == EOF){
-        set_and_print_error_message("csv file : read error\n");
-        exit(0);
-    }
-
-    int read_setting_status = read_from_setting();
-    if (read_setting_status)
-        exit(1);
-    
-    student_list student_list;
-    initial_student_list(&student_list);
-    place_list place_list;
-    initial_place_list(&place_list);
-    unsigned long long time;
-    int student_id, place_id;
-    while (fscanf(footprint, "%llu,%d,%d", &time, &student_id, &place_id) != EOF){
-        add_student_path(student_list, student_id, place_id, time);
-        add_place_path(place_list, student_id, place_id, time);
-    }
+    initial(argc, argv);
     //////////////////////////////////////////
 
+    print_out_check();
     clear_screen();
     printf("In this program, we will show the efficiency of avl tree compared with other data structures.\n");
     printf("Current version : Adelson-Velskii and Landis tree.\n");
@@ -188,9 +134,6 @@ int main(int argc, char *argv[]){
         printf("invalid options\n");
     }
     
-    //////////////////////////////////////////
-    destory_student_list(student_list);
-    destory_place_list(place_list);
     return 0;
 }
 
@@ -199,7 +142,7 @@ void seg_fault(int signo){
     exit(139);
 }
 
-void record_path(student_list student_list, place_list place_list, int student_id, int place_id){
+void record_path(int student_id, int place_id){
     time_t current_time = time(NULL);
     add_student_path(student_list, student_id, place_id, current_time);
     add_place_path(place_list, student_id, place_id, current_time);
@@ -233,7 +176,7 @@ void record_path(student_list student_list, place_list place_list, int student_i
     }
 }
 
-void search(student_list student_list, place_list place_list){
+void search(){
     while (1){
         int option;
         printf("[0] : leave\n");
@@ -252,7 +195,7 @@ void search(student_list student_list, place_list place_list){
     }
 }
 
-void hot_spots(place_list place_list){
+void hot_spots(){
     if (hot_spot_list == NULL)
         initial_vector(&hot_spot_list, sizeof(struct hot_spot), unused_function);
     
@@ -271,7 +214,7 @@ void hot_spots(place_list place_list){
     clear_screen();
 }
 
-void record(student_list student_list, place_list place_list){
+void record(){
     int input_student_id, input_place_id;
     while (1){
         int input_result;
@@ -307,7 +250,7 @@ void record(student_list student_list, place_list place_list){
             continue;
         }
 
-        record_path(student_list, place_list, input_student_id, input_place_id);
+        record_path(input_student_id, input_place_id);
         printf("record success !\n");
     }
 }
@@ -339,7 +282,7 @@ int hot_spot_compare_function(const void *front, const void *back){
     return 1;
 }
 
-void delete(student_list student_list, place_list place_list){
+void delete(){
     int input_student_id, input_place_id;
     unsigned long long input_time;
     while (1){
@@ -375,12 +318,12 @@ void delete(student_list student_list, place_list place_list){
             printf("Illegal data retrival\n");
             continue;
         }
-        delete_path(student_list, place_list, input_student_id, input_place_id,input_time);
+        delete_path(input_student_id, input_place_id, input_time);
         printf("deletion appiled !\n");
     }
 }
 
-void delete_path(student_list student_list, place_list place_list, int student_id, int place_id, unsigned long long at_time){
+void delete_path(int student_id, int place_id, unsigned long long at_time){
     delete_student_path(student_list, student_id, place_id, at_time);
     delete_place_path(place_list, student_id, place_id, at_time);
     pid_t pid;
@@ -411,4 +354,114 @@ void delete_path(student_list student_list, place_list place_list, int student_i
         perror("wait");
         exit(1);
     }
+}
+
+void clear_list(){
+    destory_student_list(student_list);
+    destory_place_list(place_list);
+}
+
+void build_list(){
+    errno = 0;
+    FILE *footprint = fopen(file_name, "r");
+    if (footprint == NULL){
+        set_and_print_error_message("fopen fail : fail to open csv file\n");
+        perror("fopen");
+        exit(0);
+    }
+
+    if (fscanf(footprint, "time,student_id,place_id") == EOF){
+        set_and_print_error_message("csv file : read error\n");
+        exit(0);
+    }
+    initial_student_list(&student_list);
+    initial_place_list(&place_list);
+    unsigned long long time;
+    int student_id, place_id;
+    while (fscanf(footprint, "%llu,%d,%d", &time, &student_id, &place_id) != EOF){
+        add_student_path(student_list, student_id, place_id, time);
+        add_place_path(place_list, student_id, place_id, time);
+    }
+}
+
+void deal_with_argv(int argc, char *argv[]){
+    if (argc < 1 && argc > 4){
+        print_usage();
+        exit(0);
+    }
+    strcpy(file_name, "footprint.csv");
+    for (char **option = argv + 1; *option != NULL; option++){
+        if (strcmp("-f", *option) == 0 || strcmp("--file", *option) == 0){
+            if (*(++option) != NULL){
+                strncpy(file_name, *option, 80);
+                continue;
+            }
+            break;
+        }
+        if (strcmp("-ps", *option) == 0 || strcmp("--printstu", *option) == 0){
+            print_out = STUDENT_ORDER;
+            continue;
+        }
+        if (strcmp("-pp", *option) == 0 || strcmp("--printpla", *option) == 0){
+            print_out = PLACE_ORDER;
+            continue;
+        }
+        printf("unknown option : %s\n", *option);
+        print_usage();
+        exit(0);
+    }
+}
+
+void initial(int argc, char *argv[]){
+    deal_with_argv(argc, argv);
+
+    errno = 0;
+    if (atexit(clear_hot_spot)){
+        perror("atexit");
+        exit(0);
+    }
+
+    if (atexit(write_to_setting)){
+        perror("atexit");
+        exit(0);
+    }
+
+
+    // error message raised when raised you attempt to illegally access or modify memory.
+    if (signal(SIGSEGV, seg_fault) == SIG_ERR){
+        set_and_print_error_message("signal error\n");
+       	exit(0);
+    }
+
+    int read_setting_status = read_from_setting();
+    if (read_setting_status)
+        exit(1);
+    
+    build_list();
+
+    if (atexit(clear_list)){
+        perror("atexit");
+        exit(0);
+    }
+
+}
+
+void print_out_check(){
+    if (print_out == STUDENT_ORDER){
+        print_all_student_list(student_list);
+        exit(0);
+    }
+    if (print_out == PLACE_ORDER){
+        print_all_place_list(place_list);
+        exit(0);
+    }
+}
+
+void print_usage(){
+    printf("Usage : ./avl_tree_ver [option]\n");
+    printf("option :\n");
+    printf("-f, --file <csv file>\t, load informtaion from csv file \n");
+    printf("-ps, --printstu\tprint output sort by student id\n");
+    printf("-pp, --printpla\tprint output sort by place id\n");
+    return;
 }

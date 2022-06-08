@@ -32,12 +32,12 @@ struct place_list{
 
 typedef struct place_record place_record;
 typedef struct place *place;
-typedef struct place_list *place_list;
+typedef struct place_list *place_list_ptr;
 
-void initial_place_list(place_list *place_list);
-void add_place(place_list place_list, int place_id);
-void add_place_path(place_list place_list, int student_id, int place_id, time_t time);
-void destory_place_list(place_list place_list);
-void print_all_place_list(place_list place_list);
-void delete_place_path(place_list student_list, int student_id, int place_id, unsigned long long at_time);
+void initial_place_list(place_list_ptr *place_list);
+void add_place(place_list_ptr place_list, int place_id);
+void add_place_path(place_list_ptr place_list, int student_id, int place_id, time_t time);
+void destory_place_list(place_list_ptr place_list);
+void print_all_place_list(place_list_ptr place_list);
+void delete_place_path(place_list_ptr student_list, int student_id, int place_id, unsigned long long at_time);
 #endif
