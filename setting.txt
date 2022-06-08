@@ -1,1 +1,7 @@
-hot spot standard : 200
+hot spot standard : 1100
+default year : 2020
+default month : 6
+default day : 8
+default hour : 10
+default minute : 30
+default second : 40

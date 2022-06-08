@@ -207,6 +207,8 @@ void hot_spots(){
     sort(hot_spot_list->array, hot_spot_list->num_of_element, hot_spot_list->element_size, hot_spot_compare_function);
     struct hot_spot *array = hot_spot_list->array;
     for (int i = 0; i < hot_spot_list->num_of_element; i++){
+        if (array[i].number_of_people < hot_spot_standard)
+            break;
         printf("place ID : %5d, visited time : %10llu\n", array[i].place_id, array[i].number_of_people);
     }
     printf("Press Enter to continue\n");
