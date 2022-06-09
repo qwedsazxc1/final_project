@@ -34,12 +34,7 @@ Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp
 ## Credits
 <font size=2> 
 410410011 吳櫂廷<br>
-410410021 林易宏(電神阿宏)<br>
-</font>
-
-![IMAGE](https://userpic.codeforces.org/2345647/title/54eb7eaca168d4c4.jpg)
-
-<font size=2> 
+410410021 林易宏<br>
 410410067 曾敬堯<br>
 410410080 黃竑喆<br>
 410410083 洪子翔<br>
