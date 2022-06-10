@@ -33,31 +33,37 @@ struct list{
     // search the list from tail to head to find the node that stores the specific data.
     struct dnode *(*search_node_from_tail)(const list dlist, void *target_data);
     
-    
+    // insert a node as the the head of the list
     int (*push_front)(list dlist, void *data, size_t size);
     
+    // insert a node as the the tail of the list
     int (*push_back)(list dlist, void *data, size_t size);
     
+    // returns the data stored in the head (head node) of the list
     void *(*front)(const list dlist);
     
-    //
+    // returns the data stored in the tail (last node) of the list
     void *(*back)(const list dlist);
     
-    //
+    // return the number of nodes in the list
     int (*size)(const list dlist);
     
     // delete a specific node.
     int (*empty)(const list dlist);
     
-
+    // delete the current tail (last node) of the list
     int (*pop_back)(list dlist);
     
+    // delete the current head (first node) of the list
     int (*pop_front)(list dlist);
     
+    // get the head (first node) of the list
     struct dnode *(*begin)(const list dlist);
     
+    // get the tail (last node) of the list
     struct dnode *(*end)(const list dlist);
     
+    // delete a specific node.
     int (*erase)(list dlist, struct dnode *target_node);
     
     // insert a new node in front of the specific node
@@ -65,11 +71,8 @@ struct list{
     
     // delete the current list
     void (*destory)(list dlist);
-    
-    void (*destroy_data_function)(void *data);
-    
+    void (*destroy_data_function)(void *data); 
     int (*cmp)(const void *a, const void *b);
-    
     int (*print_func)(const void *data);
 };
 
