@@ -72,7 +72,6 @@ void print_usage();
 
 int main(int argc, char *argv[]){
     initial(argc, argv);
-    //////////////////////////////////////////
 
     print_out_check();
     clear_screen();

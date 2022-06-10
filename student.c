@@ -1,10 +1,18 @@
 #include "student.h"
 
+// print the recorded student_id, time, and place_id
 static void print_func(const void *data);
+
+// must return it to avoid that it can't be free
 static void destory_data_function(void *data);
+
+// the function for free student data 
 static void destory_student_data_function(void *data);
+
+//
 static int delete_compare(const void *a, const void *b);
 
+// compare the student_id and then use for avl sort
 static int student_id_compare(const void *a, const void *b){
     const struct student *current_data = a;
     const struct student *target = b;
