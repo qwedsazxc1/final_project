@@ -4,9 +4,9 @@
     participant :
     student ID : 410410021, name : Yi-Hong Lin, mail : linyihong1234@gmail.com
     student ID : 410410083
-    student ID : 410410011, name : Chao-Ting Wu, mail : justinwu105@gamil.com
-    student ID : 410410067
-    student ID : 410410080
+    student ID : 410410011, name : Chao-Ting Wu, mail : justinwu105@gmail.com
+    student ID : 410410067, name : Jing-Yao Chan, mail : 
+    student ID : 410410080, name : Hung-Che Huang, mail : huanghungche0615@gmail.com
 */
 #define _GNU_SOURCE             
 
