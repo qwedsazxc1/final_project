@@ -42,12 +42,18 @@ Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp
 <br>
 
 ## Credits
-<font size=2> 
-410410011 吳櫂廷<br>
-410410021 林易宏<br>
-410410067 曾敬堯<br>
-410410080 黃竑喆<br>
-410410083 洪子翔<br>
+<font size=4> 
+
+
+
+| student_ID  |  name  | Github_ID      |
+|   :----:    | :----: |  :----         |
+| 410410011   | 吳櫂廷  | yansawu        |
+| 410410021   | 林易宏  | qwedsazxc1     |
+| 410410067   | 曾敬堯  | andrewchan2002 |
+| 410410080   | 黃竑喆  | Aaron-Huang0615|
+| 410410083   | 洪子翔  | 1Lyvianis   |
+
 </font>
 
 &emsp;&emsp;
