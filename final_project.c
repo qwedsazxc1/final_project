@@ -348,7 +348,7 @@ void delete(){
             continue;
         }
         delete_path(input_student_id, input_place_id, input_time);
-        printf("deletion appiled !\n");
+        printf("deletion applied !\n");
     }
 }
 
