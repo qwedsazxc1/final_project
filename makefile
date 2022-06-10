@@ -22,8 +22,9 @@ $(check_sort): check_sort.o
 	$(CC) -g $^ -O3 -o $@
 
 %.o:%.c
-	$(CC) -g $^ -c -O3 -Wall -o $@
-
+	$(CC) -g $^ -c -O3 -Wall -o $
+	
+# normal random test
 test1: all
 	./$(test_case_generator) 10 $@.csv
 	wc -l $@.csv
@@ -44,6 +45,7 @@ test4: all
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i
 
+#limit test(same student_id and same place_id)
 test_l: all
 	./$(test_case_generator) 10 $@.csv -l
 	wc -l $@.csv
@@ -59,6 +61,7 @@ test_l2: all
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i | ./$(check_sort) 10000000 -p
 
+#limit test(same student_id)
 test_li: all
 	./$(test_case_generator) 10 $@.csv -li
 	wc -l $@.csv
@@ -74,6 +77,7 @@ test_li2: all
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -pp | ./$(check_sort) 10000000 -p
 
+#limit test(same place_id)
 test_lp: all
 	./$(test_case_generator) 10 $@.csv -lp
 	wc -l $@.csv
