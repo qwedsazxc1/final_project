@@ -1,12 +1,19 @@
 #include "place.h"
 
+// compare place_id
 static int place_id_cmp(const void *a, const void *b);
+
+// print the recorded student_id, time and place_id
 static void print_func(const void *data);
+
+// destroy specific place
 static void destory_place(void *data);
+
 static void destory_data_function(void *data);
+
 static int delete_compare(const void *a, const void *b);
 
-//allocate memory for new place in tree
+// allocate memory for new place in tree and initialize the data
 void initial_place_list(place_list_ptr *place_list){
     *place_list = malloc(sizeof(struct place_list));
     if (*place_list == NULL){
@@ -16,6 +23,7 @@ void initial_place_list(place_list_ptr *place_list){
     (*place_list)->place_amount = 0;
     initial_avl_tree(&((*place_list)->place_tree), place_id_cmp, print_func, destory_place);
 }
+
 
 static int delete_compare(const void *a, const void *b){
     const struct place_record *current_data = a;
@@ -33,7 +41,7 @@ static int delete_compare(const void *a, const void *b){
     return 0;
 }
 
-//add place in tree
+// add place into the tree
 void add_place(place_list_ptr place_list, int place_id){
     place target = malloc(sizeof(struct place));
     if (target == NULL){
@@ -55,12 +63,14 @@ void add_place(place_list_ptr place_list, int place_id){
     place_list->place_amount += 1;
 }
 
+
 static int place_id_cmp(const void *a, const void *b){
     const struct place *current = a;
     const struct place *target = b;
     return current->place_id - target->place_id;
 }
 
+// print the recorded student_id, time and place_id
 static void print_func(const void *data){
     const struct place *place_data = data;
     place_record *record = (place_record *)place_data->path->array;
@@ -68,7 +78,7 @@ static void print_func(const void *data){
         printf("%d,%llu,%5d\n", record[i].student_id, (unsigned long long)record[i].time, record[i].place_id);
 }
 
-//destroy specific place
+// destroy specific place
 static void destory_place(void *data){
     struct place *place_data = data;
     destory_vector(&place_data->path);
@@ -126,11 +136,13 @@ void delete_place_path(place_list_ptr student_list, int student_id, int place_id
     target->path->erase(target->path, index);
 }
 
+
 void destory_place_list(place_list_ptr place_list){
     place_list->place_tree->clear(place_list->place_tree);
     free(place_list);
 }
 
+// print all the place list with avl tree
 void print_all_place_list(place_list_ptr place_list){
     avl_tree_traversal(place_list->place_tree, IN_ORDER);
 }
