@@ -1,4 +1,4 @@
-# __Fianl Project Tittle : Footprints Tracker for CCU__
+# __Final Project Tittle : Footprints Tracker for CCU__
 
 ## Introduction of Project
 * __Footprint Tracker__ is a C-based database system for ~~stalking~~ recording footprints of students, as well as faculties, in the time of pandemic.
