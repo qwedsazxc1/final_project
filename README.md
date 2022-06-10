@@ -7,20 +7,30 @@ __Footprint Tracker__ is a C-based database system for ~~stalking~~ recording fo
 
 ## Usage
 * __Add__ footprints
+
 * __Delete__ footprints
-* __Search__ for people whose footprints overlapped with specific person in 
-a specific time interval
+* __Search__ function includes two features<br>
+&emsp;1. _Overlapped Footprints Cature_ : Specify a confirmed-case student and a date, you'll get a detailed information about the overlapped people.<br>
+&emsp;2. _Health Check_ : Specify any student, and you'll know whether your footprint overlapped with infected student or not.
+
 * __Predict__ hotspots where people most likely visit
 
 <br>
 <br>
 
-## Execution details
+## Execution
 Compatible system : `Linux` ( or UNIX-like system )
 
 Compilation tool : `makefile` ( gcc )
 
 Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp;&nbsp;`test_case_generator`, &nbsp;&nbsp;`check_sort`, &nbsp;&nbsp;`student_id_list_generator`
+
+<br>
+<br>
+
+## Installation
+1.&nbsp;Download this project via _Access Link_ (you can see it inside the next block)<br>
+2.&nbsp;***等阿宏來補***
 
 <br>
 <br>
