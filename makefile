@@ -10,7 +10,7 @@ check_sort = check_sort
 all: $(exe) $(add) $(delete) $(test_case_generator) $(check_sort) student_id_list.txt
 
 $(exe): $(objects)
-	$(CC) -g $(objects) -o $(exe) 
+	$(CC) -g -O3 $(objects) -o $(exe) 
 
 $(add): add.o
 	$(CC) -g $^ -O3 -o $@

@@ -59,7 +59,7 @@ void deal_with_argv(int argc, char *argv[]);
 void delete_path(int student_id, int place_id, unsigned long long at_time);
 void clear_hot_spot();
 int hot_spot_compare_function(const void *front, const void *back);
-int search_student_id_compare_function(const void *front, const void *back);
+int time_compare_function(const void *front, const void *back);
 void hot_spot_visited_function(const void *data);
 void unused_function(void *data){}
 void search();
@@ -72,6 +72,7 @@ void delete();
 void clear_list();
 void build_list();
 void print_usage();
+void search_place_id();
 
 int main(int argc, char *argv[]){
     initial(argc, argv);
@@ -183,7 +184,7 @@ void search(){
         int option;
         printf("[0] : leave\n");
         printf("[1] : 「重疊捕獲者」 : search student ID，跑出(誰)在(該日甚麼時間)在(哪裡)足跡重疊。\n");
-        printf("[2] : 「健康檢測」 : search place ID，跑出是否曾有與確診者重疊的紀錄\n");
+        printf("[2] : 「健康檢測」 : search place ID，跑出日期範圍內的紀錄\n");
         int input_result = scanf("%2d", &option);
         fflush_stdin();
         clear_screen();
@@ -201,14 +202,7 @@ void search(){
             continue;
         }
         if (option == 2){
-            // "Input format : 目標學號\n"
-            printf("請輸入欲查詢之「目標學號」 :\n");
-            //scanf
-            // eg.410410083
-            printf("輸出 : footprint overlapped with infected (學號), at (地點), (時間)\n");
-            // eg.footprint overlapped with infected 410410083, at 五嬤嬤, PM4:00
-            // 若沒有查到任何重疊，則輸出以下
-            printf("輸出 : Congrats! Your footprints didn't overlap with any infected people in school.\n");
+            search_place_id();
             continue;
         }
         printf("Invalid option\n");
@@ -428,6 +422,10 @@ void deal_with_argv(int argc, char *argv[]){
             print_out = PLACE_ORDER;
             continue;
         }
+        if (strcmp("-h", *option) == 0 || strcmp("--help", *option) == 0){
+            print_usage();
+            exit(0);
+        }
         printf("unknown option : %s\n", *option);
         print_usage();
         exit(0);
@@ -524,12 +522,12 @@ void search_student_id(){
         place_record lower_bound_target;
         lower_bound_target.time = time_lower_bound;
         int lower_bound_index = lower_bound(search_result->path->array, &lower_bound_target, search_result->path->num_of_element \
-        , search_result->path->element_size, search_student_id_compare_function);
+        , search_result->path->element_size, time_compare_function);
 
         place_record upper_bound_target;
         upper_bound_target.time = time_upper_bound;
         int upper_bound_index = upper_bound(search_result->path->array, &upper_bound_target, search_result->path->num_of_element \
-        , search_result->path->element_size, search_student_id_compare_function);
+        , search_result->path->element_size, time_compare_function);
 
         if (lower_bound_index == -1 || upper_bound_index == -1){
             printf("no record\n");
@@ -554,7 +552,7 @@ void search_student_id(){
     }
 }
 
-int search_student_id_compare_function(const void *front, const void *back){
+int time_compare_function(const void *front, const void *back){
     const struct place_record *front_record = front;
     const struct place_record *back_record = back;
     return front_record->time - back_record->time;
@@ -578,12 +576,12 @@ void print_out_potential_contacts(place_record *record){
     place_record visited_time_lower_bound_target;
     visited_time_lower_bound_target.time = search_visited_time_lower_bound;
     int search_visited_time_lower_bound_index = lower_bound(place_search_reult->path->array, &visited_time_lower_bound_target, \
-    place_search_reult->path->num_of_element, place_search_reult->path->element_size, search_student_id_compare_function);
+    place_search_reult->path->num_of_element, place_search_reult->path->element_size, time_compare_function);
 
     place_record visited_time_upper_bound_target;
     visited_time_upper_bound_target.time = search_visited_time_upper_bound;
     int search_visited_time_upper_bound_index = upper_bound(place_search_reult->path->array, &visited_time_upper_bound_target, \
-    place_search_reult->path->num_of_element, place_search_reult->path->element_size, search_student_id_compare_function);
+    place_search_reult->path->num_of_element, place_search_reult->path->element_size, time_compare_function);
 
     if (search_visited_time_upper_bound_index == -1 || search_visited_time_lower_bound_index == -1){
         printf("no record\n");
@@ -599,4 +597,70 @@ void print_out_potential_contacts(place_record *record){
         strftime(visited_time_string, 40, "%Y-%m-%d %H:%M:%S", gmtime(&(((place_record *)place_search_reult->path->array)[i].time)));
         printf("time : %s, student ID : %d\n", visited_time_string, ((place_record *)place_search_reult->path->array)[i].student_id);
     }
+}
+
+void search_place_id(){
+    while (1){
+        unsigned long long time_lower_bound = get_time_lower_bound();
+        unsigned long long time_upper_bound = get_time_upper_bound();
+        char time_lower_bound_string[50]; 
+        char time_upper_bound_string[50]; 
+        strftime(time_lower_bound_string, 40, "%Y-%m-%d", gmtime((time_t *)&time_lower_bound));
+        strftime(time_upper_bound_string, 40, "%Y-%m-%d", gmtime((time_t *)&time_upper_bound));
+        printf("search region : from %s to %s\n", time_lower_bound_string, time_upper_bound_string);
+        printf("(include head and tail)\n");
+        printf("input 0 if you want to leave\n");
+        printf("please input place ID\n");
+        int input_place_id;
+        int input_result = scanf("%d", &input_place_id);
+        fflush_stdin();
+        clear_screen();
+        if (input_result != 1){
+            printf("Invalid place ID\n");
+            continue;
+        }
+        if (input_place_id == 0)
+            break;
+        
+        struct place place_target;
+        place_target.place_id = input_place_id;
+        struct place *search_place_result = place_list->place_tree->search(place_list->place_tree, &place_target);
+        if (search_place_result == NULL){
+            printf("Invalid place ID\n");
+            continue;
+        }
+
+        place_record lower_bound_target;
+        lower_bound_target.time = time_lower_bound;
+        int lower_bound_index = lower_bound(search_place_result->path->array, &lower_bound_target, search_place_result->path->num_of_element, \
+        search_place_result->path->element_size, time_compare_function);
+
+        place_record upper_bound_target;
+        upper_bound_target.time = time_upper_bound;
+        int upper_bound_index = upper_bound(search_place_result->path->array, &upper_bound_target, search_place_result->path->num_of_element, \
+        search_place_result->path->element_size, time_compare_function);
+
+        if (lower_bound_index == -1 || upper_bound_index == -1){
+            printf("no record\n");
+            return;
+        }
+
+        if (lower_bound_index > upper_bound_index){
+            set_and_print_error_message("lower bound greater than upper bound\n");
+            return;
+        }
+
+        printf("Place ID : %d, record from %s to %s\n", input_place_id, time_lower_bound_string, time_upper_bound_string);
+        printf("\n");
+        for (int i = lower_bound_index; i <= upper_bound_index; i++){
+            strftime(time_lower_bound_string, 40, "%Y-%m-%d %H:%M:%S", gmtime(&(((place_record *)search_place_result->path->array)[i].time)));
+            printf("time : %s,\t\tstudent ID : %d\n", time_lower_bound_string, ((place_record *)search_place_result->path->array)[i].student_id);
+        }
+        printf("\n");
+        printf("Press Enter to continue...\n");
+        fflush_stdin();
+        clear_screen();
+        break;
+    }
+    
 }
