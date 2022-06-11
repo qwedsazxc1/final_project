@@ -6,22 +6,22 @@ static struct avlnode *build_node(void *data, size_t size, struct avlnode *paren
 // insert a node to tree and determine its place
 static int insert_node(struct avlnode *node, void *data, size_t size, int (*cmp)(const void *a, const void *b));
 
-// 
+// balance the node using right_rotate and left_rotate functions
 static void balance(struct avlnode *node);
 
-// 
+// left rotate a parent node's children node
 static void left_rotate(struct avlnode *node);
 
-// 
+// right rotate a parent node's children node
 static void right_rotate(struct avlnode *node);
 
-// 
+// a function that can find the minimum node in the linked list
 static void *min_node(struct avlnode *node);
 
-// 
+// a function that can find the maximum node in the linked list
 static void *max_node(struct avlnode *node);
 
-// 
+// redefine the parent node
 static void update_root(struct avlnode **node);
 
 //return the height of node
@@ -33,25 +33,25 @@ static void free_tree(struct avlnode *node, void (*destroy_data_function)(void *
 // a function for return the target node for other function
 static struct avlnode *search_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b));
 
-// 
+// a function that can delete node in the linked list
 static struct avlnode *delete_node(struct avlnode *node, void *target, int(*cmp)(const void *a, const void *b), void (*destroy_data_function)(void *data));
 
-// 
+// get the successor node in the tree
 static struct avlnode *get_successor_node(struct avlnode *node);
 
-//
+// compare two children node and update the height of a tree
 static void update_node_height(struct avlnode *node);
 
 // a function for print a tree and use for other function
 static void print_tree(struct avlnode *node, int mode, void (*print_func)(const void *data));
 
-// 
+// insert new node into the tree
 static int insert(avl_tree tree, void *data, size_t size);
 
-// 
+// use *max_node function to find the maximum node in the tree
 static void *max(const avl_tree tree);
 
-// 
+// use *min_node function to find the minimum node in the tree
 static void *min(const avl_tree tree);
 
 // return the height of tree
@@ -60,7 +60,7 @@ static int height(const avl_tree tree);
 // clear the tree to NULL
 static void clear(avl_tree tree);
 
-// 
+// use the *delete_node function to delete node in the tree
 static void delete(avl_tree tree, void *target);
 
 // if node is not NULL use search_node to find the target
