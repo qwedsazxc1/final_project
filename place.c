@@ -85,9 +85,7 @@ static void destory_place(void *data){
 
 }
 
-static void destory_data_function(void *data){
-
-}
+static void destory_data_function(void *data){}
 
 void add_place_path(place_list_ptr place_list, int student_id, int place_id, time_t time){
     struct place search_target;

@@ -37,8 +37,7 @@
 #define STUDENT_ORDER 1
 #define PLACE_ORDER 2
 
-typedef unsigned long long ull;
-
+// the unit data type for vector hot_spot_list
 struct hot_spot{
     int place_id;
     unsigned long long number_of_people;
@@ -51,26 +50,84 @@ int print_out = NOTHING;
 char file_name[85];
 int language;
 
+// output all potential contacts in the time region
 void print_out_potential_contacts(place_record *record);
+
+// ask user input user id
+// output all potential contacts in the time region
 void search_student_id();
+
+// check if need to print out all the list be sorted
+// if true, then print it out and finish proccess
 void print_out_check();
+
+// all initial of the program
+// include build list and regist exit function
 void initial(int argc, char *argv[]);
+
+// deal with the argument vector
+// call print_usage when argument is wrong format
 void deal_with_argv(int argc, char *argv[]);
+
+// call fork function t generate a child proccess
+// let child proccess to call exec series function
+// delete the target path record in list and file
 void delete_path(int student_id, int place_id, unsigned long long at_time);
+
+// free space that hot_spot_list occur
 void clear_hot_spot();
+
+// the sort compare function for hot spot list
+// as number_of_people is greater, the order is more front
+// if equal then compare place id
+// smaller one first
 int hot_spot_compare_function(const void *front, const void *back);
+
+// use time as order
+// less one is first
 int time_compare_function(const void *front, const void *back);
+
+// push the datatype of struct hot_spot into vector
 void hot_spot_visited_function(const void *data);
+
+// an unused function
+// used to be the destroy function of basic data structure without space to free
 void unused_function(void *data){}
+
+// ask student which search method want to use
+// [1] use student ID to search
+// [2] use palce ID to search
 void search();
-void add_new_footprint();
+
+// use fork to make a child proccess
+// and let child process to call exec series function to record the footprint to file
+// and add the footprint to list
 void record_path(int student_id, int place_id);
+
+// when recieve the SIGSEGV signal
+// print segmentaion fault
 void seg_fault(int signo);
+
+
 void hot_spots();
+
+// ask user input student id and place id
+// and store it into file and list
+// it doesn't allow user to input time
 void record();
+
+
 void delete();
+
+// free the space that student list and place list use
 void clear_list();
+
+// read data from csv file
+// build student list and place list
 void build_list();
+
+// when argument have invalid option
+// print the usage of this file
 void print_usage();
 void search_place_id();
 
@@ -109,23 +166,23 @@ int main(int argc, char *argv[]){
         
         // search ID, print out overlapped studentID at what time, which place
         if (options == SEARCH){
-            search(student_list, place_list);
+            search();
             continue;
         }
 
         if (options == RECORD){
-            record(student_list, place_list);
+            record();
             continue;
         }
 
         // delete footprints
         if (options == DELETE){
-            delete(student_list, place_list);
+            delete();
             continue;
         }
 
         if (options == HOT_SPOTS){
-            hot_spots(place_list);
+            hot_spots();
             continue;
         }
 
@@ -305,6 +362,7 @@ void delete(){
         int input_result;
         printf("Please input the data you want to delete\n");
         printf("Input format : [student ID] [place ID] [target time]\n");
+        printf("time format : yyyy-mm-dd\n");
         printf("(input 0 if you want to leave)\n");
         printf("Input : ");
         input_result = scanf("%9d", &input_student_id);
@@ -480,7 +538,7 @@ void print_out_check(){
 void print_usage(){
     printf("Usage : ./avl_tree_ver [option]\n");
     printf("option :\n");
-    printf("-f, --file <csv file>\t, load informtaion from csv file \n");
+    printf("-f, --file <csv file>\t, load informtaion from csv file, default is footprint.csv\n");
     printf("-ps, --printstu\tprint output sort by student id\n");
     printf("-pp, --printpla\tprint output sort by place id\n");
     return;

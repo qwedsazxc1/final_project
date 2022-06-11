@@ -35,16 +35,21 @@ struct vector{
     // returns a pointer to the last element
     void *(*back)(const vector vector);
 
+    // free the space that the data occur
+    // especailly there are static memory in data
     void (*destroy_data_function)(void *data);
 
-    // delete an element
+    // delete an element, time complexity O(n)
     void (*erase)(vector vector, int index);
 
-    // insert an element
+    // insert an element, time complexity O(n)
     void (*insert)(vector vector, int index, void *data);
 };
 
+// free the space the vector occur
 void destory_vector(vector *vector);
+
+// to inital the vector data structure be destroryed or declared
 void initial_vector(vector *vector, size_t basic_type_size, void (*destroy_data_function)(void *data));
 
 #endif

@@ -1,6 +1,6 @@
 hot spot standard : 1100
 default date : 2022-06-11
 search front date : 3
-search after date : 10
+search after date : 3
 search front minute : 15
-search after minute : 120
+search after minute : 15

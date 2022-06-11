@@ -137,6 +137,7 @@ void delete_student_path(student_list_ptr student_list, int student_id, int plac
 
 void destory_student_list(student_list_ptr student_list){
     student_list->student_tree->clear(student_list->student_tree);
+    free(student_list->student_tree);
     free(student_list);
 }
 
