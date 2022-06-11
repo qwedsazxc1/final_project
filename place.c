@@ -11,6 +11,7 @@ static void destory_place(void *data);
 
 static void destory_data_function(void *data);
 
+// compare the time and then use for avl sort
 static int delete_compare(const void *a, const void *b);
 
 // allocate memory for new place in tree and initialize the data
@@ -23,7 +24,6 @@ void initial_place_list(place_list_ptr *place_list){
     (*place_list)->place_amount = 0;
     initial_avl_tree(&((*place_list)->place_tree), place_id_cmp, print_func, destory_place);
 }
-
 
 static int delete_compare(const void *a, const void *b){
     const struct place_record *current_data = a;
