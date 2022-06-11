@@ -180,7 +180,7 @@ void search(){
     while (1){
         int option;
         printf("[0] : leave\n");
-        printf("[1] : 「重疊捕獲者」 : 查確診者、日期，跑出 (誰)在(該日甚麼時間)在(哪裡)足跡重疊。\n");
+        printf("[1] : 「重疊捕獲者」 : 查確診者、日期，跑出(誰)在(該日甚麼時間)在(哪裡)足跡重疊。\n");
         printf("[2] : 「健康檢測」 : 查任意學號，跑出是否曾有與確診者重疊的紀錄\n");
         int input_result = scanf("%2d", &option);
         fflush_stdin();
@@ -193,8 +193,7 @@ void search(){
         // option mode
         if (option == 0)
             break;
-        else if (option == 1)
-        {
+        if (option == 1){
 
             //Input format : 確診者學號\n欲查詢日期(space)\n
             printf("請輸入欲查詢之「確診者學號」 :\n");
@@ -207,9 +206,9 @@ void search(){
             //    410410011's footprint overlapped, at 活動中心, AM_3:00
             // 若沒有查到任何重疊，則輸出以下
             printf("Confirmed Case (學號) didn't have footprints overlapped with anyone.\n");
+            continue;
         }
-        else if (option == 2)
-        {
+        if (option == 2){
             // "Input format : 目標學號\n"
             printf("請輸入欲查詢之「目標學號」 :\n");
             //scanf
@@ -218,6 +217,7 @@ void search(){
             // eg.footprint overlapped with infected 410410083, at 五嬤嬤, PM4:00
             // 若沒有查到任何重疊，則輸出以下
             printf("輸出 : Congrats! Your footprints didn't overlap with any infected people in school.\n");
+            continue;
         }
         printf("Invalid option\n");
     }

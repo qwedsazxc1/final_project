@@ -22,7 +22,7 @@ $(check_sort): check_sort.o
 	$(CC) -g $^ -O3 -o $@
 
 %.o:%.c
-	$(CC) -g $^ -c -O3 -Wall -o $
+	$(CC) -g $^ -c -O3 -Wall -o $@
 	
 # normal random test
 test1: all
@@ -59,7 +59,7 @@ test_l1: all
 test_l2: all
 	./$(test_case_generator) 10000000 $@.csv -l
 	wc -l $@.csv
-	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i | ./$(check_sort) 10000000 -p
+	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i
 
 #limit test(same student_id)
 test_li: all
