@@ -9,7 +9,7 @@ static void destory_data_function(void *data);
 // the function for free student data 
 static void destory_student_data_function(void *data);
 
-//
+// compare the time and then use for avl sort
 static int delete_compare(const void *a, const void *b);
 
 // compare the student_id and then use for avl sort
