@@ -240,8 +240,8 @@ void search(){
     while (1){
         int option;
         printf("[0] : leave\n");
-        printf("[1] : 「重疊捕獲者」 : search student ID，跑出(誰)在(該日甚麼時間)在(哪裡)足跡重疊。\n");
-        printf("[2] : 「健康檢測」 : search place ID，跑出日期範圍內的紀錄\n");
+        printf("[1] : 「重疊捕獲者」 : search student ID, 跑出(誰)在(該日甚麼時間)在(哪裡)足跡重疊。\n");
+        printf("[2] : 「健康檢測」 : search place ID, 跑出日期範圍內的紀錄\n");
         int input_result = scanf("%2d", &option);
         fflush_stdin();
         clear_screen();
@@ -535,7 +535,7 @@ void print_out_check(){
     }
 }
 
-void print_usage(){
+void print_(){
     printf("Usage : ./avl_tree_ver [option]\n");
     printf("option :\n");
     printf("-f, --file <csv file>\t, load informtaion from csv file, default is footprint.csv\n");
