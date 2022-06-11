@@ -48,5 +48,5 @@ void destory_place_list(place_list_ptr place_list);
 // print all the place list with avl tree
 void print_all_place_list(place_list_ptr place_list);
 
-void delete_place_path(place_list_ptr student_list, int student_id, int place_id, unsigned long long at_time);
+int delete_place_path(place_list_ptr student_list, int student_id, int place_id, unsigned long long at_time);
 #endif

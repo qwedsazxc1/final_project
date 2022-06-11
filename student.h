@@ -35,7 +35,7 @@ typedef struct place_record place_record;
 typedef struct student_list *student_list_ptr;
 typedef struct student *student;
 
-void delete_student_path(student_list_ptr student_list, int student_id, int place_id, unsigned long long at_time);
+int delete_student_path(student_list_ptr student_list, int student_id, int place_id, unsigned long long at_time);
 void initial_student(student student);
 void initial_student_list(student_list_ptr *student_list);
 void add_student(student_list_ptr student_list, int student_id);

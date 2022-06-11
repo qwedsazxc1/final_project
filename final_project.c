@@ -116,7 +116,8 @@ void hot_spots();
 // it doesn't allow user to input time
 void record();
 
-
+// ask user input student id and place id and delete target time
+// 
 void delete();
 
 // free the space that student list and place list use
@@ -285,6 +286,7 @@ void hot_spots(){
     printf("Press Enter to continue\n");
     fflush_stdin();
     clear_screen();
+    clear_hot_spot();
 }
 
 void record(){
@@ -332,13 +334,34 @@ void hot_spot_visited_function(const void *data){
     const struct place *place_data = data;
     struct hot_spot hot_spot_data;
     hot_spot_data.place_id = place_data->place_id;
-    hot_spot_data.number_of_people = (unsigned long long)place_data->path->num_of_element;
+
+    int time_lower_bound = get_time_lower_bound();
+    struct place_record target;
+    target.time = time_lower_bound;
+    int lower_bound_index = lower_bound(place_data->path->array, &target, place_data->path->num_of_element, \
+    place_data->path->element_size, time_compare_function);
+
+    int time_upper_bound = get_time_upper_bound();
+    target.time = time_upper_bound;
+    int upper_bound_index = upper_bound(place_data->path->array, &target, place_data->path->num_of_element, \
+    place_data->path->element_size, time_compare_function);
+
+    if (lower_bound_index == -1 || upper_bound_index == -1)
+        return;
+    
+    if (lower_bound_index > upper_bound_index){
+        set_and_print_error_message("lower bound is greater than upper bound\n");
+        return;
+    }
+    hot_spot_data.number_of_people = upper_bound_index - lower_bound_index;
     hot_spot_list->push_back(hot_spot_list, &hot_spot_data);
 }
 
 void clear_hot_spot(){
-    if (hot_spot_list != NULL)
+    if (hot_spot_list != NULL){
         destory_vector(&hot_spot_list);
+
+    }
 }
 
 int hot_spot_compare_function(const void *front, const void *back){
@@ -357,7 +380,6 @@ int hot_spot_compare_function(const void *front, const void *back){
 
 void delete(){
     int input_student_id, input_place_id;
-    unsigned long long input_time;
     while (1){
         int input_result;
         printf("Please input the data you want to delete\n");
@@ -380,7 +402,8 @@ void delete(){
             break;
         }
 
-        input_result = scanf("%9d%31llu", &input_place_id, &input_time);
+        char input_time[50];
+        input_result = scanf("%9d%40s", &input_place_id, input_time);
         fflush_stdin();
         clear_screen();
         if (input_result != 2){
@@ -392,14 +415,24 @@ void delete(){
             printf("Illegal data retrival\n");
             continue;
         }
-        delete_path(input_student_id, input_place_id, input_time);
-        printf("deletion applied !\n");
+
+        struct tm target_time;
+        memset(&target_time, 0, sizeof(struct tm));
+        if(strptime(input_time, "%Y-%m-%d", &target_time) == NULL){
+            printf("time format error\n");
+            continue;
+        }
+        delete_path(input_student_id, input_place_id, timegm(&target_time));
     }
 }
 
 void delete_path(int student_id, int place_id, unsigned long long at_time){
-    delete_student_path(student_list, student_id, place_id, at_time);
-    delete_place_path(place_list, student_id, place_id, at_time);
+    int delete_result = delete_student_path(student_list, student_id, place_id, at_time);
+    if (delete_result)
+        return;
+    delete_result = delete_place_path(place_list, student_id, place_id, at_time);
+    if (delete_result)
+        return;
     pid_t pid;
     errno = 0;
     if ((pid = fork()) < 0){
@@ -535,7 +568,7 @@ void print_out_check(){
     }
 }
 
-void print_(){
+void print_usage(){
     printf("Usage : ./avl_tree_ver [option]\n");
     printf("option :\n");
     printf("-f, --file <csv file>\t, load informtaion from csv file, default is footprint.csv\n");

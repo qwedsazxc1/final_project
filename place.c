@@ -108,19 +108,19 @@ void add_place_path(place_list_ptr place_list, int student_id, int place_id, tim
     free(data);
 }
 
-void delete_place_path(place_list_ptr student_list, int student_id, int place_id, unsigned long long at_time){
+int delete_place_path(place_list_ptr student_list, int student_id, int place_id, unsigned long long at_time){
     struct place search_target;
     search_target.place_id = place_id;
     place target = student_list->place_tree->search(student_list->place_tree, &search_target);
     if (target == NULL){
-        set_and_print_error_message("delete student path : target not found\n");
-        return;
+        set_and_print_error_message("delete place path : target not found\n");
+        return -1;
     }
 
     place_record *data = malloc(sizeof(place_record));
     if  (data == NULL){
-        set_and_print_error_message("add_student_path : memory allocate fail\n");
-        return;
+        set_and_print_error_message("delete place path : memory allocate fail\n");
+        return -2;
     }
     data->place_id = place_id;
     data->student_id = student_id;
@@ -128,10 +128,11 @@ void delete_place_path(place_list_ptr student_list, int student_id, int place_id
     void *array = target->path->array;
     int index = binary_search(array, data, target->path->num_of_element, target->path->element_size, delete_compare);
     if (index == -1){
-        set_and_print_error_message("add_student_path : memory allocate fail\n");
-        return;
+        set_and_print_error_message("delete place path : target not found\n");
+        return -1;
     }
     target->path->erase(target->path, index);
+    return 0;
 }
 
 
