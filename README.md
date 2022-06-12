@@ -30,8 +30,9 @@ Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp
 <br>
 
 ## Installation
-1.&nbsp;Download this project via _Access Link_ (you can see it inside the next block)<br>
-2.&nbsp;***等阿宏來補***
+1.&nbsp;Clone this project via [Git_clone](https://github.com/qwedsazxc1/final_project.git). <br>
+2.&nbsp;Compile this program with `make` in gcc compiler.
+
 
 <br>
 <br>
@@ -53,13 +54,13 @@ Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp
 | 410410021   | 林易宏  | qwedsazxc1     |
 | 410410067   | 曾敬堯  | andrewchan2002 |
 | 410410080   | 黃竑喆  | Aaron-Huang0615|
-| 410410083   | 洪子翔  | 1Lyvianis   |
+| 410410083   | 洪子翔  | 1Lyvianis      |
 
 </font>
 
 &emsp;&emsp;
 
-## Contributions
+## Contributing
 <font color=#FF5F5F>
 If you are interested in this project and wish to partake in, please contact our leader via below.
 
