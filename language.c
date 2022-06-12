@@ -29,6 +29,12 @@ char *place_id_msg;
 char *time_msg;
 char *visited_time_msg;
 char *delete_success_msg;
+
+char *search_place_id1;
+char *search_place_id2;
+char *search_place_id3;
+char *search_place_id4;
+char *search_place_id5;
 /////////////////////////////// search.c
 char *change_setting1;
 char *change_setting2;
@@ -43,6 +49,8 @@ char *change_value;
 
 char *change_date1;
 char *change_date2;
+
+char *default_is;
 /////////////////////////////// prototypes
 
 char welcome_message_en[] =
@@ -64,7 +72,7 @@ char features_list_en[] =
     "[2] : Add new footprint to database.\n"
     "[3] : Delete a specific footprint.\n"
     "[4] : Campus hot spot analyze.\n"
-    "[5] : User's preference Setting\n";
+    "[5] : User's preference Settings\n";
 
 char features_list_cn[] =
     "-----------------------------\n"
@@ -190,23 +198,40 @@ char visited_time_msg_cn[] = "拜訪次數 : ";
 
 char delete_success_msg_en[] = "delete success\n";
 char delete_success_msg_cn[] = "刪除成功\n";
+
+char search_place_id1_en[] = "Search region : from ";
+char search_place_id2_en[] = " to ";
+char search_place_id3_en[] = "(Head and tail are included)\n"
+                             "Input 0 if you want to leave\n"
+                             "Please input place ID :";
+char search_place_id4_en[] = "Place ID : ";
+char search_place_id5_en[] = ", record from ";
+
+char search_place_id1_cn[] = "搜尋區間 : 從";
+char search_place_id2_cn[] = " 至 ";
+char search_place_id3_cn[] = "(頭尾都包含)\n"
+                             "若您想離開, 請輸入 0 \n"
+                             "請輸入場所代碼 :";
+char search_place_id4_cn[] = "場所代碼 : ";
+char search_place_id5_cn[] = ", 收錄自 ";
+
 ////////////////////////////////////////////////////////
-char change_setting1_en[] = "[0] : leave settings\n" 
-                            "[1] : hot spot standard = ";
-char change_setting2_en[] = "[2] : default date = ";
-char change_setting3_en[] = "[3] : beginning date of search(unit : day) = ";
-char change_setting4_en[] = "[4] : end date of search(unit : day) = ";
-char change_setting5_en[] = "[5] : beginning minute of search(unit : minute) = ";
-char change_setting6_en[] = "[6] : end minute of search(unit : minute) = ";
-char change_setting7_en[] =  "Based on the options above, please pick what you want to alter\n";
+char change_setting1_en[] = "[0] : Leave settings\n" 
+                            "[1] : Hot spot definition(at least how many people) = ";
+char change_setting2_en[] = "[2] : Anchor date = ";
+char change_setting3_en[] = "[3] : Days to push backward = ";
+char change_setting4_en[] = "[4] : Days to push forward = ";
+char change_setting5_en[] = "[5] : Minutes to push backward = ";
+char change_setting6_en[] = "[6] : Minutes to push forward = ";
+char change_setting7_en[] =  "Based on the options above, please pick what you want to alter.   ";
 
 char change_setting1_cn[] = "[0] : 離開設定集\n" 
-                            "[1] : 請定義熱點標準 = ";
-char change_setting2_cn[] = "[2] : 預設日期 = ";
-char change_setting3_cn[] = "[3] : 搜尋起點日期 = (單位 : 日)";
-char change_setting4_cn[] = "[4] : 搜尋終點日期 = (單位 : 日)";
-char change_setting5_cn[] = "[5] : 搜尋起點時刻 = (單位 : 分鐘)";
-char change_setting6_cn[] = "[6] : 搜尋終點時刻 = (單位 : 分鐘)";
+                            "[1] : 請定義熱點標準(滿足熱點定義的最低人數) = ";
+char change_setting2_cn[] = "[2] : 錨點日期 = ";
+char change_setting3_cn[] = "[3] : 前推日數 = ";
+char change_setting4_cn[] = "[4] : 後推日數 = ";
+char change_setting5_cn[] = "[5] : 前推分鐘數 = ";
+char change_setting6_cn[] = "[6] : 後推分鐘數 = ";
 char change_setting7_cn[] = "請根據以上選項, 選擇您想更改的設定。\n";
 
 char change_value_en[] = "Please Input -1 if you don't want to change the value\n"
@@ -222,6 +247,8 @@ char change_date2_cn[] = "輸入格式 : yyyy-mm-dd(西元年-月-日)\n"
                          "若您不想進行更改, 請輸入 0\n"
                          "請輸入欲更改的數值 :";
 
+char default_is_en[] = ", current: ";
+char default_is_cn[] = ", 當前為: ";
 ////////////////////////////////////////////////////////
     
 void choose_language()
@@ -253,6 +280,7 @@ void choose_language()
 
         printf("%s", format_err_msg_en);
         printf("%s", format_err_msg_cn);
+        sleep(1);
     }
 }
 
@@ -286,6 +314,12 @@ void decide_message(){
         time_msg = &time_msg_en[0];
         visited_time_msg = &visited_time_msg_en[0];
         delete_success_msg = &delete_success_msg_en[0];
+
+        search_place_id1 = &search_place_id1_en[0];
+        search_place_id2 = &search_place_id2_en[0];
+        search_place_id3 = &search_place_id3_en[0];
+        search_place_id4 = &search_place_id4_en[0];
+        search_place_id5 = &search_place_id5_en[0];
         ////////////////////////////////////////////////////////////
         change_setting1 = &change_setting1_en[0];
         change_setting2 = &change_setting2_en[0];
@@ -298,6 +332,7 @@ void decide_message(){
         change_date1 = &change_date1_en[0];
         change_date2 = &change_date2_en[0];
 
+        default_is = &default_is_en[0];
         return;
     }
 
@@ -329,6 +364,12 @@ void decide_message(){
         time_msg = &time_msg_cn[0];
         visited_time_msg = &visited_time_msg_cn[0];
         delete_success_msg = &delete_success_msg_cn[0];
+
+        search_place_id1 = &search_place_id1_cn[0];
+        search_place_id2 = &search_place_id2_cn[0];
+        search_place_id3 = &search_place_id3_cn[0];
+        search_place_id4 = &search_place_id4_cn[0];
+        search_place_id5 = &search_place_id5_cn[0];
         /////////////////////////////////////////////////////////
         change_setting1 = &change_setting1_cn[0];
         change_setting2 = &change_setting2_cn[0];
@@ -340,9 +381,11 @@ void decide_message(){
         change_value = &change_value_cn[0];
         change_date1 = &change_date1_cn[0];
         change_date2 = &change_date2_cn[0];
+        default_is = &default_is_cn[0];
         return;
     }
 
     printf("language error\n");
     printf("語言錯誤\n");
+    sleep(1);
 }

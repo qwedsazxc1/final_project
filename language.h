@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "lib.h"
-
+#include <unistd.h>
 #define ENGLISH 1
 #define CHINESE 2
 
@@ -36,6 +36,12 @@ extern char *place_id_msg;
 extern char *time_msg;
 extern char *visited_time_msg;
 extern char *delete_success_msg;
+
+extern char *search_place_id1;
+extern char *search_place_id2;
+extern char *search_place_id3;
+extern char *search_place_id4;
+extern char *search_place_id5;
 //////////////////////////////////////////////
 extern char *change_setting1;
 extern char *change_setting2;
@@ -50,6 +56,8 @@ extern char *change_value;
 
 extern char *change_date1;
 extern char *change_date2;
+
+extern char *default_is;
 
 void choose_language();
 

@@ -76,6 +76,7 @@ void change_setting(){
         clear_screen();
         if (input_result != 1){
             printf("%s", option_err_msg);
+            sleep(1);
             continue;
         }
 
@@ -113,6 +114,7 @@ void change_setting(){
         }
 
         printf("%s", option_err_msg);
+        sleep(1);
     }
     
 }
@@ -128,6 +130,7 @@ static void change_setting_value(int *variable_be_changed, const char *variable_
         clear_screen();
         if (input_result != 1){
             printf("%s",option_err_msg);
+            sleep(1);
             continue;
         }
         if (value == -1)
@@ -135,6 +138,7 @@ static void change_setting_value(int *variable_be_changed, const char *variable_
         
         if (value < -1 || value > upper_bound){
             printf("%s",option_err_msg);
+            sleep(1);
             continue;
         }
         *variable_be_changed = value;
@@ -156,11 +160,13 @@ static void change_default_date(){
         clear_screen();
         if (input_result != 1){
             printf("%s",option_err_msg);
+            sleep(1);
             continue;
         }
         int leave_option = -1;
         if ((input_result = sscanf(input_time_string, "%5d", &leave_option)) != 1){
             printf("%s",option_err_msg);
+            sleep(1);
             continue;
         }
         if (leave_option == 0)
@@ -168,6 +174,7 @@ static void change_default_date(){
         
         if (strptime(input_time_string, "%Y-%m-%d", &default_date) == NULL){
             printf("%s",option_err_msg);
+            sleep(1);
             continue;
         }
 
