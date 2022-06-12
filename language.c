@@ -1,6 +1,35 @@
 #include "language.h"
 
-//undone : search() hotspot() deal_with_argv
+// undone : search() hotspot()
+
+int language;
+
+char *welcome_message;
+char *features_list;
+char *option_err_msg;
+char *seg_err_msg;
+char *record_msg;
+char *record_success;
+char *delete_msg;
+char *format_err_msg;
+char *illegal_retrieval;
+char *deletion_applied;
+char *search_options;
+
+char *search_student_id1;
+char *search_student_id2;
+char *search_student_id3;
+char *invalid_id_err_msg;
+char *no_record_err_msg ;
+char *boundary_err_msg;
+char *search_student_id4;
+char *search_student_id5;
+char *enter_continue;
+
+char *student_id_msg;
+char *place_id_msg;
+char *time_msg;
+char *visited_time_msg;
 
 char welcome_message_en[] =
     "In this program, we will show the efficiency of avl tree compared with other data structure.\n"
@@ -41,7 +70,7 @@ char option_err_msg_cn[] =
 char seg_err_msg_en[] =
     "Segmentation fault detected!\n";
 
-char seg_err_msg__cn[] =
+char seg_err_msg_cn[] =
     "偵測到記憶體區段錯誤!\n";
 
 char record_en[] =
@@ -53,7 +82,7 @@ char record_en[] =
 char record_cn[] =
     "請輸入您想記錄的學生足跡\n"
     "輸入格式 : [學號] [場所代碼]\n"
-    "(若您想跳出此功能，請輸入[0]。\n)"
+    "(若您想跳出此功能，請輸入[0]。)\n"
     "您的輸入 : ";
 
 char record_success_en[] =
@@ -65,13 +94,15 @@ char record_success_cn[] =
 char delete_en[] =
     "Please input the data you want to delete\n"
     "Input format : [student ID] [place ID] [target time]\n"
+    "time format : yyyy-mm-dd\n"
     "(input 0 if you want to leave)\n"
     "Input : \n";
 
 char delete_cn[] = 
     "請輸入您想刪除的資料\n"
     "輸入格式 : [學號] [場所代碼] [目標時間]\n"
-    "(若您想跳出此功能，請輸入[0]。\n)"
+    "時間格式 : yyyy-mm-dd\n"
+    "(若您想跳出此功能，請輸入[0]。)\n"
     "您的輸入 : ";
 
 char format_err_msg_en[] =
@@ -110,7 +141,7 @@ char search_options_cn[] =
 
 char search_student_id1_en[] = "search region : from ";
 char search_student_id2_en[] = " to ";
-char search_student_id3_en[] =
+char search_student_id3_en[] = "\n"
     "Note : This is a closed region (Head and tail are included)\n"
     "Input 0 if you want to leave\n"
     "Please input student ID : ";
@@ -123,7 +154,7 @@ char enter_continue_en[] = "Press Enter to continue...\n";
 
 char search_student_id1_cn[] = "搜尋區間 : 從 ";
 char search_student_id2_cn[] = " 到 ";
-char search_student_id3_cn[] =
+char search_student_id3_cn[] = "\n"
     "提示 : 此區間為'閉'區間\n"
     "若您想離開, 請輸入[0]\n"
     "請輸入學號 : ";
@@ -131,8 +162,110 @@ char invalid_id_err_msg_cn[] = "無效的學號!\n";
 char no_record_err_msg_cn[] = "沒有紀錄!\n";
 char boundary_err_msg_cn[] = "錯誤 : 下界大於上界\n";
 char search_student_id4_cn[] = "學號 : ";
-char search_student_id5_cn[] = " 的拜訪已被成功紀錄。\n";
+char search_student_id5_cn[] = " 的拜訪紀錄。\n";
 char enter_continue_cn[] = "按下Enter鍵以繼續...\n";
 
+char student_id_msg_en[] = "student ID : ";
+char student_id_msg_cn[] = "學號 : ";
+char place_id_msg_en[] = "place ID : ";
+char place_id_msg_cn[] = "場所代碼 : ";
+char time_msg_en[] = "time : ";
+char time_msg_cn[] = "時間 : ";
+char visited_time_msg_en[] = "visited time : ";
+char visited_time_msg_cn[] = "拜訪次數 : ";
 
+void choose_language(){
+    while (1){
+        int input_option;
+        printf("Please choose your language.\n");
+        printf("選擇你的語言\n");
+        printf("[1] English\n");
+        printf("[2] 中文\n");
+        int input_result = scanf("%2d", &input_option);
+        clear_screen();
+        fflush_stdin();
+        if (input_result != 1){
+            printf("%s", format_err_msg_en);
+            printf("%s", format_err_msg_cn);
+            continue;
+        }
 
+        if (input_option == ENGLISH){
+            language = ENGLISH;
+            break;
+        }
+
+        if (input_option == CHINESE){
+            language = CHINESE;
+            break;
+        }
+
+        printf("%s", format_err_msg_en);
+        printf("%s", format_err_msg_cn);
+    }
+}
+
+void decide_message(){
+    if (language == ENGLISH){
+        welcome_message = &welcome_message_en[0];
+        features_list = &features_list_en[0];
+        option_err_msg = &option_err_msg_en[0];
+        seg_err_msg = &seg_err_msg_en[0];
+        record_msg = &record_en[0];
+        record_success = &record_success_en[0];
+        delete_msg = &delete_en[0];
+        format_err_msg = &format_err_msg_en[0];
+        illegal_retrieval = &illegal_retrieval_en[0];
+        deletion_applied = &deletion_applied_en[0];
+        search_options = &search_options_en[0];
+
+        search_student_id1 = &search_student_id1_en[0];
+        search_student_id2 = &search_student_id2_en[0];
+        search_student_id3 = &search_student_id3_en[0];
+        invalid_id_err_msg = &invalid_id_err_msg_en[0];
+        no_record_err_msg  = &no_record_err_msg_en[0];
+        boundary_err_msg = &boundary_err_msg_en[0];
+        search_student_id4 = &search_student_id4_en[0];
+        search_student_id5 = &search_student_id5_en[0];
+        enter_continue = &enter_continue_en[0];
+
+        student_id_msg = &student_id_msg_en[0];
+        place_id_msg = &place_id_msg_en[0];
+        time_msg = &time_msg_en[0];
+        visited_time_msg = &visited_time_msg_en[0];
+        return;
+    }
+
+    if (language == CHINESE){
+        welcome_message = &welcome_message_cn[0];
+        features_list = &features_list_cn[0];
+        option_err_msg = &option_err_msg_cn[0];
+        seg_err_msg = &seg_err_msg_cn[0];
+        record_msg = &record_cn[0];
+        record_success = &record_success_cn[0];
+        delete_msg = &delete_cn[0];
+        format_err_msg = &format_err_msg_cn[0];
+        illegal_retrieval = &illegal_retrieval_cn[0];
+        deletion_applied = &deletion_applied_cn[0];
+        search_options = &search_options_cn[0];
+
+        search_student_id1 = &search_student_id1_cn[0];
+        search_student_id2 = &search_student_id2_cn[0];
+        search_student_id3 = &search_student_id3_cn[0];
+        invalid_id_err_msg = &invalid_id_err_msg_cn[0];
+        no_record_err_msg  = &no_record_err_msg_cn[0];
+        boundary_err_msg = &boundary_err_msg_cn[0];
+        search_student_id4 = &search_student_id4_cn[0];
+        search_student_id5 = &search_student_id5_cn[0];
+        enter_continue = &enter_continue_cn[0];
+
+        student_id_msg = &student_id_msg_cn[0];
+        place_id_msg = &place_id_msg_cn[0];
+        time_msg = &time_msg_cn[0];
+        visited_time_msg = &visited_time_msg_cn[0];
+        return;
+    }
+
+    printf("language error\n");
+    printf("語言錯誤\n");
+}

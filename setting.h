@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include "error.h"
+#include "language.h"
 #include <time.h>
 #include "lib.h"
 
