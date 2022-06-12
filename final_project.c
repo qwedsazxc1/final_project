@@ -136,6 +136,8 @@ int main(int argc, char *argv[]){
 
     print_out_check();
     clear_screen();
+    choose_language();
+    decide_message();
     printf("%s", welcome_message);
     fflush_stdin();
     clear_screen();
@@ -434,9 +436,14 @@ void delete(){
             delete_path(input_student_id, input_place_id, ((struct place_record *)search_result->path->array)[i].time);
             flag = 0;
         }
-        if (flag)
+        if (flag){
             printf("%s", no_record_err_msg);
+            continue;
+        }
+
         
+        printf("%s", delete_success_msg);
+        break;
     }
 }
 
@@ -539,9 +546,6 @@ void deal_with_argv(int argc, char *argv[]){
 
 void initial(int argc, char *argv[]){
     deal_with_argv(argc, argv);
-
-    choose_language();
-    decide_message();
 
     errno = 0;
     if (atexit(clear_hot_spot)){

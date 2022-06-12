@@ -30,6 +30,7 @@ char *student_id_msg;
 char *place_id_msg;
 char *time_msg;
 char *visited_time_msg;
+char *delete_success_msg;
 
 char welcome_message_en[] =
     "In this program, we will show the efficiency of avl tree compared with other data structure.\n"
@@ -174,6 +175,9 @@ char time_msg_cn[] = "時間 : ";
 char visited_time_msg_en[] = "visited time : ";
 char visited_time_msg_cn[] = "拜訪次數 : ";
 
+char delete_success_msg_en[] = "delete success\n";
+char delete_success_msg_cn[] = "刪除成功\n";
+
 void choose_language(){
     while (1){
         int input_option;
@@ -233,6 +237,7 @@ void decide_message(){
         place_id_msg = &place_id_msg_en[0];
         time_msg = &time_msg_en[0];
         visited_time_msg = &visited_time_msg_en[0];
+        delete_success_msg = &delete_success_msg_en[0];
         return;
     }
 
@@ -263,6 +268,7 @@ void decide_message(){
         place_id_msg = &place_id_msg_cn[0];
         time_msg = &time_msg_cn[0];
         visited_time_msg = &visited_time_msg_cn[0];
+        delete_success_msg = &delete_success_msg_cn[0];
         return;
     }
 

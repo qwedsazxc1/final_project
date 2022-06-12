@@ -28,10 +28,10 @@ struct list{
     void (*clear)(list dlist);
     
     // search the list from head to tail to find the node that stores the specific data.
-    struct dnode *(*search_node_from_head)(const list dlist, void *target_data);
+    void *(*search_node_from_head)(const list dlist, void *target_data);
     
     // search the list from tail to head to find the node that stores the specific data.
-    struct dnode *(*search_node_from_tail)(const list dlist, void *target_data);
+    void *(*search_node_from_tail)(const list dlist, void *target_data);
     
     // insert a node as the the head of the list
     int (*push_front)(list dlist, void *data, size_t size);

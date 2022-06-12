@@ -1,16 +1,21 @@
 objects = final_project.o lib.o error.o basic_data_structure/stack.o basic_data_structure/list.o basic_data_structure/queue.o basic_data_structure/avl_tree.o student.o basic_data_structure/vector.o place.o setting.o language.o
+linked_list_ver_obj = final_project_list_version.o lib.o error.o basic_data_structure/stack.o basic_data_structure/list.o basic_data_structure/queue.o basic_data_structure/avl_tree.o place_for_list.o basic_data_structure/vector.o student_for_list.o setting.o language.o
 CC = gcc
 exe = avl_tree_ver
+linked_list_exe = linked_list_ver
 add = add
 delete = delete
 student_id_list = student_id_list_generator
 test_case_generator = test_case_generator
 check_sort = check_sort
 
-all: $(exe) $(add) $(delete) $(test_case_generator) $(check_sort) student_id_list.txt
+all: $(exe) $(add) $(delete) $(test_case_generator) $(check_sort) $(linked_list_exe) student_id_list.txt
 
 $(exe): $(objects)
-	$(CC) -g -O3 $(objects) -o $(exe) 
+	$(CC) -g -O3 $(objects) -o $@
+
+$(linked_list_exe): $(linked_list_ver_obj)
+	$(CC) -g -O3 $(linked_list_ver_obj) -o $@
 
 $(add): add.o
 	$(CC) -g $^ -O3 -o $@
@@ -103,7 +108,7 @@ student_id_list_generator: student_id_list_generator.o
 	$(CC) -g $^ -O3 -o $@
 
 clear:
-	rm $(exe) $(add) $(delete) $(test_case_generator) *.o test*.csv student_id_list_generator
+	rm $(exe) $(add) $(delete) $(test_case_generator) *.o basic_data_structure/*.o test*.csv student_id_list_generator $(linked_list_exe)
 
 clean:
-	rm $(exe) $(add) $(delete) $(test_case_generator) *.o test*.csv student_id_list_generator
+	rm $(exe) $(add) $(delete) $(test_case_generator) *.o basic_data_structure/*.o test*.csv student_id_list_generator $(linked_list_exe)

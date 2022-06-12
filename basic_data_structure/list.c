@@ -55,10 +55,10 @@ static struct dnode *begin(const list dlist);
 static struct dnode *end(const list dlist);    
 
 // search the list from head to tail to find the node that stores the specific data.
-static struct dnode *search_node_from_head(const list dlist, void *target_data);    
+static void *search_node_from_head(const list dlist, void *target_data);    
 
 // search the list from tail to head to find the node that stores the specific data.
-static struct dnode *search_node_from_tail(const list dlist, void *target_data);  
+static void *search_node_from_tail(const list dlist, void *target_data);  
 
 // delete a specific node.
 static int erase(list dlist, struct dnode *target_node);                      
@@ -168,11 +168,9 @@ static int add_node_to_tail(struct dnode **head, struct dnode **tail, void *data
 }
 
 static void print_list_from_head(const list dlist){  
-    printf("list (from head) : ");
     for (struct dnode *cur = dlist->head; cur != NULL; cur = cur->next)  //for each loop, move to the next node by dereference the pointer dnode* next of the current node.
         dlist->print_func(cur->data);
 
-    printf("\n");
 }
 
 static void clear(list dlist){ 
@@ -186,11 +184,9 @@ static void clear(list dlist){
     dlist->tail = NULL;
 }
 static void print_list_from_tail(const list dlist){       
-    printf("list (from tail) : ");
     for (struct dnode *cur = dlist->tail; cur != NULL; cur = cur->prev) //for each loop, move to the prev node by dereference the pointer dnode* prev of the current node.
         dlist->print_func(cur->data);
 
-    printf("\n");
 }
 
 static int push_front(list dlist, void *data, size_t size){  
@@ -295,21 +291,27 @@ static struct dnode *begin(const list dlist){
 static struct dnode *end(const list dlist){    
     return dlist->tail;
 }
-static struct dnode *search_node_from_head(const list dlist, void *target_data){  
+static void *search_node_from_head(const list dlist, void *target_data){  
     struct dnode *cur;
     for (cur = dlist->head; cur != NULL; cur = cur->next){
         if (dlist->cmp(target_data, cur->data) == 0)
             break;
     }
-    return cur;
+
+    if (cur == NULL)
+        return NULL;
+    return cur->data;
 }
-static struct dnode *search_node_from_tail(const list dlist, void *target_data){  
+static void *search_node_from_tail(const list dlist, void *target_data){  
     struct dnode *cur;
     for (cur = dlist->tail; cur != NULL; cur = cur->prev){
         if (dlist->cmp(target_data, cur->data) == 0)
             break;
     }
-    return cur;
+
+    if (cur == NULL)
+        return NULL;
+    return cur->data;
 }
 
 static int erase(list dlist, struct dnode *target_node){  

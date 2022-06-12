@@ -35,6 +35,7 @@ extern char *student_id_msg;
 extern char *place_id_msg;
 extern char *time_msg;
 extern char *visited_time_msg;
+extern char *delete_success_msg;
 
 void choose_language();
 
