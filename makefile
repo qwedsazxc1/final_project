@@ -108,7 +108,7 @@ student_id_list_generator: student_id_list_generator.o
 	$(CC) -g $^ -O3 -o $@
 
 clear:
-	rm $(exe) $(add) $(delete) $(test_case_generator) *.o basic_data_structure/*.o test*.csv student_id_list_generator $(linked_list_exe)
+	rm $(exe) $(add) $(delete) $(test_case_generator) *.o basic_data_structure/*.o test*.csv student_id_list_generator $(linked_list_exe) $(check_sort)
 
 clean:
-	rm $(exe) $(add) $(delete) $(test_case_generator) *.o basic_data_structure/*.o test*.csv student_id_list_generator $(linked_list_exe)
+	rm $(exe) $(add) $(delete) $(test_case_generator) *.o basic_data_structure/*.o test*.csv student_id_list_generator $(linked_list_exe) $(check_sort)

@@ -107,7 +107,7 @@ void record_path(int student_id, int place_id);
 // print segmentaion fault
 void seg_fault(int signo);
 
-
+// show the place visit time over the standard amount in region
 void hot_spots();
 
 // ask user input student id and place id
@@ -116,7 +116,7 @@ void hot_spots();
 void record();
 
 // ask user input student id and place id and delete target time
-// 
+// time format : yyyy-mm-dd
 void delete();
 
 // free the space that student list and place list use
@@ -129,6 +129,9 @@ void build_list();
 // when argument have invalid option
 // print the usage of this file
 void print_usage();
+
+// ask user input place ID be searched
+// output the visit people in the region
 void search_place_id();
 
 int main(int argc, char *argv[]){
@@ -750,11 +753,13 @@ void search_place_id(){
         int upper_bound_index = upper_bound(search_place_result->path->array, &upper_bound_target, search_place_result->path->num_of_element, \
         search_place_result->path->element_size, time_compare_function);
 
+        // no record in search region 
         if (lower_bound_index == -1 || upper_bound_index == -1){
             printf("%s", no_record_err_msg);
             return;
         }
 
+        // no record in search region 
         if (lower_bound_index > upper_bound_index){
             printf("%s", no_record_err_msg);
             return;
