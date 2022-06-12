@@ -37,6 +37,19 @@ extern char *time_msg;
 extern char *visited_time_msg;
 extern char *delete_success_msg;
 //////////////////////////////////////////////
+extern char *change_setting1;
+extern char *change_setting2;
+extern char *change_setting3;
+extern char *change_setting4;
+extern char *change_setting5;
+extern char *change_setting6;
+extern char *change_setting7;
+
+extern char *change_value;
+
+
+extern char *change_date1;
+extern char *change_date2;
 
 void choose_language();
 

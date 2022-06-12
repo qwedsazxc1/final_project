@@ -63,20 +63,19 @@ void write_to_setting(){
 void change_setting(){
     while (1){
         int option;
-        printf("[0] : leave\n");
-        printf("[1] : hot spot standard = %d\n", hot_spot_standard); 
-        printf("[2] : default date = %s\n", default_date_string);
-        printf("[3] : search front date(unit : day) = %d\n", search_front_date);
-        printf("[4] : search after date(unit : day) = %d\n", search_after_date);
-        printf("[5] : search front minute(unit : minute) = %d\n", search_front_minute);
-        printf("[6] : search after minute(unit : minute) = %d\n", search_after_minute);
-        printf("input the option that you want to change\n");
+        printf("%s%d\n", change_setting1, hot_spot_standard);
+        printf("%s%s\n", change_setting2, default_date_string);
+        printf("%s%d\n", change_setting3, search_front_date);
+        printf("%s%d\n", change_setting4, search_after_date);
+        printf("%s%d\n", change_setting5, search_front_minute);
+        printf("%s%d\n", change_setting6, search_after_minute);
+        printf("%s",change_setting7);
 
         int input_result = scanf("%2d", &option);
         fflush_stdin();
         clear_screen();
         if (input_result != 1){
-            printf("invalid option\n");
+            printf("%s", option_err_msg);
             continue;
         }
 
@@ -113,7 +112,7 @@ void change_setting(){
             continue;
         }
 
-        printf("invalid option\n");
+        printf("%s", option_err_msg);
     }
     
 }
@@ -122,20 +121,20 @@ static void change_setting_value(int *variable_be_changed, const char *variable_
     while (1){
         int value;
         printf("%s = %d\n", variable_name, *variable_be_changed);
-        printf("input -1 if you don't want to change the value\n");
-        printf("input the value you want change : ");
+        printf("%s",change_value);
+
         int input_result = scanf("%9d", &value);
         fflush_stdin();
         clear_screen();
         if (input_result != 1){
-            printf("Invalid option\n");
+            printf("%s",option_err_msg);
             continue;
         }
         if (value == -1)
             break;
         
         if (value < -1 || value > upper_bound){
-            printf("Invalid option\n");
+            printf("%s",option_err_msg);
             continue;
         }
         *variable_be_changed = value;
@@ -150,26 +149,25 @@ static void change_hot_spot_standard(){
 static void change_default_date(){
     while (1){
         char input_time_string[50];
-        printf("default_date = %s\n", default_date_string);
-        printf("Input format : yyyy-mm-dd\n");
-        printf("input 0 if you don't want to change the value\n");
+        printf("%s%s\n", change_date1, default_date_string);
+        printf("%s",change_date2);
         int input_result = scanf("%40s", input_time_string);
         fflush_stdin();
         clear_screen();
         if (input_result != 1){
-            printf("invalid option\n");
+            printf("%s",option_err_msg);
             continue;
         }
         int leave_option = -1;
         if ((input_result = sscanf(input_time_string, "%5d", &leave_option)) != 1){
-            printf("invalid option\n");
+            printf("%s",option_err_msg);
             continue;
         }
         if (leave_option == 0)
             break;
         
         if (strptime(input_time_string, "%Y-%m-%d", &default_date) == NULL){
-            printf("invalid option\n");
+            printf("%s",option_err_msg);
             continue;
         }
 
