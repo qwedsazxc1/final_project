@@ -1,9 +1,7 @@
 #include "language.h"
 
-// undone : search() hotspot()
-
 int language;
-
+//////////////////////////// final_project.c
 char *welcome_message;
 char *features_list;
 char *option_err_msg;
@@ -31,6 +29,21 @@ char *place_id_msg;
 char *time_msg;
 char *visited_time_msg;
 char *delete_success_msg;
+/////////////////////////////// search.c
+char *change_setting1;
+char *change_setting2;
+char *change_setting3;
+char *change_setting4;
+char *change_setting5;
+char *change_setting6;
+char *change_setting;
+
+char *change_value;
+
+
+char *change_date1;
+char *change_date2;
+/////////////////////////////// prototypes
 
 char welcome_message_en[] =
     "In this program, we will show the efficiency of avl tree compared with other data structure.\n"
@@ -177,8 +190,42 @@ char visited_time_msg_cn[] = "拜訪次數 : ";
 
 char delete_success_msg_en[] = "delete success\n";
 char delete_success_msg_cn[] = "刪除成功\n";
+////////////////////////////////////////////////////////
+char change_setting1_en[] = "[0] : leave settings\n" 
+                            "[1] : hot spot standard = ";
+char change_setting2_en[] = "[2] : default date = ";
+char change_setting3_en[] = "[3] : beginning date of search(unit : day) = ";
+char change_setting4_en[] = "[4] : end date of search(unit : day) = ";
+char change_setting5_en[] = "[5] : beginning minute of search(unit : minute) = ";
+char change_setting6_en[] = "[6] : end minute of search(unit : minute) = ";
+char change_setting_en[] =  "Based on the options above, please pick what you want to alter\n";
 
-void choose_language(){
+char change_setting1_cn[] = "[0] : 離開設定集\n" 
+                            "[1] : 請定義熱點標準 = ";
+char change_setting2_cn[] = "[2] : 預設日期 = ";
+char change_setting3_cn[] = "[3] : 搜尋起點日期 = (單位 : 日)";
+char change_setting4_cn[] = "[4] : 搜尋終點日期 = (單位 : 日)";
+char change_setting5_cn[] = "[5] : 搜尋起點時刻 = (單位 : 分鐘)";
+char change_setting6_cn[] = "[6] : 搜尋終點時刻 = (單位 : 分鐘)";
+char change_setting_cn[] = "請根據以上選項, 選擇您想更改的設定。\n";
+
+char change_value_en[] = "Please Input -1 if you don't want to change the value\n"
+                         "Input the value you want change : ";
+char change_value_cn[] = "若您不想進行更改, 請輸入 -1\n"
+                         "請輸入欲更改的數值 :";
+
+char change_date1_en[] = "Default date = ";
+char change_date2_en[] = "Input format : yyyy-mm-dd\n"
+                         "Please input 0 if you don't want to change the value\n";
+char change_date1_cn[] = "預設日期 = ";
+char change_date2_cn[] = "輸入格式 : yyyy-mm-dd(西元年-月-日)\n"
+                         "若您不想進行更改, 請輸入 0\n"
+                         "請輸入欲更改的數值 :";
+
+////////////////////////////////////////////////////////
+    
+void choose_language()
+{
     while (1){
         int input_option;
         printf("Please choose your language.\n");
@@ -238,6 +285,7 @@ void decide_message(){
         time_msg = &time_msg_en[0];
         visited_time_msg = &visited_time_msg_en[0];
         delete_success_msg = &delete_success_msg_en[0];
+        ////////////////////////////////////////////////////////////
         return;
     }
 
@@ -269,6 +317,7 @@ void decide_message(){
         time_msg = &time_msg_cn[0];
         visited_time_msg = &visited_time_msg_cn[0];
         delete_success_msg = &delete_success_msg_cn[0];
+        /////////////////////////////////////////////////////////
         return;
     }
 

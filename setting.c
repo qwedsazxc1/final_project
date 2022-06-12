@@ -1,4 +1,5 @@
 #include "setting.h"
+#include "language.h"
 
 static void change_hot_spot_standard();
 static void change_setting_value(int *variable_be_changed, const char *variable_name, int upper_bound);
