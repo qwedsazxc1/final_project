@@ -24,7 +24,7 @@ Compatible system : `Linux` ( or UNIX-like system )
 
 Compilation tool : `makefile` ( gcc )
 
-Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp;&nbsp;`test_case_generator`, &nbsp;&nbsp;`check_sort`, &nbsp;&nbsp;`student_id_list_generator`
+Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp;&nbsp;`test_case_generator`, &nbsp;&nbsp;`check_sort`, &nbsp;&nbsp;`student_id_list_generator`, et cetera.
 
 <br>
 <br>
