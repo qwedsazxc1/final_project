@@ -100,6 +100,41 @@ test14: all
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 100000000 -i
 
+test15: all
+	./$(test_case_generator) 10 $@.csv 
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps > /dev/null
+	time -p ./$(linked_list_exe) -f $@.csv -ps > /dev/null
+
+test16: all
+	./$(test_case_generator) 100 $@.csv 
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps > /dev/null
+	time -p ./$(linked_list_exe) -f $@.csv  -ps > /dev/null
+
+test17: all
+	./$(test_case_generator) 1000 $@.csv 
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps > /dev/null
+	time -p ./$(linked_list_exe) -f $@.csv -ps > /dev/null
+
+test18: all
+	./$(test_case_generator) 10000 $@.csv 
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps > /dev/null
+	time -p ./$(linked_list_exe) -f $@.csv -ps > /dev/null
+
+test19: all
+	./$(test_case_generator) 100000 $@.csv 
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps > /dev/null
+	time -p ./$(linked_list_exe) -f $@.csv -ps > /dev/null
+
+test20: all
+	./$(test_case_generator) 1000000 $@.csv 
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps > /dev/null
+	time -p ./$(linked_list_exe) -f $@.csv -ps > /dev/null
 
 test_case_generator: test_case_generator.c
 	$(CC) -g $^ -O3 -o $@
@@ -115,3 +150,6 @@ clear:
 
 clean:
 	rm $(exe) $(add) $(delete) $(test_case_generator) *.o basic_data_structure/*.o test*.csv student_id_list_generator $(linked_list_exe) $(check_sort)
+
+clean_test_case:
+	rm test*.csv
