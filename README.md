@@ -26,16 +26,16 @@ Compilation tool : `makefile` ( gcc )
 
 Executable file : `avl_tree_ver`, &nbsp;&nbsp;`add`, &nbsp;&nbsp;`delete`, &nbsp;&nbsp;`test_case_generator`, &nbsp;&nbsp;`check_sort`, &nbsp;&nbsp;`student_id_list_generator`, et cetera.
 
-Execute the avl_tree_ver:
-./avl_tree_ver [option] 
+execute avl_tree_ver and linked_list_ver:  
+./avl_tree_ver [option] , ./linked_list_ver [option]
 -h: show every parameter
 -f: --file <csv file>   , load informtaion from csv file, default is footprint.csv
 -ps: --printstu print output sort by student id
 -pp: --printpla print output sort by place id     
 
-Example:
-./avl_tree_ver -f test1.csv
-./avl_tree_ver -h
+example:
+./avl_tree_ver -f test1.csv <br>
+./linked_list_ver -h  <br>
 
 <br>
 <br>
