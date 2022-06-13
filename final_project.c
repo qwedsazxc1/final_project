@@ -729,7 +729,6 @@ void search_place_id(){
         clear_screen();
         if (input_result != 1){
             printf("%s", illegal_retrieval);
-            sleep(1);
             continue;
         }
         if (input_place_id == 0)
@@ -740,7 +739,6 @@ void search_place_id(){
         struct place *search_place_result = place_list->place_tree->search(place_list->place_tree, &place_target);
         if (search_place_result == NULL){
             printf("%s", illegal_retrieval);
-            sleep(1);
             continue;
         }
 
@@ -757,14 +755,12 @@ void search_place_id(){
         // no record in search region 
         if (lower_bound_index == -1 || upper_bound_index == -1){
             printf("%s", no_record_err_msg);
-            sleep(1);
             return;
         }
 
         // no record in search region 
         if (lower_bound_index > upper_bound_index){
             printf("%s", no_record_err_msg);
-            sleep(1);
             return;
         }
         printf("%s%d%s%s%s%s\n", search_place_id4, input_place_id, search_place_id5, time_lower_bound_string, search_place_id2, time_upper_bound_string);

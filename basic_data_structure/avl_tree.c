@@ -189,15 +189,15 @@ static void right_rotate(struct avlnode *node){
 }
 
 static void balance(struct avlnode *node){
-    if (node_height((node)->left_child) - node_height((node)->right_child) > 1){
-        if (node_height((node)->left_child->right_child) > node_height((node)->left_child->left_child))
-            left_rotate(((node)->left_child));
+    if (node_height(node->left_child) - node_height(node->right_child) > 1){
+        if (node_height(node->left_child->right_child) > node_height(node->left_child->left_child))
+            left_rotate(node->left_child);
         
         right_rotate(node);
     }
-    if (node_height((node)->right_child) - node_height((node)->left_child) > 1){
-        if (node_height((node)->right_child->left_child) > node_height((node)->right_child->right_child))
-            right_rotate(((node)->right_child));
+    if (node_height(node->right_child) - node_height(node->left_child) > 1){
+        if (node_height(node->right_child->left_child) > node_height(node->right_child->right_child))
+            right_rotate(node->right_child);
 
         left_rotate(node);
     }

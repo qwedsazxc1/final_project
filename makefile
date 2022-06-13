@@ -33,70 +33,73 @@ $(check_sort): check_sort.o
 test1: all
 	./$(test_case_generator) 10 $@.csv
 	wc -l $@.csv
-	time -p ./$(exe) $@.csv
+	time -p ./$(exe) -f $@.csv -ps
 
 test2: all
-	./$(test_case_generator) 100 $@.csv
-	wc -l $@.csv
-	time -p ./$(exe) -f $@.csv -ps
-
-test3: all
-	./$(test_case_generator) 10000 $@.csv
-	wc -l $@.csv
-	time -p ./$(exe) -f $@.csv -ps
-
-test4: all
-	./$(test_case_generator) 10000000 $@.csv
-	wc -l $@.csv
-	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i
-
-#limit test(same student_id and same place_id)
-test_l: all
 	./$(test_case_generator) 10 $@.csv -l
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -ps
 
-test_l1: all
-	./$(test_case_generator) 10000 $@.csv -l
-	wc -l $@.csv
-	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000 -i
-
-test_l2: all
-	./$(test_case_generator) 10000000 $@.csv -l
-	wc -l $@.csv
-	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i
-
-#limit test(same student_id)
-test_li: all
+test3: all
 	./$(test_case_generator) 10 $@.csv -li
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -pp
 
-test_li1: all
+test4: all
+	./$(test_case_generator) 10 $@.csv -lp
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps
+
+test5: all
+	./$(test_case_generator) 100 $@.csv
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps
+
+test6: all
+	./$(test_case_generator) 10000 $@.csv
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000 -i
+
+test7: all
+	./$(test_case_generator) 10000 $@.csv -l
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000 -i
+
+test8: all
 	./$(test_case_generator) 10000 $@.csv -li
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -pp | ./$(check_sort) 10000 -p
 
-test_li2: all
-	./$(test_case_generator) 10000000 $@.csv -li
-	wc -l $@.csv
-	time -p ./$(exe) -f $@.csv -pp | ./$(check_sort) 10000000 -p
-
-#limit test(same place_id)
-test_lp: all
-	./$(test_case_generator) 10 $@.csv -lp
-	wc -l $@.csv
-	time -p ./$(exe) -f $@.csv
-
-test_lp1: all
+test9: all
 	./$(test_case_generator) 10000 $@.csv -lp
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000 -i
 
-test_lp2: all
+test10: all
+	./$(test_case_generator) 10000000 $@.csv
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i
+
+test11: all
+	./$(test_case_generator) 10000000 $@.csv -l
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i
+
+test12: all
+	./$(test_case_generator) 10000000 $@.csv -li
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -pp | ./$(check_sort) 10000000 -p
+
+test13: all
 	./$(test_case_generator) 10000000 $@.csv -lp
 	wc -l $@.csv
 	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 10000000 -i
+
+test14: all
+	time -p ./$(test_case_generator) 100000000 $@.csv
+	wc -l $@.csv
+	time -p ./$(exe) -f $@.csv -ps | ./$(check_sort) 100000000 -i
+
 
 test_case_generator: test_case_generator.c
 	$(CC) -g $^ -O3 -o $@
