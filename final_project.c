@@ -764,7 +764,6 @@ void search_place_id(){
             return;
         }
         printf("%s%d%s%s%s%s\n", search_place_id4, input_place_id, search_place_id5, time_lower_bound_string, search_place_id2, time_upper_bound_string);
-        printf("Place ID : %d, record from %s to %s\n", input_place_id, time_lower_bound_string, time_upper_bound_string);
         printf("\n");
         for (int i = lower_bound_index; i <= upper_bound_index; i++){
             strftime(time_lower_bound_string, 40, "%Y-%m-%d %H:%M:%S", gmtime(&(((place_record *)search_place_result->path->array)[i].time)));
