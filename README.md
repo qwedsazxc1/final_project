@@ -36,7 +36,14 @@ execute avl_tree_ver and linked_list_ver:  <br>
 example: <br>
 ./avl_tree_ver -f test1.csv <br>
 ./linked_list_ver -h  <br>
+  
+[Makefile command]  <br> 
+test_case_generator: <br>
+    make test1 <br>
+    make test2 <br>
+    make test3......and so on to test20 <br>
 
+  
 <br>
 <br>
 
