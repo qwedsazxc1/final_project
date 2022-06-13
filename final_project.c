@@ -405,7 +405,7 @@ void delete(){
             printf("%s", format_err_msg);
             continue;
         }
-        time_t lower_bound_time = timegm(&target_time);
+        time_t lower_bound_time = mktime(&target_time);
         time_t upper_bound_time = lower_bound_time + SECOND_IN_A_DAY;
         struct student search_target;
         search_target.student_id = input_student_id;
